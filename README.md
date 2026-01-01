@@ -1,24 +1,38 @@
 # Kamran Boroomand — Portfolio
 
-Personal one-page portfolio website (Linux System Administration / Infrastructure / Security).
+**Personal portfolio website showcasing skills in Linux System Administration, Infrastructure, and Security.**
 
-## Live
-- GitHub Pages: https://kamranboroomand.github.io/KamranBoroomand.ir/
+## 🚀 Live Demo
 
-## Tech
-- HTML / CSS / JavaScript
-- Ionicons
-- Hosted on GitHub Pages
+You can view the live site here:  
+[**KamranBoroomand.ir Portfolio**](https://kamranboroomand.github.io/KamranBoroomand.ir/)
 
-## Structure
+## 🔧 Technologies Used
 
-| Path | Description |
-|-----|------------|
-| index.html | Main entry point |
-| assets/css/style.css | Styles |
-| assets/js/script.js | JavaScript logic |
-| assets/images/ | Images |
+- **Frontend:** HTML, CSS, JavaScript  
+- **Icons:** Ionicons  
+- **Hosting:** GitHub Pages  
 
-## Notes
-- Brand palette: yellow + gray
-- Icons and layout are customized for a sysadmin/security portfolio
+## 🗂️ Project Structure
+
+This project is organized as follows:
+
+| Path                      | Description                                     |
+|---------------------------|-------------------------------------------------|
+| `index.html`              | Main entry point for the portfolio              |
+| `assets/css/style.css`    | Custom styles for the site                      |
+| `assets/js/script.js`     | JavaScript logic for interactions and features  |
+| `assets/images/`          | All images used across the site                 |
+
+## 🎨 Design Notes
+
+- **Brand Palette:** Yellow + Gray  
+- **Icons & Layout:** Tailored for a cybersecurity and sysadmin-focused portfolio
+
+## 💡 Purpose
+
+This portfolio is designed to showcase my **Linux system administration**, **network security**, and **open-source projects**, including **NullID**, a privacy-focused bot I built. Explore my work to see how I approach system security, automation, and infrastructure management.
+
+## 📜 License
+
+This project is **MIT Licensed**.
