@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <rect x="3" y="6" width="34" height="24" rx="3" fill="#1f2933"/>
+
+  <!-- shackle -->
+  <path d="M15 18v-2.2c0-3 2.2-5.3 5-5.3s5 2.3 5 5.3V18"
+        stroke="#f2c94c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- body -->
+  <rect x="14" y="18" width="12" height="10" rx="2" fill="#f2c94c"/>
+
+  <!-- keyhole -->
+  <circle cx="20" cy="23" r="1.4" fill="#1f2933"/>
+  <line x1="20" y1="24.2" x2="20" y2="26.4" stroke="#1f2933" stroke-width="2" stroke-linecap="round"/>
+</svg>

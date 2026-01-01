@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <rect x="3" y="6" width="34" height="24" rx="3" fill="#1f2933"/>
+
+  <!-- gear -->
+  <circle cx="17" cy="18" r="4" fill="none" stroke="#f2c94c" stroke-width="2"/>
+  <line x1="17" y1="12" x2="17" y2="10" stroke="#f2c94c" stroke-width="2" stroke-linecap="round"/>
+  <line x1="17" y1="26" x2="17" y2="28" stroke="#f2c94c" stroke-width="2" stroke-linecap="round"/>
+  <line x1="11" y1="18" x2="9" y2="18" stroke="#f2c94c" stroke-width="2" stroke-linecap="round"/>
+  <line x1="25" y1="18" x2="27" y2="18" stroke="#f2c94c" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- arrow -->
+  <path d="M24 24 L30 24 L28 22" stroke="#f2c94c" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
