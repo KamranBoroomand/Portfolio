@@ -5,7 +5,7 @@
 ## 🚀 Live Demo
 
 You can view the live site here:  
-[**KamranBoroomand.ir Portfolio**](https://kamranboroomand.github.io/KamranBoroomand.ir/)
+[**KamranBoroomand.ir Portfolio**](https://KamranBoroomand.ir)
 
 ## 🔧 Technologies Used
 
