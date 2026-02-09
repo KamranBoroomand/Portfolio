@@ -1,221 +1,150 @@
-// ==========================================================
-// Kamran Portfolio — Minimal UI Script
-// Tabs: About / Resume / Portfolio
-// ==========================================================
-
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // =========================================================
-  // 1) Global page fade-in
-  // =========================================================
   document.body.classList.add("is-loaded");
 
-  // =========================================================
-  // 2) NAVIGATION (About / Resume / Portfolio)
-  // =========================================================
-  const navLinks = document.querySelectorAll("[data-nav-link]");
-  const pages = document.querySelectorAll("[data-page]");
+  initTabs();
+  initProjectFilters();
+});
+
+function initTabs() {
+  const navLinks = Array.from(document.querySelectorAll("[data-nav-link]"));
+  const pages = Array.from(document.querySelectorAll("[data-page]"));
+
+  if (!navLinks.length || !pages.length) {
+    return;
+  }
+
+  const pageMap = new Map();
+  pages.forEach((page) => {
+    const key = page.dataset.page;
+    if (key) {
+      pageMap.set(key, page);
+    }
+  });
+
+  function activatePage(targetKey, shouldScroll = true) {
+    navLinks.forEach((link) => {
+      const isActive = link.dataset.target === targetKey;
+      link.classList.toggle("active", isActive);
+      link.setAttribute("aria-selected", String(isActive));
+      link.tabIndex = isActive ? 0 : -1;
+    });
+
+    pages.forEach((page) => {
+      const isActive = page.dataset.page === targetKey;
+      page.classList.toggle("active", isActive);
+      page.setAttribute("aria-hidden", String(!isActive));
+      page.hidden = !isActive;
+    });
+
+    if (shouldScroll) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
 
   navLinks.forEach((link) => {
     link.addEventListener("click", () => {
-      const target = link.textContent.trim().toLowerCase();
-
-      // Toggle active class on nav
-      navLinks.forEach((btn) => btn.classList.remove("active"));
-      link.classList.add("active");
-
-      // Toggle active class on pages
-      pages.forEach((page) => {
-        if (page.dataset.page === target) {
-          page.classList.add("active");
-        } else {
-          page.classList.remove("active");
-        }
-      });
-
-      // Smooth scroll to top of main content
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      const target = link.dataset.target;
+      if (target && pageMap.has(target)) {
+        activatePage(target, true);
+      }
     });
   });
 
-  // =========================================================
-  // 3) PORTFOLIO FILTERING
-  // =========================================================
-  const filterButtons = document.querySelectorAll("[data-filter-btn]");
-  const filterItems = document.querySelectorAll("[data-filter-item]");
-  const select = document.querySelector("[data-select]");
-  const selectValue = document.querySelector("[data-selecct-value]");
-  const selectItems = document.querySelectorAll("[data-select-item]");
+  const initial = navLinks.find((link) => link.classList.contains("active"));
+  if (initial?.dataset.target && pageMap.has(initial.dataset.target)) {
+    activatePage(initial.dataset.target, false);
+  }
+}
 
-  function filterProjects(category) {
-    const normalized = category ? category.toLowerCase() : "all";
+function initProjectFilters() {
+  const filterButtons = Array.from(document.querySelectorAll("[data-filter-btn]"));
+  const filterItems = Array.from(document.querySelectorAll("[data-filter-item]"));
+  const selectBox = document.querySelector(".filter-select-box");
+  const selectTrigger = document.querySelector("[data-select]");
+  const selectValue = document.querySelector("[data-select-value]");
+  const selectItems = Array.from(document.querySelectorAll("[data-select-item]"));
 
-    filterItems.forEach((item) => {
-      const itemCategory = item.dataset.category;
-
-      if (normalized === "all" || normalized === "") {
-        item.classList.add("active");
-      } else if (itemCategory === normalized) {
-        item.classList.add("active");
-      } else {
-        item.classList.remove("active");
-      }
-    });
+  if (!filterItems.length) {
+    return;
   }
 
-  // Button-based filter (desktop)
-  filterButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const category = btn.textContent.trim().toLowerCase();
+  const labelByFilter = {
+    all: "All",
+    security: "Security",
+    automation: "Automation"
+  };
 
-      filterButtons.forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
+  function applyFilter(filter) {
+    const normalized = (filter || "all").toLowerCase();
 
-      filterProjects(category);
+    filterItems.forEach((item) => {
+      const categories = (item.dataset.category || "")
+        .split(",")
+        .map((value) => value.trim().toLowerCase())
+        .filter(Boolean);
 
-      if (selectValue) {
-        selectValue.textContent = btn.textContent.trim();
-      }
+      const isVisible = normalized === "all" || categories.includes(normalized);
+      item.classList.toggle("active", isVisible);
+      item.hidden = !isVisible;
+    });
+
+    filterButtons.forEach((button) => {
+      const isActive = button.dataset.filter === normalized;
+      button.classList.toggle("active", isActive);
+      button.setAttribute("aria-selected", String(isActive));
+    });
+
+    selectItems.forEach((item) => {
+      const isActive = item.dataset.filter === normalized;
+      item.setAttribute("aria-selected", String(isActive));
+    });
+
+    if (selectValue) {
+      selectValue.textContent = labelByFilter[normalized] || "All";
+    }
+  }
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      applyFilter(button.dataset.filter);
     });
   });
 
-  // Select dropdown filter (mobile)
-  if (select) {
-    select.addEventListener("click", () => {
-      select.classList.toggle("active");
+  function closeSelect() {
+    if (selectBox && selectTrigger) {
+      selectBox.classList.remove("active");
+      selectTrigger.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  if (selectBox && selectTrigger) {
+    selectTrigger.addEventListener("click", () => {
+      const next = !selectBox.classList.contains("active");
+      selectBox.classList.toggle("active", next);
+      selectTrigger.setAttribute("aria-expanded", String(next));
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!selectBox.contains(event.target)) {
+        closeSelect();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeSelect();
+      }
     });
 
     selectItems.forEach((item) => {
       item.addEventListener("click", () => {
-        const category = item.textContent.trim().toLowerCase();
-
-        if (selectValue) {
-          selectValue.textContent = item.textContent.trim();
-        }
-
-        select.classList.remove("active");
-        filterProjects(category);
-
-        // Sync button state with select choice
-        filterButtons.forEach((btn) => {
-          const match =
-            btn.textContent.trim().toLowerCase() === category ||
-            (category === "all" &&
-              btn.textContent.trim().toLowerCase() === "all");
-          btn.classList.toggle("active", match);
-        });
+        applyFilter(item.dataset.filter);
+        closeSelect();
       });
     });
-
-    // Close select when clicking outside
-    document.addEventListener("click", (event) => {
-      if (!select.contains(event.target)) {
-        select.classList.remove("active");
-      }
-    });
   }
 
-  // =========================================================
-  // 4) INTERACTIVE BACKGROUND (points reacting to mouse)
-  // =========================================================
-  const canvas = document.getElementById("bg-canvas");
-  if (!canvas) return;
-
-  const ctx = canvas.getContext("2d");
-  let width = window.innerWidth;
-  let height = window.innerHeight;
-
-  canvas.width = width;
-  canvas.height = height;
-
-  const POINT_COUNT = Math.min(80, Math.floor((width * height) / 25000));
-  const points = [];
-  const mouse = { x: null, y: null };
-  const influenceRadius = 140; // area around cursor that "reacts"
-
-  function createPoints() {
-    points.length = 0;
-    for (let i = 0; i < POINT_COUNT; i++) {
-      points.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.15,
-        vy: (Math.random() - 0.5) * 0.15,
-        baseSize: 1 + Math.random() * 1.3
-      });
-    }
-  }
-
-  createPoints();
-
-  // Handle mouse movement
-  window.addEventListener("mousemove", (event) => {
-    mouse.x = event.clientX;
-    mouse.y = event.clientY;
-  });
-
-  // If mouse leaves window, slowly fade back to neutral
-  window.addEventListener("mouseleave", () => {
-    mouse.x = null;
-    mouse.y = null;
-  });
-
-  // Handle resize
-  window.addEventListener("resize", () => {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-    createPoints();
-  });
-
-  function animate() {
-    ctx.clearRect(0, 0, width, height);
-
-    for (const p of points) {
-      // Natural drifting
-      p.x += p.vx;
-      p.y += p.vy;
-
-      // Wrap around edges softly
-      if (p.x < -50) p.x = width + 50;
-      if (p.x > width + 50) p.x = -50;
-      if (p.y < -50) p.y = height + 50;
-      if (p.y > height + 50) p.y = -50;
-
-      let size = p.baseSize;
-      let alpha = 0.18;
-      let color = `rgba(255, 255, 255, ${alpha})`;
-
-      // React to mouse proximity
-      if (mouse.x !== null && mouse.y !== null) {
-        const dx = p.x - mouse.x;
-        const dy = p.y - mouse.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < influenceRadius) {
-          const force = (influenceRadius - dist) / influenceRadius;
-
-          // Light push away from the cursor
-          p.x += (dx / dist) * force * 4;
-          p.y += (dy / dist) * force * 4;
-
-          size = p.baseSize + force * 2.2;
-          alpha = 0.3 + force * 0.4;
-          color = `rgba(242, 201, 76, ${alpha})`; // yellow glow near cursor
-        }
-      }
-
-      ctx.beginPath();
-      ctx.fillStyle = color;
-      ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    requestAnimationFrame(animate);
-  }
-
-  animate();
-});
-
+  applyFilter("all");
+}
