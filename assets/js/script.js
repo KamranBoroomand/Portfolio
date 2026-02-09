@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function initTabs() {
   const navLinks = Array.from(document.querySelectorAll("[data-nav-link]"));
   const pages = Array.from(document.querySelectorAll("[data-page]"));
-  const quickLinks = Array.from(document.querySelectorAll("[data-open-page]"));
 
   if (!navLinks.length || !pages.length) {
     return;
@@ -51,15 +50,6 @@ function initTabs() {
   navLinks.forEach((link) => {
     link.addEventListener("click", () => {
       const target = link.dataset.target;
-      if (target && pageMap.has(target)) {
-        activatePage(target, true);
-      }
-    });
-  });
-
-  quickLinks.forEach((link) => {
-    link.addEventListener("click", () => {
-      const target = link.dataset.openPage;
       if (target && pageMap.has(target)) {
         activatePage(target, true);
       }
