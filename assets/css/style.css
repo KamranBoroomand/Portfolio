@@ -192,7 +192,10 @@ body.is-loaded {
   border-radius: 12px;
   padding: 0.68rem 1rem;
   border: 1px solid transparent;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
   font-weight: 600;
+  cursor: pointer;
   text-decoration: none;
   transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease, color 180ms ease;
 }

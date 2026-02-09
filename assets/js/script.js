@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function initTabs() {
   const navLinks = Array.from(document.querySelectorAll("[data-nav-link]"));
   const pages = Array.from(document.querySelectorAll("[data-page]"));
+  const quickLinks = Array.from(document.querySelectorAll("[data-open-page]"));
 
   if (!navLinks.length || !pages.length) {
     return;
@@ -41,6 +42,10 @@ function initTabs() {
     if (shouldScroll) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+
+    if (window.location.hash !== `#${targetKey}`) {
+      history.replaceState(null, "", `#${targetKey}`);
+    }
   }
 
   navLinks.forEach((link) => {
@@ -51,6 +56,21 @@ function initTabs() {
       }
     });
   });
+
+  quickLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      const target = link.dataset.openPage;
+      if (target && pageMap.has(target)) {
+        activatePage(target, true);
+      }
+    });
+  });
+
+  const targetFromHash = window.location.hash.replace("#", "").trim().toLowerCase();
+  if (targetFromHash && pageMap.has(targetFromHash)) {
+    activatePage(targetFromHash, false);
+    return;
+  }
 
   const initial = navLinks.find((link) => link.classList.contains("active"));
   if (initial?.dataset.target && pageMap.has(initial.dataset.target)) {

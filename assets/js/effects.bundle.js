@@ -26635,6 +26635,7 @@ void main() {
     const timeOffsetRef = (0, import_react.useRef)(Math.random() * 100);
     const tintVec = (0, import_react.useMemo)(() => hexToRgb(tint), [tint]);
     const ditherValue = (0, import_react.useMemo)(() => typeof dither === "boolean" ? dither ? 1 : 0 : dither, [dither]);
+    const containerClassName = className ? `faulty-terminal-container ${className}` : "faulty-terminal-container";
     const handleMouseMove = (0, import_react.useCallback)((e) => {
       const ctn = containerRef.current;
       if (!ctn) return;
@@ -26758,7 +26759,7 @@ void main() {
       brightness,
       handleMouseMove
     ]);
-    return /* @__PURE__ */ import_react.default.createElement("div", { ref: containerRef, className: `faulty-terminal-container ${className}`, style, ...rest });
+    return /* @__PURE__ */ import_react.default.createElement("div", { ref: containerRef, className: containerClassName, style, ...rest });
   }
 
   // src/react/AvatarEasterEgg.tsx
