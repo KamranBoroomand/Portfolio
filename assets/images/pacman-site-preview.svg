@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">PacMan project preview</title>
+  <desc id="desc">Stylized PacMan scene with maze lines and ghosts.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a1120" />
+      <stop offset="100%" stop-color="#141f38" />
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.6">
+      <stop offset="0%" stop-color="#ffd053" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#ffd053" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#bg)" />
+  <rect width="1200" height="800" fill="url(#glow)" />
+
+  <g stroke="#2a4276" stroke-width="10" fill="none" opacity="0.85">
+    <rect x="90" y="110" width="1020" height="580" rx="28" />
+    <rect x="170" y="190" width="860" height="420" rx="22" />
+    <path d="M170 300h860M170 500h860M350 190v420M600 190v420M850 190v420" />
+  </g>
+
+  <g fill="#ffd53d">
+    <path d="M380 400A88 88 0 1 1 380 401L446 352A88 88 0 0 0 446 448Z" />
+  </g>
+
+  <g fill="#ffe28a">
+    <circle cx="520" cy="400" r="11" />
+    <circle cx="560" cy="400" r="11" />
+    <circle cx="600" cy="400" r="11" />
+    <circle cx="640" cy="400" r="11" />
+  </g>
+
+  <g transform="translate(760 344)">
+    <path d="M0 56c0-40 30-70 70-70s70 30 70 70v66l-18-14-17 14-17-14-18 14-17-14-18 14V56Z" fill="#ff5978" />
+    <circle cx="47" cy="52" r="12" fill="#fff" />
+    <circle cx="92" cy="52" r="12" fill="#fff" />
+    <circle cx="51" cy="56" r="5" fill="#18203a" />
+    <circle cx="96" cy="56" r="5" fill="#18203a" />
+  </g>
+
+  <text x="90" y="90" fill="#f6b31d" font-family="Sora, Arial, sans-serif" font-size="44" font-weight="700">PacMan</text>
+  <text x="90" y="742" fill="#95a6ce" font-family="Manrope, Arial, sans-serif" font-size="26">Arcade Game Project</text>
+</svg>
