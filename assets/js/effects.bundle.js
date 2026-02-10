@@ -26634,7 +26634,10 @@ void main() {
     const loadAnimationStartRef = (0, import_react.useRef)(0);
     const timeOffsetRef = (0, import_react.useRef)(Math.random() * 100);
     const tintVec = (0, import_react.useMemo)(() => hexToRgb(tint), [tint]);
-    const ditherValue = (0, import_react.useMemo)(() => typeof dither === "boolean" ? dither ? 1 : 0 : dither, [dither]);
+    const ditherValue = (0, import_react.useMemo)(
+      () => typeof dither === "boolean" ? dither ? 1 : 0 : dither,
+      [dither]
+    );
     const containerClassName = className ? `faulty-terminal-container ${className}` : "faulty-terminal-container";
     const handleMouseMove = (0, import_react.useCallback)((e) => {
       const ctn = containerRef.current;
@@ -26906,7 +26909,14 @@ void main() {
         }
       };
     }, [characters, glitchColors, glitchSpeed, smooth, centerVignette, outerVignette]);
-    return /* @__PURE__ */ import_react2.default.createElement("canvas", { ref: canvasRef, className, style: { display: "block", width: "100%", height: "100%" } });
+    return /* @__PURE__ */ import_react2.default.createElement(
+      "canvas",
+      {
+        ref: canvasRef,
+        className,
+        style: { display: "block", width: "100%", height: "100%" }
+      }
+    );
   };
   var LetterGlitch_default = LetterGlitch;
 

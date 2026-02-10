@@ -1,418 +1,660 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kamran Boroomand | Linux System Administrator</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; form-action 'self'; upgrade-insecure-requests"
+    />
+    <title>Kamran Boroomand | Linux System Administrator</title>
 
-  <meta name="description" content="Kamran Boroomand is a Linux System Administrator focused on secure infrastructure, system reliability, and automation.">
-  <meta name="robots" content="index,follow">
-  <meta name="author" content="Kamran Boroomand">
-  <meta name="theme-color" content="#0f141d">
-  <link rel="canonical" href="https://kamranboroomand.ir/">
-  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+    <meta
+      name="description"
+      content="Kamran Boroomand is a Linux System Administrator focused on secure infrastructure, system reliability, and automation."
+    />
+    <meta name="robots" content="index,follow" />
+    <meta name="author" content="Kamran Boroomand" />
+    <meta name="theme-color" content="#0f141d" />
+    <link rel="canonical" href="https://kamranboroomand.ir/" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
 
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Kamran Boroomand Portfolio">
-  <meta property="og:title" content="Kamran Boroomand | Linux System Administrator">
-  <meta property="og:description" content="Portfolio featuring Linux operations, security hardening, and automation projects.">
-  <meta property="og:url" content="https://kamranboroomand.ir/">
-  <meta property="og:image" content="https://kamranboroomand.ir/assets/images/preview.jpg">
-  <meta property="og:image:url" content="https://kamranboroomand.ir/assets/images/preview.jpg">
-  <meta property="og:image:secure_url" content="https://kamranboroomand.ir/assets/images/preview.jpg">
-  <meta property="og:image:type" content="image/jpeg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Kamran Boroomand portfolio preview">
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kamran Boroomand Portfolio" />
+    <meta property="og:title" content="Kamran Boroomand | Linux System Administrator" />
+    <meta
+      property="og:description"
+      content="Portfolio featuring Linux operations, security hardening, and automation projects."
+    />
+    <meta property="og:url" content="https://kamranboroomand.ir/" />
+    <meta property="og:image" content="https://kamranboroomand.ir/assets/images/preview.jpg" />
+    <meta property="og:image:url" content="https://kamranboroomand.ir/assets/images/preview.jpg" />
+    <meta
+      property="og:image:secure_url"
+      content="https://kamranboroomand.ir/assets/images/preview.jpg"
+    />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Kamran Boroomand portfolio preview" />
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Kamran Boroomand | Linux System Administrator">
-  <meta name="twitter:description" content="Linux operations, security hardening, and automation project portfolio.">
-  <meta name="twitter:image" content="https://kamranboroomand.ir/assets/images/preview.jpg">
-  <meta name="twitter:image:alt" content="Kamran Boroomand portfolio preview">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Kamran Boroomand | Linux System Administrator" />
+    <meta
+      name="twitter:description"
+      content="Linux operations, security hardening, and automation project portfolio."
+    />
+    <meta name="twitter:image" content="https://kamranboroomand.ir/assets/images/preview.jpg" />
+    <meta name="twitter:image:alt" content="Kamran Boroomand portfolio preview" />
 
-  <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
-  <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/favicon-96x96.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
-  <link rel="manifest" href="/assets/images/site.webmanifest">
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/favicon-96x96.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/assets/images/site.webmanifest" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="stylesheet" href="./assets/css/style.css">
-  <link rel="stylesheet" href="./assets/js/effects.bundle.css">
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="stylesheet" href="./assets/js/effects.bundle.css" />
 
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Kamran Boroomand",
-      "jobTitle": "Linux System Administrator",
-      "url": "https://kamranboroomand.ir/",
-      "sameAs": [
-        "https://github.com/KamranBoroomand",
-        "https://t.me/kamranRU"
-      ],
-      "knowsAbout": [
-        "Linux Administration",
-        "Security Hardening",
-        "Infrastructure Reliability",
-        "System Automation",
-        "Networking"
-      ]
-    }
-  </script>
-</head>
-<body>
-  <div id="effects-root"></div>
+    <script type="application/ld+json" src="./assets/data/person.schema.jsonld"></script>
+  </head>
+  <body>
+    <div id="effects-root"></div>
 
-  <main class="layout">
-    <aside class="sidebar card" data-sidebar>
-      <div class="sidebar-info">
-        <figure class="avatar-box">
-          <img src="./assets/images/my-avatar.PNG" alt="Portrait of Kamran Boroomand" width="512" height="512" loading="eager" decoding="async">
-        </figure>
+    <main class="layout">
+      <aside class="sidebar card" data-sidebar>
+        <div class="sidebar-info">
+          <figure class="avatar-box">
+            <img
+              src="./assets/images/my-avatar.PNG"
+              alt="Portrait of Kamran Boroomand"
+              width="512"
+              height="512"
+              loading="eager"
+              decoding="async"
+            />
+          </figure>
 
-        <div class="info-content">
-          <p class="eyebrow">Linux Systems & Security</p>
-          <h1 class="name">Kamran Boroomand</h1>
-          <p class="title">Linux System Administrator</p>
-          <p class="summary">
-            I build stable, secure, and observable Linux environments with a focus on operational clarity and risk reduction.
-          </p>
+          <div class="info-content">
+            <p class="eyebrow">Linux Systems & Security</p>
+            <h1 class="name">Kamran Boroomand</h1>
+            <p class="title">Linux System Administrator</p>
+            <p class="summary">
+              I build stable, secure, and observable Linux environments with a focus on operational
+              clarity and risk reduction.
+            </p>
+          </div>
         </div>
-      </div>
 
-      <div class="separator"></div>
+        <div class="separator"></div>
 
-      <section class="sidebar-connect" aria-label="Direct contact">
-        <h2 class="sidebar-section-title">Connect</h2>
+        <section class="sidebar-connect" aria-label="Direct contact">
+          <h2 class="sidebar-section-title">Connect</h2>
 
-        <ul class="contacts-list">
-          <li class="contact-item">
-            <div class="icon-box" aria-hidden="true">
-              <ion-icon name="mail-outline"></ion-icon>
-            </div>
-            <div class="contact-info">
-              <p class="contact-title">Email</p>
-              <a href="mailto:kamranboroomand@mail.ru" class="contact-link">kamranboroomand@mail.ru</a>
-            </div>
-          </li>
-
-          <li class="contact-item">
-            <div class="icon-box" aria-hidden="true">
-              <ion-icon name="paper-plane-outline"></ion-icon>
-            </div>
-            <div class="contact-info">
-              <p class="contact-title">Telegram</p>
-              <a href="https://t.me/kamranRU" class="contact-link" target="_blank" rel="noopener noreferrer">@kamranRU</a>
-            </div>
-          </li>
-
-          <li class="contact-item">
-            <div class="icon-box" aria-hidden="true">
-              <ion-icon name="logo-github"></ion-icon>
-            </div>
-            <div class="contact-info">
-              <p class="contact-title">GitHub</p>
-              <a href="https://github.com/KamranBoroomand" class="contact-link" target="_blank" rel="noopener noreferrer">github.com/KamranBoroomand</a>
-            </div>
-          </li>
-
-          <li class="contact-item">
-            <div class="icon-box" aria-hidden="true">
-              <ion-icon name="location-outline"></ion-icon>
-            </div>
-            <div class="contact-info">
-              <p class="contact-title">Location</p>
-              <address>Moscow, Russia</address>
-            </div>
-          </li>
-        </ul>
-      </section>
-
-      <div class="separator"></div>
-
-      <section class="focus-area" aria-label="Core Focus">
-        <h2 class="h3">Core Focus</h2>
-        <ul class="chip-list">
-          <li>Linux Operations</li>
-          <li>Security Hardening</li>
-          <li>Automation</li>
-        </ul>
-      </section>
-    </aside>
-
-    <div class="main-content">
-      <nav class="navbar card" aria-label="Primary">
-        <ul class="navbar-list" role="tablist">
-          <li class="navbar-item">
-            <button class="navbar-link active" data-nav-link data-target="about" role="tab" aria-selected="true" aria-controls="about-page">About</button>
-          </li>
-          <li class="navbar-item">
-            <button class="navbar-link" data-nav-link data-target="resume" role="tab" aria-selected="false" aria-controls="resume-page">Resume</button>
-          </li>
-          <li class="navbar-item">
-            <button class="navbar-link" data-nav-link data-target="portfolio" role="tab" aria-selected="false" aria-controls="portfolio-page">Projects</button>
-          </li>
-        </ul>
-      </nav>
-
-      <article id="about-page" class="about active card" data-page="about" role="tabpanel" aria-hidden="false">
-        <header class="article-header">
-          <p class="kicker">Professional Profile</p>
-          <h2 class="h2 article-title">Building secure systems that remain predictable under load</h2>
-        </header>
-
-        <section class="about-text">
-          <p>
-            I am a Linux System Administrator with hands-on experience in server operations, access control,
-            and reliability improvements for production and lab environments.
-          </p>
-          <p>
-            My approach is practical: identify weak points, tighten configuration baselines, automate repetitive
-            workflows, and keep systems observable so failures are easier to detect and recover.
-          </p>
-          <p>
-            I work fluently in English and Russian and collaborate effectively with engineering teams across
-            infrastructure and application boundaries.
-          </p>
-        </section>
-
-        <section class="highlights">
-          <h3 class="h3 section-title">How I Work</h3>
-          <ul class="highlight-list">
-            <li><strong>Reliability First:</strong> reduce operational surprises through hardening, standardization, and clear runbooks.</li>
-            <li><strong>Security by Default:</strong> enforce least privilege, patch discipline, and auditable access patterns.</li>
-            <li><strong>Automation with Intent:</strong> remove repetitive manual work without losing visibility or control.</li>
-          </ul>
-        </section>
-
-        <section class="service">
-          <h3 class="h3 section-title">What I Deliver</h3>
-          <ul class="service-list">
-            <li class="service-item">
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-linux.svg" width="40" height="40" alt="Linux Administration icon" loading="lazy" decoding="async">
+          <ul class="contacts-list">
+            <li class="contact-item">
+              <div class="icon-box" aria-hidden="true">
+                <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                  <path d="m3 7 9 6 9-6"></path>
+                </svg>
               </div>
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Linux Administration</h4>
-                <p class="service-item-text">
-                  Secure server setup, updates, backup strategy, and troubleshooting based on repeatable operational patterns.
-                </p>
+              <div class="contact-info">
+                <p class="contact-title">Email</p>
+                <a href="mailto:kamranboroomand@mail.ru" class="contact-link"
+                  >kamranboroomand@mail.ru</a
+                >
               </div>
             </li>
 
-            <li class="service-item">
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-security.svg" width="40" height="40" alt="Security Hardening icon" loading="lazy" decoding="async">
+            <li class="contact-item">
+              <div class="icon-box" aria-hidden="true">
+                <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 11.5 21 3l-4.5 18-5.5-6.5L3 11.5z"></path>
+                  <path d="M10.5 14.5 21 3"></path>
+                </svg>
               </div>
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Security Hardening</h4>
-                <p class="service-item-text">
-                  SSH hardening, privilege boundaries, firewall policy design, and baseline configuration controls.
-                </p>
-              </div>
-            </li>
-
-            <li class="service-item">
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-network.svg" width="40" height="40" alt="Networking icon" loading="lazy" decoding="async">
-              </div>
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Networking</h4>
-                <p class="service-item-text">
-                  DNS troubleshooting, routing fundamentals, VPN setup, and practical diagnostics for service availability.
-                </p>
+              <div class="contact-info">
+                <p class="contact-title">Telegram</p>
+                <a
+                  href="https://t.me/kamranRU"
+                  class="contact-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >@kamranRU</a
+                >
               </div>
             </li>
 
-            <li class="service-item">
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-automation.svg" width="40" height="40" alt="Automation icon" loading="lazy" decoding="async">
+            <li class="contact-item">
+              <div class="icon-box" aria-hidden="true">
+                <svg class="ui-icon ui-icon--fill" viewBox="0 0 512 512" aria-hidden="true">
+                  <path
+                    d="M256 32C132.3 32 32 134.9 32 261.7c0 101.5 64.2 187.5 153.2 217.9a17.56 17.56 0 003.8.4c8.3 0 11.5-6.1 11.5-11.4 0-5.5-.2-19.9-.3-39.1a102.4 102.4 0 01-22.6 2.7c-43.1 0-52.9-33.5-52.9-33.5-10.2-26.5-24.9-33.6-24.9-33.6-19.5-13.7-.1-14.1 1.4-14.1h.1c22.5 2 34.3 23.8 34.3 23.8 11.2 19.6 26.2 25.1 39.6 25.1a63 63 0 0025.6-6c2-14.8 7.8-24.9 14.2-30.7-49.7-5.8-102-25.5-102-113.5 0-25.1 8.7-45.6 23-61.6-2.3-5.8-10-29.2 2.2-60.8a18.64 18.64 0 015-.5c8.1 0 26.4 3.1 56.6 24.1a208.21 208.21 0 01112.2 0c30.2-21 48.5-24.1 56.6-24.1a18.64 18.64 0 015 .5c12.2 31.6 4.5 55 2.2 60.8 14.3 16.1 23 36.6 23 61.6 0 88.2-52.4 107.6-102.3 113.3 8 7.1 15.2 21.1 15.2 42.5 0 30.7-.3 55.5-.3 63 0 5.4 3.1 11.5 11.4 11.5a19.35 19.35 0 004-.4C415.9 449.2 480 363.1 480 261.7 480 134.9 379.7 32 256 32z"
+                  ></path>
+                </svg>
               </div>
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Automation</h4>
-                <p class="service-item-text">
-                  Bash-based automation for backups, service checks, log workflows, and repeatable operational tasks.
-                </p>
+              <div class="contact-info">
+                <p class="contact-title">GitHub</p>
+                <a
+                  href="https://github.com/KamranBoroomand"
+                  class="contact-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >github.com/KamranBoroomand</a
+                >
+              </div>
+            </li>
+
+            <li class="contact-item">
+              <div class="icon-box" aria-hidden="true">
+                <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 21s-6-5.25-6-10a6 6 0 1 1 12 0c0 4.75-6 10-6 10z"></path>
+                  <circle cx="12" cy="11" r="2.5"></circle>
+                </svg>
+              </div>
+              <div class="contact-info">
+                <p class="contact-title">Location</p>
+                <address>Moscow, Russia</address>
               </div>
             </li>
           </ul>
         </section>
-      </article>
 
-      <article id="resume-page" class="resume card" data-page="resume" role="tabpanel" aria-hidden="true">
-        <header class="article-header">
-          <p class="kicker">Capabilities</p>
-          <h2 class="h2 article-title">Technical Strengths</h2>
-        </header>
+        <div class="separator"></div>
 
-        <section class="timeline">
-          <h3 class="h3 section-title">Certifications & Learning</h3>
-          <ul class="timeline-list">
-            <li class="timeline-item">
-              <h4 class="h4">LPIC-1 (Linux Administration)</h4>
-              <p>Practical Linux operations, system setup, shell usage, and service management.</p>
-            </li>
-            <li class="timeline-item">
-              <h4 class="h4">Network+ (Networking)</h4>
-              <p>Networking fundamentals, secure connectivity, and diagnostics workflows.</p>
-            </li>
-            <li class="timeline-item">
-              <h4 class="h4">Security-Focused Lab Work</h4>
-              <p>Hands-on hardening of Linux hosts, access controls, and secure operational baselines.</p>
-            </li>
+        <section class="focus-area" aria-label="Core Focus">
+          <h2 class="h3">Core Focus</h2>
+          <ul class="chip-list">
+            <li>Linux Operations</li>
+            <li>Security Hardening</li>
+            <li>Automation</li>
           </ul>
         </section>
+      </aside>
 
-        <section class="skill-groups">
-          <h3 class="h3 section-title">Technical Stack</h3>
-          <div class="tag-grid">
-            <span>Linux</span>
-            <span>Bash</span>
-            <span>Systemd</span>
-            <span>SSH</span>
-            <span>Firewall Rules</span>
-            <span>Networking</span>
-            <span>DNS</span>
-            <span>VPN</span>
-            <span>Monitoring</span>
-            <span>Git</span>
-            <span>Java</span>
-            <span>C++</span>
-          </div>
-        </section>
-      </article>
-
-      <article id="portfolio-page" class="portfolio card" data-page="portfolio" role="tabpanel" aria-hidden="true">
-        <header class="article-header">
-          <p class="kicker">Selected Work</p>
-          <h2 class="h2 article-title">Live Project Showcase</h2>
-          <p class="summary">Each project includes a live website preview and a direct GitHub repository link.</p>
-        </header>
-
-        <section class="projects">
-          <ul class="filter-list" role="tablist" aria-label="Project categories">
-            <li class="filter-item"><button class="active" data-filter-btn data-filter="all" role="tab" aria-selected="true">All</button></li>
-            <li class="filter-item"><button data-filter-btn data-filter="security" role="tab" aria-selected="false">Security</button></li>
-            <li class="filter-item"><button data-filter-btn data-filter="automation" role="tab" aria-selected="false">Automation</button></li>
+      <div class="main-content">
+        <nav class="navbar card" aria-label="Primary">
+          <ul class="navbar-list" role="tablist">
+            <li class="navbar-item">
+              <button
+                class="navbar-link active"
+                data-nav-link
+                data-target="about"
+                role="tab"
+                aria-selected="true"
+                aria-controls="about-page"
+              >
+                About
+              </button>
+            </li>
+            <li class="navbar-item">
+              <button
+                class="navbar-link"
+                data-nav-link
+                data-target="resume"
+                role="tab"
+                aria-selected="false"
+                aria-controls="resume-page"
+              >
+                Resume
+              </button>
+            </li>
+            <li class="navbar-item">
+              <button
+                class="navbar-link"
+                data-nav-link
+                data-target="portfolio"
+                role="tab"
+                aria-selected="false"
+                aria-controls="portfolio-page"
+              >
+                Projects
+              </button>
+            </li>
           </ul>
+        </nav>
 
-          <div class="filter-select-box">
-            <button class="filter-select" data-select aria-haspopup="listbox" aria-expanded="false">
-              <span class="select-value" data-select-value>All</span>
-              <ion-icon name="chevron-down-outline" aria-hidden="true"></ion-icon>
-            </button>
+        <article
+          id="about-page"
+          class="about active card"
+          data-page="about"
+          role="tabpanel"
+          aria-hidden="false"
+        >
+          <header class="article-header">
+            <p class="kicker">Professional Profile</p>
+            <h2 class="h2 article-title">
+              Building secure systems that remain predictable under load
+            </h2>
+          </header>
 
-            <ul class="select-list" role="listbox">
-              <li class="select-item"><button data-select-item data-filter="all" role="option">All</button></li>
-              <li class="select-item"><button data-select-item data-filter="security" role="option">Security</button></li>
-              <li class="select-item"><button data-select-item data-filter="automation" role="option">Automation</button></li>
+          <section class="about-text">
+            <p>
+              I am a Linux System Administrator with hands-on experience in server operations,
+              access control, and reliability improvements for production and lab environments.
+            </p>
+            <p>
+              My approach is practical: identify weak points, tighten configuration baselines,
+              automate repetitive workflows, and keep systems observable so failures are easier to
+              detect and recover.
+            </p>
+            <p>
+              I work fluently in English and Russian and collaborate effectively with engineering
+              teams across infrastructure and application boundaries.
+            </p>
+          </section>
+
+          <section class="highlights">
+            <h3 class="h3 section-title">How I Work</h3>
+            <ul class="highlight-list">
+              <li>
+                <strong>Reliability First:</strong> reduce operational surprises through hardening,
+                standardization, and clear runbooks.
+              </li>
+              <li>
+                <strong>Security by Default:</strong> enforce least privilege, patch discipline, and
+                auditable access patterns.
+              </li>
+              <li>
+                <strong>Automation with Intent:</strong> remove repetitive manual work without
+                losing visibility or control.
+              </li>
             </ul>
-          </div>
+          </section>
 
-          <ul class="project-list">
-            <li class="project-item active" data-filter-item data-category="security">
-              <article class="project-card">
-                <a class="project-preview-link" href="https://nullid.kamranboroomand.ir" target="_blank" rel="noopener noreferrer" aria-label="Open NullID website">
-                  <figure class="project-img">
-                    <div class="preview-chrome" aria-hidden="true">
-                      <span class="preview-dots">
-                        <i></i><i></i><i></i>
-                      </span>
-                      <span class="preview-domain">nullid.kamranboroomand.ir</span>
-                    </div>
-                    <img src="./assets/images/nullid-site-preview.png" width="1200" height="800" alt="Live preview of NullID website" loading="lazy" decoding="async">
-                  </figure>
-                </a>
-                <div class="project-content">
-                  <h3 class="project-title">NullID</h3>
-                  <p class="project-category">Security Platform</p>
-                  <p class="project-description">
-                    Privacy-focused communication and security project with strong access control and operational reliability principles.
-                  </p>
-                  <div class="project-actions">
-                    <a class="project-action project-action-primary" href="https://nullid.kamranboroomand.ir" target="_blank" rel="noopener noreferrer">Open Live Website</a>
-                    <a class="project-action" href="https://github.com/KamranBoroomand/NullID" target="_blank" rel="noopener noreferrer">View GitHub Repo</a>
-                  </div>
+          <section class="service">
+            <h3 class="h3 section-title">What I Deliver</h3>
+            <ul class="service-list">
+              <li class="service-item">
+                <div class="service-icon-box">
+                  <img
+                    src="./assets/images/icon-linux.svg"
+                    width="40"
+                    height="40"
+                    alt="Linux Administration icon"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
-              </article>
-            </li>
-
-            <li class="project-item active" data-filter-item data-category="automation">
-              <article class="project-card">
-                <a class="project-preview-link" href="https://nullcal.kamranboroomand.ir" target="_blank" rel="noopener noreferrer" aria-label="Open NullCal website">
-                  <figure class="project-img">
-                    <div class="preview-chrome" aria-hidden="true">
-                      <span class="preview-dots">
-                        <i></i><i></i><i></i>
-                      </span>
-                      <span class="preview-domain">nullcal.kamranboroomand.ir</span>
-                    </div>
-                    <img src="./assets/images/nullcal-site-preview.png" width="1200" height="800" alt="Live preview of NullCal website" loading="lazy" decoding="async">
-                  </figure>
-                </a>
-                <div class="project-content">
-                  <h3 class="project-title">NullCal</h3>
-                  <p class="project-category">Automation Suite</p>
-                  <p class="project-description">
-                    Scheduling and planning automation built to reduce repetitive coordination work and improve execution consistency.
+                <div class="service-content-box">
+                  <h4 class="h4 service-item-title">Linux Administration</h4>
+                  <p class="service-item-text">
+                    Secure server setup, updates, backup strategy, and troubleshooting based on
+                    repeatable operational patterns.
                   </p>
-                  <div class="project-actions">
-                    <a class="project-action project-action-primary" href="https://nullcal.kamranboroomand.ir" target="_blank" rel="noopener noreferrer">Open Live Website</a>
-                    <a class="project-action" href="https://github.com/KamranBoroomand/NullCal" target="_blank" rel="noopener noreferrer">View GitHub Repo</a>
-                  </div>
                 </div>
-              </article>
-            </li>
+              </li>
 
-            <li class="project-item active" data-filter-item data-category="all">
-              <article class="project-card">
-                <a class="project-preview-link" href="https://pacman.kamranboroomand.ir" target="_blank" rel="noopener noreferrer" aria-label="Open PacMan website">
-                  <figure class="project-img">
-                    <div class="preview-chrome" aria-hidden="true">
-                      <span class="preview-dots">
-                        <i></i><i></i><i></i>
-                      </span>
-                      <span class="preview-domain">pacman.kamranboroomand.ir</span>
-                    </div>
-                    <img src="https://image.thum.io/get/width/1200/https://pacman.kamranboroomand.ir" width="1200" height="800" alt="Live preview of PacMan website" loading="lazy" decoding="async" referrerpolicy="no-referrer">
-                  </figure>
-                </a>
-                <div class="project-content">
-                  <h3 class="project-title">PacMan</h3>
-                  <p class="project-category">Game Project</p>
-                  <p class="project-description">
-                    Classic arcade-style PacMan implementation focused on gameplay logic, responsive controls, and clean front-end structure.
+              <li class="service-item">
+                <div class="service-icon-box">
+                  <img
+                    src="./assets/images/icon-security.svg"
+                    width="40"
+                    height="40"
+                    alt="Security Hardening icon"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div class="service-content-box">
+                  <h4 class="h4 service-item-title">Security Hardening</h4>
+                  <p class="service-item-text">
+                    SSH hardening, privilege boundaries, firewall policy design, and baseline
+                    configuration controls.
                   </p>
-                  <div class="project-actions">
-                    <a class="project-action project-action-primary" href="https://pacman.kamranboroomand.ir" target="_blank" rel="noopener noreferrer">Open Live Website</a>
-                    <a class="project-action" href="https://github.com/KamranBoroomand?tab=repositories" target="_blank" rel="noopener noreferrer">Browse All Repos</a>
-                  </div>
                 </div>
-              </article>
-            </li>
-          </ul>
+              </li>
 
-          <a class="more-projects" href="https://github.com/KamranBoroomand?tab=repositories" target="_blank" rel="noopener noreferrer">
-            Explore More Projects on GitHub
-            <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
-          </a>
-        </section>
-      </article>
+              <li class="service-item">
+                <div class="service-icon-box">
+                  <img
+                    src="./assets/images/icon-network.svg"
+                    width="40"
+                    height="40"
+                    alt="Networking icon"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div class="service-content-box">
+                  <h4 class="h4 service-item-title">Networking</h4>
+                  <p class="service-item-text">
+                    DNS troubleshooting, routing fundamentals, VPN setup, and practical diagnostics
+                    for service availability.
+                  </p>
+                </div>
+              </li>
 
-      <footer class="site-footer">
-        <p class="last-updated">Last updated: February 2026</p>
-      </footer>
-    </div>
-  </main>
+              <li class="service-item">
+                <div class="service-icon-box">
+                  <img
+                    src="./assets/images/icon-automation.svg"
+                    width="40"
+                    height="40"
+                    alt="Automation icon"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div class="service-content-box">
+                  <h4 class="h4 service-item-title">Automation</h4>
+                  <p class="service-item-text">
+                    Bash-based automation for backups, service checks, log workflows, and repeatable
+                    operational tasks.
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </section>
+        </article>
 
-  <script src="./assets/js/script.js"></script>
-  <script src="./assets/js/effects.bundle.js"></script>
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-</body>
+        <article
+          id="resume-page"
+          class="resume card"
+          data-page="resume"
+          role="tabpanel"
+          aria-hidden="true"
+        >
+          <header class="article-header">
+            <p class="kicker">Capabilities</p>
+            <h2 class="h2 article-title">Technical Strengths</h2>
+          </header>
+
+          <section class="timeline">
+            <h3 class="h3 section-title">Certifications & Learning</h3>
+            <ul class="timeline-list">
+              <li class="timeline-item">
+                <h4 class="h4">LPIC-1 (Linux Administration)</h4>
+                <p>
+                  Practical Linux operations, system setup, shell usage, and service management.
+                </p>
+              </li>
+              <li class="timeline-item">
+                <h4 class="h4">Network+ (Networking)</h4>
+                <p>Networking fundamentals, secure connectivity, and diagnostics workflows.</p>
+              </li>
+              <li class="timeline-item">
+                <h4 class="h4">Security-Focused Lab Work</h4>
+                <p>
+                  Hands-on hardening of Linux hosts, access controls, and secure operational
+                  baselines.
+                </p>
+              </li>
+            </ul>
+          </section>
+
+          <section class="skill-groups">
+            <h3 class="h3 section-title">Technical Stack</h3>
+            <div class="tag-grid">
+              <span>Linux</span>
+              <span>Bash</span>
+              <span>Systemd</span>
+              <span>SSH</span>
+              <span>Firewall Rules</span>
+              <span>Networking</span>
+              <span>DNS</span>
+              <span>VPN</span>
+              <span>Monitoring</span>
+              <span>Git</span>
+              <span>Java</span>
+              <span>C++</span>
+            </div>
+          </section>
+        </article>
+
+        <article
+          id="portfolio-page"
+          class="portfolio card"
+          data-page="portfolio"
+          role="tabpanel"
+          aria-hidden="true"
+        >
+          <header class="article-header">
+            <p class="kicker">Selected Work</p>
+            <h2 class="h2 article-title">Live Project Showcase</h2>
+            <p class="summary">
+              Each project includes a live website preview and a direct GitHub repository link.
+            </p>
+          </header>
+
+          <section class="projects">
+            <ul class="filter-list" role="tablist" aria-label="Project categories">
+              <li class="filter-item">
+                <button
+                  class="active"
+                  data-filter-btn
+                  data-filter="all"
+                  role="tab"
+                  aria-selected="true"
+                >
+                  All
+                </button>
+              </li>
+              <li class="filter-item">
+                <button data-filter-btn data-filter="security" role="tab" aria-selected="false">
+                  Security
+                </button>
+              </li>
+              <li class="filter-item">
+                <button data-filter-btn data-filter="automation" role="tab" aria-selected="false">
+                  Automation
+                </button>
+              </li>
+            </ul>
+
+            <div class="filter-select-box">
+              <button
+                class="filter-select"
+                data-select
+                aria-haspopup="listbox"
+                aria-expanded="false"
+              >
+                <span class="select-value" data-select-value>All</span>
+                <svg class="ui-icon ui-icon-sm" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6"></path>
+                </svg>
+              </button>
+
+              <ul class="select-list" role="listbox">
+                <li class="select-item">
+                  <button data-select-item data-filter="all" role="option">All</button>
+                </li>
+                <li class="select-item">
+                  <button data-select-item data-filter="security" role="option">Security</button>
+                </li>
+                <li class="select-item">
+                  <button data-select-item data-filter="automation" role="option">
+                    Automation
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <ul class="project-list">
+              <li class="project-item active" data-filter-item data-category="security">
+                <article class="project-card">
+                  <a
+                    class="project-preview-link"
+                    href="https://nullid.kamranboroomand.ir"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open NullID website"
+                  >
+                    <figure class="project-img">
+                      <div class="preview-chrome" aria-hidden="true">
+                        <span class="preview-dots"> <i></i><i></i><i></i> </span>
+                        <span class="preview-domain">nullid.kamranboroomand.ir</span>
+                      </div>
+                      <img
+                        src="./assets/images/nullid-site-preview.png"
+                        width="1200"
+                        height="800"
+                        alt="Live preview of NullID website"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </figure>
+                  </a>
+                  <div class="project-content">
+                    <h3 class="project-title">NullID</h3>
+                    <p class="project-category">Security Platform</p>
+                    <p class="project-description">
+                      Privacy-focused communication and security project with strong access control
+                      and operational reliability principles.
+                    </p>
+                    <div class="project-actions">
+                      <a
+                        class="project-action project-action-primary"
+                        href="https://nullid.kamranboroomand.ir"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >Open Live Website</a
+                      >
+                      <a
+                        class="project-action"
+                        href="https://github.com/KamranBoroomand/NullID"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >View GitHub Repo</a
+                      >
+                    </div>
+                  </div>
+                </article>
+              </li>
+
+              <li class="project-item active" data-filter-item data-category="automation">
+                <article class="project-card">
+                  <a
+                    class="project-preview-link"
+                    href="https://nullcal.kamranboroomand.ir"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open NullCal website"
+                  >
+                    <figure class="project-img">
+                      <div class="preview-chrome" aria-hidden="true">
+                        <span class="preview-dots"> <i></i><i></i><i></i> </span>
+                        <span class="preview-domain">nullcal.kamranboroomand.ir</span>
+                      </div>
+                      <img
+                        src="./assets/images/nullcal-site-preview.png"
+                        width="1200"
+                        height="800"
+                        alt="Live preview of NullCal website"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </figure>
+                  </a>
+                  <div class="project-content">
+                    <h3 class="project-title">NullCal</h3>
+                    <p class="project-category">Automation Suite</p>
+                    <p class="project-description">
+                      Scheduling and planning automation built to reduce repetitive coordination
+                      work and improve execution consistency.
+                    </p>
+                    <div class="project-actions">
+                      <a
+                        class="project-action project-action-primary"
+                        href="https://nullcal.kamranboroomand.ir"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >Open Live Website</a
+                      >
+                      <a
+                        class="project-action"
+                        href="https://github.com/KamranBoroomand/NullCal"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >View GitHub Repo</a
+                      >
+                    </div>
+                  </div>
+                </article>
+              </li>
+
+              <li class="project-item active" data-filter-item data-category="all">
+                <article class="project-card">
+                  <a
+                    class="project-preview-link"
+                    href="https://pacman.kamranboroomand.ir"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open PacMan website"
+                  >
+                    <figure class="project-img">
+                      <div class="preview-chrome" aria-hidden="true">
+                        <span class="preview-dots"> <i></i><i></i><i></i> </span>
+                        <span class="preview-domain">pacman.kamranboroomand.ir</span>
+                      </div>
+                      <img
+                        src="./assets/images/pacman-site-preview.png"
+                        width="1200"
+                        height="800"
+                        alt="Live preview of PacMan website"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </figure>
+                  </a>
+                  <div class="project-content">
+                    <h3 class="project-title">PacMan</h3>
+                    <p class="project-category">Game Project</p>
+                    <p class="project-description">
+                      Classic arcade-style PacMan implementation focused on gameplay logic,
+                      responsive controls, and clean front-end structure.
+                    </p>
+                    <div class="project-actions">
+                      <a
+                        class="project-action project-action-primary"
+                        href="https://pacman.kamranboroomand.ir"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >Open Live Website</a
+                      >
+                      <a
+                        class="project-action"
+                        href="https://github.com/KamranBoroomand?tab=repositories"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >Browse All Repos</a
+                      >
+                    </div>
+                  </div>
+                </article>
+              </li>
+            </ul>
+
+            <a
+              class="more-projects"
+              href="https://github.com/KamranBoroomand?tab=repositories"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Explore More Projects on GitHub
+              <svg class="ui-icon ui-icon-sm" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12h14"></path>
+                <path d="m13 6 6 6-6 6"></path>
+              </svg>
+            </a>
+          </section>
+        </article>
+
+        <footer class="site-footer">
+          <p class="last-updated">Last updated: February 2026</p>
+        </footer>
+      </div>
+    </main>
+
+    <script src="./assets/js/script.js"></script>
+    <script src="./assets/js/effects.bundle.js"></script>
+  </body>
 </html>

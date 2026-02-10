@@ -236,7 +236,7 @@ function hexToRgb(hex: string): [number, number, number] {
   if (h.length === 3)
     h = h
       .split('')
-      .map(c => c + c)
+      .map((c) => c + c)
       .join('');
   const num = parseInt(h, 16);
   return [((num >> 16) & 255) / 255, ((num >> 8) & 255) / 255, (num & 255) / 255];
@@ -277,7 +277,10 @@ export default function FaultyTerminal({
 
   const tintVec = useMemo(() => hexToRgb(tint), [tint]);
 
-  const ditherValue = useMemo(() => (typeof dither === 'boolean' ? (dither ? 1 : 0) : dither), [dither]);
+  const ditherValue = useMemo(
+    () => (typeof dither === 'boolean' ? (dither ? 1 : 0) : dither),
+    [dither]
+  );
   const containerClassName = className
     ? `faulty-terminal-container ${className}`
     : 'faulty-terminal-container';

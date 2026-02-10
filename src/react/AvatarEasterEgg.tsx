@@ -207,7 +207,7 @@ export default function AvatarEasterEgg({
           <div className="egg-glitch-wrap" aria-hidden="true">
             <div style={{ width: '1080px', height: '1080px', position: 'relative' }}>
               <LetterGlitch
-                glitchColors={["#fffb00", "#c0c0c0", "#7a7a7a", "#444444"]}
+                glitchColors={['#fffb00', '#c0c0c0', '#7a7a7a', '#444444']}
                 glitchSpeed={10}
                 centerVignette={false}
                 outerVignette={false}

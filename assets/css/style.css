@@ -26,8 +26,8 @@
   --shadow-sm: 0 8px 24px rgba(17, 27, 45, 0.1);
   --shadow-md: 0 18px 40px rgba(17, 27, 45, 0.14);
 
-  --font-title: "Sora", "Manrope", sans-serif;
-  --font-body: "Manrope", "Segoe UI", sans-serif;
+  --font-title: 'Sora', 'Manrope', sans-serif;
+  --font-body: 'Manrope', 'Segoe UI', sans-serif;
 }
 
 *,
@@ -86,8 +86,7 @@ body.is-loaded {
 }
 
 .card {
-  background:
-    linear-gradient(145deg, var(--surface-1), rgba(255, 255, 255, 0.76));
+  background: linear-gradient(145deg, var(--surface-1), rgba(255, 255, 255, 0.76));
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
@@ -101,7 +100,7 @@ body.is-loaded {
 }
 
 .sidebar::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background-image: linear-gradient(135deg, rgba(246, 179, 29, 0.08), rgba(147, 183, 255, 0.08));
@@ -236,6 +235,27 @@ body.is-loaded {
   background: rgba(255, 255, 255, 0.65);
 }
 
+.ui-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ui-icon-sm {
+  width: 18px;
+  height: 18px;
+}
+
+.ui-icon--fill {
+  fill: currentColor;
+  stroke: none;
+}
+
 .contact-title {
   margin: 0;
   font-size: 0.68rem;
@@ -303,7 +323,10 @@ address {
   font-family: var(--font-title);
   font-size: 0.92rem;
   cursor: pointer;
-  transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
 }
 
 .navbar-link.active {
@@ -410,7 +433,10 @@ address {
   grid-template-columns: 52px 1fr;
   gap: 0.72rem;
   align-items: start;
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
 }
 
 .service-item:hover {
@@ -503,7 +529,10 @@ address {
   padding: 0.42rem 0.78rem;
   font-weight: 600;
   cursor: pointer;
-  transition: border-color 180ms ease, color 180ms ease, background-color 180ms ease;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    background-color 180ms ease;
 }
 
 .filter-item button.active {
@@ -544,7 +573,10 @@ address {
   opacity: 0;
   visibility: hidden;
   transform: translateY(-4px);
-  transition: opacity 150ms ease, transform 150ms ease, visibility 150ms ease;
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease,
+    visibility 150ms ease;
   z-index: 3;
 }
 
@@ -594,7 +626,10 @@ address {
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.77);
   overflow: hidden;
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
 }
 
 .project-card:hover,
@@ -663,11 +698,10 @@ address {
 }
 
 .project-img::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(to top, rgba(8, 13, 22, 0.22), rgba(8, 13, 22, 0.02) 40%);
+  background: linear-gradient(to top, rgba(8, 13, 22, 0.22), rgba(8, 13, 22, 0.02) 40%);
   pointer-events: none;
 }
 
@@ -721,7 +755,11 @@ address {
   text-decoration: none;
   font-size: 0.8rem;
   font-weight: 600;
-  transition: border-color 180ms ease, transform 180ms ease, color 180ms ease, background-color 180ms ease;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease,
+    color 180ms ease,
+    background-color 180ms ease;
 }
 
 .project-action:hover {
@@ -749,7 +787,10 @@ address {
   color: var(--text-1);
   text-decoration: none;
   font-weight: 600;
-  transition: border-color 180ms ease, color 180ms ease, transform 180ms ease;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
 }
 
 .more-projects:hover {
@@ -824,5 +865,4 @@ a:focus-visible {
     transition-duration: 1ms !important;
     scroll-behavior: auto !important;
   }
-
 }

@@ -182,7 +182,13 @@ const LetterGlitch: React.FC<LetterGlitchProps> = ({
     };
   }, [characters, glitchColors, glitchSpeed, smooth, centerVignette, outerVignette]);
 
-  return <canvas ref={canvasRef} className={className} style={{ display: 'block', width: '100%', height: '100%' }} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className={className}
+      style={{ display: 'block', width: '100%', height: '100%' }}
+    />
+  );
 };
 
 export default LetterGlitch;

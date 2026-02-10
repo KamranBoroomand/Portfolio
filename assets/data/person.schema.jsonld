@@ -1,0 +1,15 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Kamran Boroomand",
+  "jobTitle": "Linux System Administrator",
+  "url": "https://kamranboroomand.ir/",
+  "sameAs": ["https://github.com/KamranBoroomand", "https://t.me/kamranRU"],
+  "knowsAbout": [
+    "Linux Administration",
+    "Security Hardening",
+    "Infrastructure Reliability",
+    "System Automation",
+    "Networking"
+  ]
+}
