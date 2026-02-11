@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom';
 
 import LetterGlitch from './reactbits/LetterGlitch';
+import './AvatarEasterEgg.css';
 
 interface AvatarEasterEggProps {
   avatarSelector?: string;
@@ -10,110 +11,8 @@ interface AvatarEasterEggProps {
 
 const CLOSE_ANIMATION_MS = 220;
 
-const styles = `
-.egg-overlay {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(2, 5, 11, 0.64);
-  backdrop-filter: blur(4px);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 220ms ease, visibility 220ms ease;
-  z-index: 999;
-}
-
-.egg-overlay.is-open {
-  opacity: 1;
-  visibility: visible;
-}
-
-.egg-modal {
-  width: min(920px, 92vw);
-  max-height: min(88vh, 820px);
-  overflow: hidden;
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
-  transform: translateY(14px) scale(0.97);
-  opacity: 0;
-  transition: transform 220ms ease, opacity 220ms ease;
-  background: #06090f;
-  position: relative;
-}
-
-.egg-modal.is-open {
-  transform: translateY(0) scale(1);
-  opacity: 1;
-}
-
-.egg-glitch-wrap {
-  position: absolute;
-  inset: 0;
-}
-
-.egg-shell {
-  position: relative;
-  z-index: 1;
-  min-height: 540px;
-  max-height: min(88vh, 820px);
-  padding: 1.2rem 1.2rem 2.4rem;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.65));
-  overflow-y: auto;
-}
-
-.egg-close {
-  align-self: end;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  color: #f7f9ff;
-  background: rgba(7, 11, 20, 0.54);
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.egg-content {
-  margin-top: auto;
-  padding-top: 1.2rem;
-  padding-bottom: 0.2rem;
-  color: #f7f9ff;
-  max-width: 56ch;
-}
-
-.egg-kicker {
-  margin: 0;
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(247, 249, 255, 0.72);
-}
-
-.egg-title {
-  margin: 0.45rem 0 0;
-  font-size: clamp(1.2rem, 2.8vw, 2rem);
-  line-height: 1.15;
-}
-
-.egg-text {
-  margin: 0.55rem 0 0;
-  color: rgba(247, 249, 255, 0.86);
-  line-height: 1.45;
-}
-
-.egg-avatar-trigger {
-  cursor: pointer;
-}
-`;
-
 export default function AvatarEasterEgg({
-  avatarSelector = '.avatar-box img',
+  avatarSelector = '.avatar-box',
   soundSrc = '/assets/audio/easter-egg.wav'
 }: AvatarEasterEggProps) {
   const [isMounted, setIsMounted] = useState(false);
@@ -159,12 +58,38 @@ export default function AvatarEasterEgg({
       return undefined;
     }
 
+    const hadRole = avatar.hasAttribute('role');
+    const hadTabIndex = avatar.hasAttribute('tabindex');
+
     avatar.classList.add('egg-avatar-trigger');
+    avatar.setAttribute('aria-label', 'Open Easter egg');
+    if (!hadRole) {
+      avatar.setAttribute('role', 'button');
+    }
+    if (!hadTabIndex) {
+      avatar.tabIndex = 0;
+    }
+
     avatar.addEventListener('click', openOverlay);
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openOverlay();
+      }
+    };
+    avatar.addEventListener('keydown', onKeyDown);
 
     return () => {
       avatar.classList.remove('egg-avatar-trigger');
+      avatar.removeAttribute('aria-label');
+      if (!hadRole) {
+        avatar.removeAttribute('role');
+      }
+      if (!hadTabIndex) {
+        avatar.removeAttribute('tabindex');
+      }
       avatar.removeEventListener('click', openOverlay);
+      avatar.removeEventListener('keydown', onKeyDown);
     };
   }, [avatarSelector, openOverlay]);
 
@@ -205,7 +130,7 @@ export default function AvatarEasterEgg({
       >
         <div className={`egg-modal ${isOpen ? 'is-open' : ''}`}>
           <div className="egg-glitch-wrap" aria-hidden="true">
-            <div style={{ width: '1080px', height: '1080px', position: 'relative' }}>
+            <div className="egg-glitch-stage">
               <LetterGlitch
                 glitchColors={['#fffb00', '#c0c0c0', '#7a7a7a', '#444444']}
                 glitchSpeed={10}
@@ -237,7 +162,6 @@ export default function AvatarEasterEgg({
 
   return (
     <>
-      <style>{styles}</style>
       <audio ref={audioRef} preload="auto" src={soundSrc} />
       {portal}
     </>

@@ -298,9 +298,20 @@ export default function FaultyTerminal({
     const ctn = containerRef.current;
     if (!ctn) return;
 
-    const renderer = new Renderer({ dpr });
+    let renderer: Renderer;
+    try {
+      renderer = new Renderer({ dpr });
+    } catch {
+      // Some browsers/CI environments can fail to initialize WebGL.
+      // Do not crash the whole effects layer; keep the rest of the UI interactive.
+      return;
+    }
+
     rendererRef.current = renderer;
     const gl = renderer.gl;
+    if (!gl) {
+      return;
+    }
     gl.clearColor(0, 0, 0, 1);
 
     const geometry = new Triangle(gl);
