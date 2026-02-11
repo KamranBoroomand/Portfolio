@@ -27,8 +27,12 @@
   --shadow-md: 0 18px 40px rgba(17, 27, 45, 0.14);
   --effects-intensity: 1;
 
-  --font-title: 'Sora', 'Manrope', sans-serif;
-  --font-body: 'Manrope', 'Segoe UI', sans-serif;
+  --font-title: 'Supertalls', 'Space Rabbit', 'Ferron', monospace;
+  --font-body: 'Workbench', 'Space Rabbit', monospace;
+  --font-nav: 'Ferron', 'Space Rabbit', 'Supertalls', monospace;
+  --font-glitch: 'Doctor Glitch', 'Supertalls', 'Ferron', monospace;
+  --font-callout: 'Lemonade Display', 'Cinema Sunday', 'Space Rabbit', cursive;
+  --font-signature: 'Cinema Sunday', 'Lemonade Display', cursive;
 }
 
 *,
@@ -170,15 +174,16 @@ body.is-loaded {
 
 .eyebrow {
   margin: 0;
+  font-family: var(--font-glitch);
   font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   color: var(--text-2);
 }
 
 .name {
   margin: 0.35rem 0 0;
-  font-family: var(--font-title);
+  font-family: 'Space Rabbit', var(--font-title);
   font-size: clamp(1.5rem, 3vw, 2rem);
   line-height: 1.1;
 }
@@ -191,7 +196,10 @@ body.is-loaded {
   border-radius: 999px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.72);
+  font-family: var(--font-nav);
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--text-1);
 }
 
@@ -207,7 +215,7 @@ body.is-loaded {
 
 .sidebar-section-title {
   margin: 0;
-  font-family: var(--font-title);
+  font-family: var(--font-glitch);
   font-size: 0.86rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -280,6 +288,7 @@ body.is-loaded {
 
 .contact-title {
   margin: 0;
+  font-family: var(--font-glitch);
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -396,8 +405,10 @@ address {
   color: var(--text-2);
   border-radius: 12px;
   padding: 0.58rem 0.9rem;
-  font-family: var(--font-title);
+  font-family: var(--font-nav);
   font-size: 0.92rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   cursor: pointer;
   transition:
     color 180ms ease,
@@ -445,6 +456,7 @@ address {
 
 .kicker {
   margin: 0;
+  font-family: var(--font-glitch);
   color: var(--text-2);
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -806,10 +818,11 @@ address {
 
 .project-category {
   margin: 0.2rem 0 0;
+  font-family: var(--font-callout);
   color: var(--text-2);
   font-size: 0.84rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  text-transform: none;
+  letter-spacing: 0.04em;
 }
 
 .project-description {
@@ -889,8 +902,10 @@ address {
 
 .last-updated {
   margin: 0;
+  font-family: var(--font-signature);
   color: currentColor;
   font-size: 0.8rem;
+  letter-spacing: 0.05em;
 }
 
 a {

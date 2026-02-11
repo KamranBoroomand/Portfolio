@@ -20,7 +20,7 @@ body {
 }
 
 body {
-  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  font-family: 'Workbench', 'Space Rabbit', monospace;
   color: var(--text-0);
   background:
     radial-gradient(circle at 14% 18%, rgba(246, 179, 29, 0.16), transparent 38%),
@@ -43,6 +43,7 @@ body {
 
 .status {
   margin: 0;
+  font-family: 'Doctor Glitch', 'Supertalls', 'Ferron', monospace;
   color: var(--accent-strong);
   font-size: 0.75rem;
   letter-spacing: 0.16em;
@@ -52,7 +53,7 @@ body {
 
 h1 {
   margin: 0.3rem 0 0;
-  font-family: 'Sora', 'Manrope', sans-serif;
+  font-family: 'Supertalls', 'Space Rabbit', 'Ferron', monospace;
   font-size: clamp(1.5rem, 4vw, 2.4rem);
   line-height: 1.1;
 }
@@ -74,6 +75,7 @@ h1 {
 
 .path-label {
   margin: 0;
+  font-family: 'Doctor Glitch', 'Supertalls', 'Ferron', monospace;
   color: var(--text-1);
   font-size: 0.75rem;
   letter-spacing: 0.08em;
@@ -130,6 +132,7 @@ h1 {
 
 .redirect-note {
   margin: 0.8rem 0 0;
+  font-family: 'Cinema Sunday', 'Lemonade Display', cursive;
   color: var(--text-1);
   font-size: 0.86rem;
 }

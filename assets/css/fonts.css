@@ -1,0 +1,65 @@
+/* Local self-hosted font sources requested for the portfolio look and feel. */
+
+@font-face {
+  font-family: 'Workbench';
+  src: url('/assets/fonts/workbench-bled-scan.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ferron';
+  src: url('/assets/fonts/ferron-regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Rabbit';
+  src: url('/assets/fonts/space-rabbit.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Doctor Glitch';
+  src: url('/assets/fonts/doctor-glitch.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Supertalls';
+  src: url('/assets/fonts/supertalls.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Supertalls';
+  src: url('/assets/fonts/supertalls-italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lemonade Display';
+  src: url('/assets/fonts/lemonade-display.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cinema Sunday';
+  src: url('/assets/fonts/cinema-sunday.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
