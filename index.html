@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; form-action 'self'"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self'; form-action 'self'"
     />
     <title>Kamran Boroomand | Linux System Administrator</title>
 
@@ -54,13 +54,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png" />
     <link rel="manifest" href="/assets/images/site.webmanifest" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap"
-      rel="stylesheet"
-    />
-
+    <link rel="stylesheet" href="./assets/css/fonts.css" />
     <link rel="stylesheet" href="./assets/css/style.css" />
     <link rel="stylesheet" href="./assets/js/effects.bundle.css" />
 
@@ -201,41 +195,6 @@
           </ul>
         </section>
 
-        <div class="separator"></div>
-
-        <section class="preference-panel" aria-label="Visual preferences">
-          <h2 class="h3">Visual Preferences</h2>
-          <p class="preference-note">Motion defaults to your system setting unless overridden.</p>
-
-          <div class="preference-control">
-            <label for="reduce-motion-toggle">Reduce motion</label>
-            <input
-              id="reduce-motion-toggle"
-              type="checkbox"
-              data-preference-reduce-motion
-              aria-describedby="effects-intensity-help"
-            />
-          </div>
-
-          <div class="preference-control preference-control--stack">
-            <label for="effects-intensity-range">
-              Effects intensity
-              <span class="preference-value" data-effects-value>100%</span>
-            </label>
-            <input
-              id="effects-intensity-range"
-              type="range"
-              min="0"
-              max="100"
-              step="5"
-              value="100"
-              data-preference-effects-intensity
-            />
-            <p class="preference-note" id="effects-intensity-help">
-              Adjusts background and glitch effect intensity.
-            </p>
-          </div>
-        </section>
       </aside>
 
       <div class="main-content">
@@ -278,6 +237,19 @@
                 aria-controls="portfolio-page"
               >
                 Projects
+              </button>
+            </li>
+            <li class="navbar-item" role="presentation">
+              <button
+                class="navbar-link"
+                type="button"
+                data-nav-link
+                data-target="settings"
+                role="tab"
+                aria-selected="false"
+                aria-controls="settings-page"
+              >
+                Settings
               </button>
             </li>
           </ul>
@@ -563,6 +535,65 @@
                 <path d="m13 6 6 6-6 6"></path>
               </svg>
             </a>
+          </section>
+        </article>
+
+        <article
+          id="settings-page"
+          class="settings card"
+          data-page="settings"
+          role="tabpanel"
+          aria-hidden="true"
+        >
+          <header class="article-header">
+            <p class="kicker">Control Plane</p>
+            <h2 class="h2 article-title">Visual and Motion Settings</h2>
+            <p class="summary">
+              Keep the interface low-distraction while preserving terminal-style feedback and readable
+              typography.
+            </p>
+          </header>
+
+          <section class="preference-panel preference-panel--page" aria-label="Visual preferences">
+            <h3 class="h3">Visual Preferences</h3>
+            <p class="preference-note">Motion defaults to your system setting unless overridden.</p>
+
+            <div class="preference-control">
+              <label for="reduce-motion-toggle">Reduce motion</label>
+              <input
+                id="reduce-motion-toggle"
+                type="checkbox"
+                data-preference-reduce-motion
+                aria-describedby="effects-intensity-help"
+              />
+            </div>
+
+            <div class="preference-control preference-control--stack">
+              <label for="effects-intensity-range">
+                Effects intensity
+                <span class="preference-value" data-effects-value>100%</span>
+              </label>
+              <input
+                id="effects-intensity-range"
+                type="range"
+                min="0"
+                max="100"
+                step="5"
+                value="100"
+                data-preference-effects-intensity
+              />
+              <p class="preference-note" id="effects-intensity-help">
+                Adjusts background and glitch effect intensity.
+              </p>
+            </div>
+          </section>
+
+          <section class="settings-meta">
+            <h3 class="h3 section-title">Typeface Stack</h3>
+            <p>
+              This site now uses self-hosted open-source fonts only: Hack for body text and
+              JetBrains Mono for headings and UI labels.
+            </p>
           </section>
         </article>
 
