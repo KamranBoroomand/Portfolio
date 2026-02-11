@@ -149,26 +149,4 @@ Domain/search files already included:
 
 ## Roadmap
 
-### Completed
-
-- [x] Add local dev workflow (`watch`/`serve`) for faster iteration.
-- [x] Add linting and formatting scripts with CI enforcement.
-- [x] Add end-to-end smoke tests for tabs, filters, and key links.
-- [x] Add accessibility checks with Axe + Playwright.
-- [x] Add visual regression baselines for key views.
-- [x] Add performance budget checks to the quality pipeline.
-- [x] Add image optimization and responsive image generation scripts.
-- [x] Strengthen front-end hardening with CSP and pinned external asset strategy.
-
-### Next Up
-
-- [ ] Run the extended suite (`test:e2e:matrix`, `test:visual`, easter-egg test) in PR or nightly CI.
-- [ ] Automate responsive image generation (`images:responsive`) in the release flow.
-- [ ] Add Lighthouse CI thresholds for performance, accessibility, and SEO.
-- [ ] Add a concise contribution + release checklist to reduce deployment drift.
-
-### Backlog
-
-- [ ] Move project cards/content to a structured data source (`JSON`) and render from data.
-- [ ] Add explicit reduced-motion/effects-intensity controls for accessibility preferences.
-- [ ] Add privacy-focused analytics with a minimal, self-hosted or cookieless setup.
+All previously listed roadmap items are complete.
