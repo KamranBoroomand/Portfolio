@@ -20,7 +20,7 @@ body {
 }
 
 body {
-  font-family: 'Workbench', 'Space Rabbit', monospace;
+  font-family: 'JetBrains Mono', 'Space Rabbit', monospace;
   color: var(--text-0);
   background:
     radial-gradient(circle at 14% 18%, rgba(246, 179, 29, 0.16), transparent 38%),
