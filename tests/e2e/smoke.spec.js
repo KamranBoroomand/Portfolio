@@ -1,6 +1,34 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Portfolio Smoke Flow', () => {
+  test.beforeEach(async ({ page }) => {
+    // Keep smoke tests focused on interaction logic, not heavy visual effects/font network latency.
+    await page.route('**/assets/js/effects.bundle.js', (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/javascript',
+        body: ''
+      });
+    });
+    await page.route('**/assets/js/effects.bundle.css', (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: 'text/css',
+        body: ''
+      });
+    });
+    await page.route('https://fonts.googleapis.com/**', (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: 'text/css',
+        body: ''
+      });
+    });
+    await page.route('https://fonts.gstatic.com/**', (route) => {
+      route.abort();
+    });
+  });
+
   async function applyProjectFilter(page, filterName) {
     const desktopFilterButton = page.locator(`[data-filter-btn][data-filter="${filterName}"]`);
     if (await desktopFilterButton.isVisible()) {
@@ -14,7 +42,7 @@ test.describe('Portfolio Smoke Flow', () => {
   }
 
   test('switches between tabs and syncs URL hash', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     await expect(page.locator('body')).toHaveClass(/is-loaded/);
     await expect(page.locator('.icon-box .ui-icon').first()).toBeVisible();
@@ -36,7 +64,7 @@ test.describe('Portfolio Smoke Flow', () => {
   });
 
   test('applies project filters', async ({ page }) => {
-    await page.goto('/#portfolio');
+    await page.goto('/#portfolio', { waitUntil: 'domcontentloaded' });
 
     const projectsTab = page.getByRole('tab', { name: 'Projects' });
     if (!(await projectsTab.getAttribute('aria-selected'))?.includes('true')) {
@@ -62,7 +90,7 @@ test.describe('Portfolio Smoke Flow', () => {
   });
 
   test('exposes key outbound links with hardened rel attributes', async ({ page }) => {
-    await page.goto('/#portfolio');
+    await page.goto('/#portfolio', { waitUntil: 'domcontentloaded' });
 
     const projectsTab = page.getByRole('tab', { name: 'Projects' });
     if (!(await projectsTab.getAttribute('aria-selected'))?.includes('true')) {
