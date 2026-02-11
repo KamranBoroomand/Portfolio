@@ -4,6 +4,7 @@ test.describe('Portfolio Smoke Flow', () => {
   test('switches between tabs and syncs URL hash', async ({ page }) => {
     await page.goto('/');
 
+    await expect(page.locator('body')).toHaveClass(/is-loaded/);
     await expect(page.locator('.icon-box .ui-icon').first()).toBeVisible();
 
     const aboutPanel = page.locator('#about-page');
@@ -50,6 +51,11 @@ test.describe('Portfolio Smoke Flow', () => {
 
   test('exposes key outbound links with hardened rel attributes', async ({ page }) => {
     await page.goto('/#portfolio');
+
+    const projectsTab = page.getByRole('tab', { name: 'Projects' });
+    if (!(await projectsTab.getAttribute('aria-selected'))?.includes('true')) {
+      await projectsTab.click();
+    }
 
     const expectedLinks = [
       'https://nullid.kamranboroomand.ir',
