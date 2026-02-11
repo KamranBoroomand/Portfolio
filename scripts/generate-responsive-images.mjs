@@ -6,34 +6,44 @@ const cwd = process.cwd();
 const outDir = path.resolve(cwd, 'assets/images/responsive');
 await fs.mkdir(outDir, { recursive: true });
 
-const jobs = [
+const staticJobs = [
   {
     input: 'assets/images/my-avatar.PNG',
     base: 'my-avatar',
     widths: [128, 256, 512],
     fit: 'cover'
-  },
-  {
-    input: 'assets/images/nullid-site-preview.png',
-    base: 'nullid-site-preview',
-    widths: [480, 800, 1200],
-    fit: 'cover'
-  },
-  {
-    input: 'assets/images/nullcal-site-preview.png',
-    base: 'nullcal-site-preview',
-    widths: [480, 800, 1200],
-    fit: 'cover'
-  },
-  {
-    input: 'assets/images/pacman-site-preview.png',
-    base: 'pacman-site-preview',
-    widths: [480, 800, 1200],
-    fit: 'cover'
   }
 ];
 
-for (const job of jobs) {
+const projectsDataPath = path.resolve(cwd, 'assets/data/projects.json');
+const projectsPayload = JSON.parse(await fs.readFile(projectsDataPath, 'utf8'));
+const projects = Array.isArray(projectsPayload.projects) ? projectsPayload.projects : [];
+
+const projectJobs = projects
+  .map((project) => {
+    const image = project.image && typeof project.image === 'object' ? project.image : null;
+    if (!image) return null;
+
+    const input = String(image.src || '')
+      .trim()
+      .replace(/^\.\//, '');
+    const base = String(image.responsiveBase || '').trim();
+    const widths = Array.isArray(image.responsiveWidths) ? image.responsiveWidths : [];
+    if (!input || !base || !widths.length) return null;
+
+    return {
+      input,
+      base,
+      widths,
+      fit: 'cover'
+    };
+  })
+  .filter(Boolean);
+
+const jobs = [...staticJobs, ...projectJobs];
+const dedupedJobs = Array.from(new Map(jobs.map((job) => [job.base, job])).values());
+
+for (const job of dedupedJobs) {
   const inputPath = path.resolve(cwd, job.input);
   for (const width of job.widths) {
     const avifPath = path.join(outDir, `${job.base}-${width}.avif`);

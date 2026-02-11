@@ -19,6 +19,10 @@
   visibility: visible;
 }
 
+.egg-overlay.is-reduced-motion {
+  transition: none;
+}
+
 .egg-modal {
   width: min(920px, 92vw);
   max-height: min(88vh, 820px);
@@ -38,6 +42,10 @@
 .egg-modal.is-open {
   transform: translateY(0) scale(1);
   opacity: 1;
+}
+
+.egg-modal.is-reduced-motion {
+  transition: none;
 }
 
 .egg-glitch-wrap {

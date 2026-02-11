@@ -17,6 +17,7 @@
     <meta name="robots" content="index,follow" />
     <meta name="author" content="Kamran Boroomand" />
     <meta name="theme-color" content="#0f141d" />
+    <meta name="privacy-analytics-pixel" content="/assets/images/analytics-pixel.gif" />
     <link rel="canonical" href="https://kamranboroomand.ir/" />
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
 
@@ -198,6 +199,42 @@
             <li>Security Hardening</li>
             <li>Automation</li>
           </ul>
+        </section>
+
+        <div class="separator"></div>
+
+        <section class="preference-panel" aria-label="Visual preferences">
+          <h2 class="h3">Visual Preferences</h2>
+          <p class="preference-note">Motion defaults to your system setting unless overridden.</p>
+
+          <div class="preference-control">
+            <label for="reduce-motion-toggle">Reduce motion</label>
+            <input
+              id="reduce-motion-toggle"
+              type="checkbox"
+              data-preference-reduce-motion
+              aria-describedby="effects-intensity-help"
+            />
+          </div>
+
+          <div class="preference-control preference-control--stack">
+            <label for="effects-intensity-range">
+              Effects intensity
+              <span class="preference-value" data-effects-value>100%</span>
+            </label>
+            <input
+              id="effects-intensity-range"
+              type="range"
+              min="0"
+              max="100"
+              step="5"
+              value="100"
+              data-preference-effects-intensity
+            />
+            <p class="preference-note" id="effects-intensity-help">
+              Adjusts background and glitch effect intensity.
+            </p>
+          </div>
         </section>
       </aside>
 
@@ -506,220 +543,13 @@
               </ul>
             </div>
 
-            <ul class="project-list">
-              <li class="project-item active" data-filter-item data-category="security">
-                <article class="project-card">
-                  <a
-                    class="project-preview-link"
-                    href="https://nullid.kamranboroomand.ir"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Open NullID website"
-                  >
-                    <figure class="project-img">
-                      <div class="preview-chrome" aria-hidden="true">
-                        <span class="preview-dots"> <i></i><i></i><i></i> </span>
-                        <span class="preview-domain">nullid.kamranboroomand.ir</span>
-                      </div>
-                      <picture>
-                        <source
-                          type="image/avif"
-                          srcset="
-                            ./assets/images/responsive/nullid-site-preview-480.avif   480w,
-                            ./assets/images/responsive/nullid-site-preview-800.avif   800w,
-                            ./assets/images/responsive/nullid-site-preview-1200.avif 1200w
-                          "
-                          sizes="(max-width: 759px) 100vw, 50vw"
-                        />
-                        <source
-                          type="image/webp"
-                          srcset="
-                            ./assets/images/responsive/nullid-site-preview-480.webp   480w,
-                            ./assets/images/responsive/nullid-site-preview-800.webp   800w,
-                            ./assets/images/responsive/nullid-site-preview-1200.webp 1200w
-                          "
-                          sizes="(max-width: 759px) 100vw, 50vw"
-                        />
-                        <img
-                          src="./assets/images/nullid-site-preview.png"
-                          width="1200"
-                          height="800"
-                          alt="Live preview of NullID website"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </picture>
-                    </figure>
-                  </a>
-                  <div class="project-content">
-                    <h3 class="project-title">NullID</h3>
-                    <p class="project-category">Security Platform</p>
-                    <p class="project-description">
-                      Privacy-focused communication and security project with strong access control
-                      and operational reliability principles.
-                    </p>
-                    <div class="project-actions">
-                      <a
-                        class="project-action project-action-primary"
-                        href="https://nullid.kamranboroomand.ir"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >Open Live Website</a
-                      >
-                      <a
-                        class="project-action"
-                        href="https://github.com/KamranBoroomand/NullID"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >View GitHub Repo</a
-                      >
-                    </div>
-                  </div>
-                </article>
-              </li>
-
-              <li class="project-item active" data-filter-item data-category="automation">
-                <article class="project-card">
-                  <a
-                    class="project-preview-link"
-                    href="https://nullcal.kamranboroomand.ir"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Open NullCal website"
-                  >
-                    <figure class="project-img">
-                      <div class="preview-chrome" aria-hidden="true">
-                        <span class="preview-dots"> <i></i><i></i><i></i> </span>
-                        <span class="preview-domain">nullcal.kamranboroomand.ir</span>
-                      </div>
-                      <picture>
-                        <source
-                          type="image/avif"
-                          srcset="
-                            ./assets/images/responsive/nullcal-site-preview-480.avif   480w,
-                            ./assets/images/responsive/nullcal-site-preview-800.avif   800w,
-                            ./assets/images/responsive/nullcal-site-preview-1200.avif 1200w
-                          "
-                          sizes="(max-width: 759px) 100vw, 50vw"
-                        />
-                        <source
-                          type="image/webp"
-                          srcset="
-                            ./assets/images/responsive/nullcal-site-preview-480.webp   480w,
-                            ./assets/images/responsive/nullcal-site-preview-800.webp   800w,
-                            ./assets/images/responsive/nullcal-site-preview-1200.webp 1200w
-                          "
-                          sizes="(max-width: 759px) 100vw, 50vw"
-                        />
-                        <img
-                          src="./assets/images/nullcal-site-preview.png"
-                          width="1200"
-                          height="800"
-                          alt="Live preview of NullCal website"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </picture>
-                    </figure>
-                  </a>
-                  <div class="project-content">
-                    <h3 class="project-title">NullCal</h3>
-                    <p class="project-category">Automation Suite</p>
-                    <p class="project-description">
-                      Scheduling and planning automation built to reduce repetitive coordination
-                      work and improve execution consistency.
-                    </p>
-                    <div class="project-actions">
-                      <a
-                        class="project-action project-action-primary"
-                        href="https://nullcal.kamranboroomand.ir"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >Open Live Website</a
-                      >
-                      <a
-                        class="project-action"
-                        href="https://github.com/KamranBoroomand/NullCal"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >View GitHub Repo</a
-                      >
-                    </div>
-                  </div>
-                </article>
-              </li>
-
-              <li class="project-item active" data-filter-item data-category="all">
-                <article class="project-card">
-                  <a
-                    class="project-preview-link"
-                    href="https://pacman.kamranboroomand.ir"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Open PacMan website"
-                  >
-                    <figure class="project-img">
-                      <div class="preview-chrome" aria-hidden="true">
-                        <span class="preview-dots"> <i></i><i></i><i></i> </span>
-                        <span class="preview-domain">pacman.kamranboroomand.ir</span>
-                      </div>
-                      <picture>
-                        <source
-                          type="image/avif"
-                          srcset="
-                            ./assets/images/responsive/pacman-site-preview-480.avif   480w,
-                            ./assets/images/responsive/pacman-site-preview-800.avif   800w,
-                            ./assets/images/responsive/pacman-site-preview-1200.avif 1200w
-                          "
-                          sizes="(max-width: 759px) 100vw, 50vw"
-                        />
-                        <source
-                          type="image/webp"
-                          srcset="
-                            ./assets/images/responsive/pacman-site-preview-480.webp   480w,
-                            ./assets/images/responsive/pacman-site-preview-800.webp   800w,
-                            ./assets/images/responsive/pacman-site-preview-1200.webp 1200w
-                          "
-                          sizes="(max-width: 759px) 100vw, 50vw"
-                        />
-                        <img
-                          src="./assets/images/pacman-site-preview.png"
-                          width="1200"
-                          height="800"
-                          alt="Live preview of PacMan website"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </picture>
-                    </figure>
-                  </a>
-                  <div class="project-content">
-                    <h3 class="project-title">PacMan</h3>
-                    <p class="project-category">Game Project</p>
-                    <p class="project-description">
-                      Classic arcade-style PacMan implementation focused on gameplay logic,
-                      responsive controls, and clean front-end structure.
-                    </p>
-                    <div class="project-actions">
-                      <a
-                        class="project-action project-action-primary"
-                        href="https://pacman.kamranboroomand.ir"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >Open Live Website</a
-                      >
-                      <a
-                        class="project-action"
-                        href="https://github.com/KamranBoroomand?tab=repositories"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >Browse All Repos</a
-                      >
-                    </div>
-                  </div>
-                </article>
-              </li>
-            </ul>
+            <ul
+              class="project-list"
+              data-project-list
+              data-project-source="./assets/data/projects.json"
+              aria-live="polite"
+              aria-busy="true"
+            ></ul>
 
             <a
               class="more-projects"

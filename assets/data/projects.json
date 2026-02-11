@@ -1,0 +1,70 @@
+{
+  "projects": [
+    {
+      "id": "nullid",
+      "title": "NullID",
+      "categoryLabel": "Security Platform",
+      "filters": ["security"],
+      "description": "Privacy-focused communication and security project with strong access control and operational reliability principles.",
+      "previewUrl": "https://nullid.kamranboroomand.ir",
+      "previewDomain": "nullid.kamranboroomand.ir",
+      "previewAriaLabel": "Open NullID website",
+      "primaryActionLabel": "Open Live Website",
+      "repoUrl": "https://github.com/KamranBoroomand/NullID",
+      "repoLabel": "View GitHub Repo",
+      "image": {
+        "src": "./assets/images/nullid-site-preview.png",
+        "alt": "Live preview of NullID website",
+        "width": 1200,
+        "height": 800,
+        "sizes": "(max-width: 759px) 100vw, 50vw",
+        "responsiveBase": "nullid-site-preview",
+        "responsiveWidths": [480, 800, 1200]
+      }
+    },
+    {
+      "id": "nullcal",
+      "title": "NullCal",
+      "categoryLabel": "Automation Suite",
+      "filters": ["automation"],
+      "description": "Scheduling and planning automation built to reduce repetitive coordination work and improve execution consistency.",
+      "previewUrl": "https://nullcal.kamranboroomand.ir",
+      "previewDomain": "nullcal.kamranboroomand.ir",
+      "previewAriaLabel": "Open NullCal website",
+      "primaryActionLabel": "Open Live Website",
+      "repoUrl": "https://github.com/KamranBoroomand/NullCal",
+      "repoLabel": "View GitHub Repo",
+      "image": {
+        "src": "./assets/images/nullcal-site-preview.png",
+        "alt": "Live preview of NullCal website",
+        "width": 1200,
+        "height": 800,
+        "sizes": "(max-width: 759px) 100vw, 50vw",
+        "responsiveBase": "nullcal-site-preview",
+        "responsiveWidths": [480, 800, 1200]
+      }
+    },
+    {
+      "id": "pacman",
+      "title": "PacMan",
+      "categoryLabel": "Game Project",
+      "filters": ["all"],
+      "description": "Classic arcade-style PacMan implementation focused on gameplay logic, responsive controls, and clean front-end structure.",
+      "previewUrl": "https://pacman.kamranboroomand.ir",
+      "previewDomain": "pacman.kamranboroomand.ir",
+      "previewAriaLabel": "Open PacMan website",
+      "primaryActionLabel": "Open Live Website",
+      "repoUrl": "https://github.com/KamranBoroomand?tab=repositories",
+      "repoLabel": "Browse All Repos",
+      "image": {
+        "src": "./assets/images/pacman-site-preview.png",
+        "alt": "Live preview of PacMan website",
+        "width": 1200,
+        "height": 800,
+        "sizes": "(max-width: 759px) 100vw, 50vw",
+        "responsiveBase": "pacman-site-preview",
+        "responsiveWidths": [480, 800, 1200]
+      }
+    }
+  ]
+}

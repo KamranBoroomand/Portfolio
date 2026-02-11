@@ -1084,7 +1084,7 @@
             }
             return dispatcher.useContext(Context);
           }
-          function useState2(initialState) {
+          function useState3(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
@@ -1887,7 +1887,7 @@
           exports.useMemo = useMemo3;
           exports.useReducer = useReducer;
           exports.useRef = useRef5;
-          exports.useState = useState2;
+          exports.useState = useState3;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -26806,6 +26806,7 @@ void main() {
     centerVignette = false,
     outerVignette = true,
     smooth = true,
+    paused = false,
     characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$&*()-_+=/[]{};:<>",
     className = ""
   }) => {
@@ -26839,7 +26840,7 @@ void main() {
       const render = () => {
         const now = Date.now();
         const elapsed = now - lastGlitchTimeRef.current;
-        if (elapsed >= glitchSpeed) {
+        if (!paused && elapsed >= glitchSpeed) {
           lettersRef.current.forEach((letter) => {
             if (Math.random() < 0.03) {
               letter.char = characters[Math.floor(Math.random() * characters.length)];
@@ -26854,7 +26855,7 @@ void main() {
           });
           lastGlitchTimeRef.current = now;
         }
-        if (smooth) {
+        if (!paused && smooth) {
           lettersRef.current.forEach((letter) => {
             if (letter.colorProgress < 1) {
               letter.colorProgress += 0.05;
@@ -26905,7 +26906,9 @@ void main() {
           ctx.fillStyle = gradient;
           ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
-        animationRef.current = window.requestAnimationFrame(render);
+        if (!paused) {
+          animationRef.current = window.requestAnimationFrame(render);
+        }
       };
       window.addEventListener("resize", setCanvasSize);
       setCanvasSize();
@@ -26916,7 +26919,7 @@ void main() {
           window.cancelAnimationFrame(animationRef.current);
         }
       };
-    }, [characters, glitchColors, glitchSpeed, smooth, centerVignette, outerVignette]);
+    }, [characters, glitchColors, glitchSpeed, smooth, centerVignette, outerVignette, paused]);
     return /* @__PURE__ */ import_react2.default.createElement(
       "canvas",
       {
@@ -26932,7 +26935,9 @@ void main() {
   var CLOSE_ANIMATION_MS = 220;
   function AvatarEasterEgg({
     avatarSelector = ".avatar-box",
-    soundSrc = "/assets/audio/easter-egg.wav"
+    soundSrc = "/assets/audio/easter-egg.wav",
+    reducedMotion = false,
+    intensity = 1
   }) {
     const [isMounted, setIsMounted] = (0, import_react3.useState)(false);
     const [isOpen, setIsOpen] = (0, import_react3.useState)(false);
@@ -26945,13 +26950,18 @@ void main() {
       }
     }, []);
     const closeOverlay = (0, import_react3.useCallback)(() => {
+      const closeAnimationMs = reducedMotion ? 0 : CLOSE_ANIMATION_MS;
       clearCloseTimer();
       setIsOpen(false);
+      if (closeAnimationMs === 0) {
+        setIsMounted(false);
+        return;
+      }
       closeTimerRef.current = window.setTimeout(() => {
         setIsMounted(false);
         closeTimerRef.current = null;
-      }, CLOSE_ANIMATION_MS);
-    }, [clearCloseTimer]);
+      }, closeAnimationMs);
+    }, [clearCloseTimer, reducedMotion]);
     const openOverlay = (0, import_react3.useCallback)(() => {
       clearCloseTimer();
       setIsMounted(true);
@@ -27025,34 +27035,74 @@ void main() {
         /* @__PURE__ */ import_react3.default.createElement(
           "div",
           {
-            className: `egg-overlay ${isOpen ? "is-open" : ""}`,
+            className: `egg-overlay ${isOpen ? "is-open" : ""} ${reducedMotion ? "is-reduced-motion" : ""}`,
             onMouseDown: (event) => {
               if (event.target === event.currentTarget) {
                 closeOverlay();
               }
             }
           },
-          /* @__PURE__ */ import_react3.default.createElement("div", { className: `egg-modal ${isOpen ? "is-open" : ""}` }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "egg-glitch-wrap", "aria-hidden": "true" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "egg-glitch-stage" }, /* @__PURE__ */ import_react3.default.createElement(
-            LetterGlitch_default,
+          /* @__PURE__ */ import_react3.default.createElement(
+            "div",
             {
-              glitchColors: ["#fffb00", "#c0c0c0", "#7a7a7a", "#444444"],
-              glitchSpeed: 10,
-              centerVignette: false,
-              outerVignette: false,
-              smooth: true
-            }
-          ))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "egg-shell" }, /* @__PURE__ */ import_react3.default.createElement("button", { className: "egg-close", "aria-label": "Close Easter egg", onClick: closeOverlay }, "\xD7"), /* @__PURE__ */ import_react3.default.createElement("div", { className: "egg-content" }, /* @__PURE__ */ import_react3.default.createElement("p", { className: "egg-kicker" }, "Easter Egg"), /* @__PURE__ */ import_react3.default.createElement("h3", { className: "egg-title" }, "You discovered the hidden console dimension."), /* @__PURE__ */ import_react3.default.createElement("p", { className: "egg-text" }, "Built for curious minds. Press Escape or click outside to exit."))))
+              className: `egg-modal ${isOpen ? "is-open" : ""} ${reducedMotion ? "is-reduced-motion" : ""}`
+            },
+            /* @__PURE__ */ import_react3.default.createElement("div", { className: "egg-glitch-wrap", "aria-hidden": "true" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "egg-glitch-stage" }, /* @__PURE__ */ import_react3.default.createElement(
+              LetterGlitch_default,
+              {
+                glitchColors: ["#fffb00", "#c0c0c0", "#7a7a7a", "#444444"],
+                glitchSpeed: Math.round(8 + (1 - intensity) * 60),
+                centerVignette: false,
+                outerVignette: false,
+                smooth: !reducedMotion,
+                paused: reducedMotion || intensity <= 0.05
+              }
+            ))),
+            /* @__PURE__ */ import_react3.default.createElement("div", { className: "egg-shell" }, /* @__PURE__ */ import_react3.default.createElement("button", { className: "egg-close", "aria-label": "Close Easter egg", onClick: closeOverlay }, "\xD7"), /* @__PURE__ */ import_react3.default.createElement("div", { className: "egg-content" }, /* @__PURE__ */ import_react3.default.createElement("p", { className: "egg-kicker" }, "Easter Egg"), /* @__PURE__ */ import_react3.default.createElement("h3", { className: "egg-title" }, "You discovered the hidden console dimension."), /* @__PURE__ */ import_react3.default.createElement("p", { className: "egg-text" }, "Built for curious minds. Press Escape or click outside to exit.")))
+          )
         ),
         document.body
       );
-    }, [isMounted, isOpen, closeOverlay]);
+    }, [isMounted, isOpen, closeOverlay, reducedMotion, intensity]);
     return /* @__PURE__ */ import_react3.default.createElement(import_react3.default.Fragment, null, /* @__PURE__ */ import_react3.default.createElement("audio", { ref: audioRef, preload: "auto", src: soundSrc }), portal);
   }
 
   // src/react/effects-entry.tsx
+  var EFFECTS_SETTINGS_EVENT = "kb-effects-settings";
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+  function normalizeSettings(raw) {
+    var _a;
+    const intensity = clamp(Number((_a = raw == null ? void 0 : raw.intensity) != null ? _a : 1) || 1, 0, 1);
+    return {
+      reducedMotion: Boolean(raw == null ? void 0 : raw.reducedMotion),
+      intensity
+    };
+  }
+  function getInitialSettings() {
+    const fromWindow = normalizeSettings(window.__KB_EFFECTS_SETTINGS__);
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    return {
+      reducedMotion: fromWindow.reducedMotion || prefersReducedMotion,
+      intensity: fromWindow.intensity
+    };
+  }
   function EffectsLayer() {
     const terminalWrapRef = (0, import_react4.useRef)(null);
+    const [settings, setSettings] = (0, import_react4.useState)(() => getInitialSettings());
     (0, import_react4.useEffect)(() => {
+      const handleSettingsUpdate = (event) => {
+        const customEvent = event;
+        setSettings(normalizeSettings(customEvent.detail));
+      };
+      window.addEventListener(EFFECTS_SETTINGS_EVENT, handleSettingsUpdate);
+      return () => window.removeEventListener(EFFECTS_SETTINGS_EVENT, handleSettingsUpdate);
+    }, []);
+    (0, import_react4.useEffect)(() => {
+      if (settings.reducedMotion || settings.intensity <= 0) {
+        return void 0;
+      }
       const handleMouseMove = (event) => {
         const host = terminalWrapRef.current;
         if (!host) return;
@@ -27067,29 +27117,40 @@ void main() {
       };
       window.addEventListener("mousemove", handleMouseMove, { passive: true });
       return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, []);
-    return /* @__PURE__ */ import_react4.default.createElement(import_react4.default.Fragment, null, /* @__PURE__ */ import_react4.default.createElement(AvatarEasterEgg, null), /* @__PURE__ */ import_react4.default.createElement("div", { className: "effects-terminal-wrap", "aria-hidden": "true", ref: terminalWrapRef }, /* @__PURE__ */ import_react4.default.createElement(
-      FaultyTerminal,
+    }, [settings.reducedMotion, settings.intensity]);
+    const intensity = clamp(settings.intensity, 0, 1);
+    const isPaused = settings.reducedMotion || intensity <= 0;
+    return /* @__PURE__ */ import_react4.default.createElement(import_react4.default.Fragment, null, /* @__PURE__ */ import_react4.default.createElement(AvatarEasterEgg, { reducedMotion: settings.reducedMotion, intensity }), /* @__PURE__ */ import_react4.default.createElement(
+      "div",
       {
-        scale: 3,
-        gridMul: [2, 1],
-        digitSize: 2.1,
-        timeScale: 0.8,
-        pause: false,
-        scanlineIntensity: 0.5,
-        glitchAmount: 1,
-        flickerAmount: 1,
-        noiseAmp: 1,
-        chromaticAberration: 0,
-        dither: 0,
-        curvature: 0.1,
-        tint: "#fffb00",
-        mouseReact: true,
-        mouseStrength: 0.5,
-        pageLoadAnimation: true,
-        brightness: 0.6
-      }
-    )));
+        className: "effects-terminal-wrap",
+        "aria-hidden": "true",
+        ref: terminalWrapRef,
+        style: { opacity: intensity }
+      },
+      /* @__PURE__ */ import_react4.default.createElement(
+        FaultyTerminal,
+        {
+          scale: 3,
+          gridMul: [2, 1],
+          digitSize: 2.1,
+          timeScale: isPaused ? 0 : 0.3 + intensity * 0.5,
+          pause: isPaused,
+          scanlineIntensity: 0.12 + intensity * 0.38,
+          glitchAmount: 0.25 + intensity * 0.75,
+          flickerAmount: 0.2 + intensity * 0.8,
+          noiseAmp: 0.2 + intensity * 0.8,
+          chromaticAberration: 0,
+          dither: 0,
+          curvature: 0.1,
+          tint: "#fffb00",
+          mouseReact: !settings.reducedMotion && intensity > 0.15,
+          mouseStrength: 0.1 + intensity * 0.4,
+          pageLoadAnimation: !settings.reducedMotion && intensity > 0.05,
+          brightness: 0.18 + intensity * 0.42
+        }
+      )
+    ));
   }
   var rootElement = document.getElementById("effects-root");
   if (rootElement) {

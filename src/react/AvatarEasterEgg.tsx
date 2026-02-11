@@ -7,13 +7,17 @@ import './AvatarEasterEgg.css';
 interface AvatarEasterEggProps {
   avatarSelector?: string;
   soundSrc?: string;
+  reducedMotion?: boolean;
+  intensity?: number;
 }
 
 const CLOSE_ANIMATION_MS = 220;
 
 export default function AvatarEasterEgg({
   avatarSelector = '.avatar-box',
-  soundSrc = '/assets/audio/easter-egg.wav'
+  soundSrc = '/assets/audio/easter-egg.wav',
+  reducedMotion = false,
+  intensity = 1
 }: AvatarEasterEggProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -28,13 +32,20 @@ export default function AvatarEasterEgg({
   }, []);
 
   const closeOverlay = useCallback(() => {
+    const closeAnimationMs = reducedMotion ? 0 : CLOSE_ANIMATION_MS;
     clearCloseTimer();
     setIsOpen(false);
+
+    if (closeAnimationMs === 0) {
+      setIsMounted(false);
+      return;
+    }
+
     closeTimerRef.current = window.setTimeout(() => {
       setIsMounted(false);
       closeTimerRef.current = null;
-    }, CLOSE_ANIMATION_MS);
-  }, [clearCloseTimer]);
+    }, closeAnimationMs);
+  }, [clearCloseTimer, reducedMotion]);
 
   const openOverlay = useCallback(() => {
     clearCloseTimer();
@@ -121,22 +132,25 @@ export default function AvatarEasterEgg({
 
     return createPortal(
       <div
-        className={`egg-overlay ${isOpen ? 'is-open' : ''}`}
+        className={`egg-overlay ${isOpen ? 'is-open' : ''} ${reducedMotion ? 'is-reduced-motion' : ''}`}
         onMouseDown={(event) => {
           if (event.target === event.currentTarget) {
             closeOverlay();
           }
         }}
       >
-        <div className={`egg-modal ${isOpen ? 'is-open' : ''}`}>
+        <div
+          className={`egg-modal ${isOpen ? 'is-open' : ''} ${reducedMotion ? 'is-reduced-motion' : ''}`}
+        >
           <div className="egg-glitch-wrap" aria-hidden="true">
             <div className="egg-glitch-stage">
               <LetterGlitch
                 glitchColors={['#fffb00', '#c0c0c0', '#7a7a7a', '#444444']}
-                glitchSpeed={10}
+                glitchSpeed={Math.round(8 + (1 - intensity) * 60)}
                 centerVignette={false}
                 outerVignette={false}
-                smooth
+                smooth={!reducedMotion}
+                paused={reducedMotion || intensity <= 0.05}
               />
             </div>
           </div>
@@ -158,7 +172,7 @@ export default function AvatarEasterEgg({
       </div>,
       document.body
     );
-  }, [isMounted, isOpen, closeOverlay]);
+  }, [isMounted, isOpen, closeOverlay, reducedMotion, intensity]);
 
   return (
     <>

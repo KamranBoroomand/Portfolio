@@ -10,13 +10,30 @@ const fileBudgets = [
   { file: 'assets/images/preview.jpg', maxKb: 100 }
 ];
 
+const projectsDataPath = path.resolve(cwd, 'assets/data/projects.json');
+const projectsPayload = JSON.parse(await fs.readFile(projectsDataPath, 'utf8'));
+const projects = Array.isArray(projectsPayload.projects) ? projectsPayload.projects : [];
+
+const projectImageConfigs = projects
+  .map((project) => {
+    const image = project.image && typeof project.image === 'object' ? project.image : null;
+    if (!image) return null;
+
+    const src = String(image.src || '')
+      .trim()
+      .replace(/^\.\//, '');
+    const responsiveBase = String(image.responsiveBase || '').trim();
+    const responsiveWidths = Array.isArray(image.responsiveWidths) ? image.responsiveWidths : [];
+    if (!src || !responsiveBase || !responsiveWidths.length) return null;
+
+    return { src, responsiveBase, responsiveWidths };
+  })
+  .filter(Boolean);
+
 const criticalImageBudget = {
-  files: [
-    'assets/images/my-avatar.PNG',
-    'assets/images/nullid-site-preview.png',
-    'assets/images/nullcal-site-preview.png',
-    'assets/images/pacman-site-preview.png'
-  ],
+  files: Array.from(
+    new Set(['assets/images/my-avatar.PNG', ...projectImageConfigs.map((image) => image.src)])
+  ),
   maxKb: 300
 };
 
@@ -27,24 +44,12 @@ const responsiveAssets = [
   'assets/images/responsive/my-avatar-256.webp',
   'assets/images/responsive/my-avatar-512.avif',
   'assets/images/responsive/my-avatar-512.webp',
-  'assets/images/responsive/nullid-site-preview-480.avif',
-  'assets/images/responsive/nullid-site-preview-480.webp',
-  'assets/images/responsive/nullid-site-preview-800.avif',
-  'assets/images/responsive/nullid-site-preview-800.webp',
-  'assets/images/responsive/nullid-site-preview-1200.avif',
-  'assets/images/responsive/nullid-site-preview-1200.webp',
-  'assets/images/responsive/nullcal-site-preview-480.avif',
-  'assets/images/responsive/nullcal-site-preview-480.webp',
-  'assets/images/responsive/nullcal-site-preview-800.avif',
-  'assets/images/responsive/nullcal-site-preview-800.webp',
-  'assets/images/responsive/nullcal-site-preview-1200.avif',
-  'assets/images/responsive/nullcal-site-preview-1200.webp',
-  'assets/images/responsive/pacman-site-preview-480.avif',
-  'assets/images/responsive/pacman-site-preview-480.webp',
-  'assets/images/responsive/pacman-site-preview-800.avif',
-  'assets/images/responsive/pacman-site-preview-800.webp',
-  'assets/images/responsive/pacman-site-preview-1200.avif',
-  'assets/images/responsive/pacman-site-preview-1200.webp'
+  ...projectImageConfigs.flatMap((image) =>
+    image.responsiveWidths.flatMap((width) => [
+      `assets/images/responsive/${image.responsiveBase}-${width}.avif`,
+      `assets/images/responsive/${image.responsiveBase}-${width}.webp`
+    ])
+  )
 ];
 
 let hasFailure = false;

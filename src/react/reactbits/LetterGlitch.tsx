@@ -13,6 +13,7 @@ interface LetterGlitchProps {
   centerVignette?: boolean;
   outerVignette?: boolean;
   smooth?: boolean;
+  paused?: boolean;
   characters?: string;
   className?: string;
 }
@@ -49,6 +50,7 @@ const LetterGlitch: React.FC<LetterGlitchProps> = ({
   centerVignette = false,
   outerVignette = true,
   smooth = true,
+  paused = false,
   characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$&*()-_+=/[]{};:<>',
   className = ''
 }) => {
@@ -90,7 +92,7 @@ const LetterGlitch: React.FC<LetterGlitchProps> = ({
       const now = Date.now();
       const elapsed = now - lastGlitchTimeRef.current;
 
-      if (elapsed >= glitchSpeed) {
+      if (!paused && elapsed >= glitchSpeed) {
         lettersRef.current.forEach((letter) => {
           if (Math.random() < 0.03) {
             letter.char = characters[Math.floor(Math.random() * characters.length)];
@@ -108,7 +110,7 @@ const LetterGlitch: React.FC<LetterGlitchProps> = ({
         lastGlitchTimeRef.current = now;
       }
 
-      if (smooth) {
+      if (!paused && smooth) {
         lettersRef.current.forEach((letter) => {
           if (letter.colorProgress < 1) {
             letter.colorProgress += 0.05;
@@ -167,7 +169,9 @@ const LetterGlitch: React.FC<LetterGlitchProps> = ({
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
 
-      animationRef.current = window.requestAnimationFrame(render);
+      if (!paused) {
+        animationRef.current = window.requestAnimationFrame(render);
+      }
     };
 
     window.addEventListener('resize', setCanvasSize);
@@ -180,7 +184,7 @@ const LetterGlitch: React.FC<LetterGlitchProps> = ({
         window.cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [characters, glitchColors, glitchSpeed, smooth, centerVignette, outerVignette]);
+  }, [characters, glitchColors, glitchSpeed, smooth, centerVignette, outerVignette, paused]);
 
   return (
     <canvas
