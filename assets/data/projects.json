@@ -12,6 +12,26 @@
       "primaryActionLabel": "Open Live Website",
       "repoUrl": "https://github.com/KamranBoroomand/NullID",
       "repoLabel": "View GitHub Repo",
+      "i18n": {
+        "ru": {
+          "title": "NullID",
+          "categoryLabel": "Платформа безопасности",
+          "description": "Проект защищенной коммуникации и безопасности с упором на контроль доступа, приватность и операционную надежность.",
+          "previewAriaLabel": "Открыть сайт NullID",
+          "primaryActionLabel": "Открыть сайт",
+          "repoLabel": "Открыть репозиторий GitHub",
+          "imageAlt": "Предпросмотр сайта NullID"
+        },
+        "fa": {
+          "title": "نال‌آی‌دی",
+          "categoryLabel": "پلتفرم امنیتی",
+          "description": "پروژه ارتباط و امنیت با تمرکز بر حریم خصوصی، کنترل دسترسی قوی و پایداری عملیاتی.",
+          "previewAriaLabel": "باز کردن وب‌سایت نال‌آی‌دی",
+          "primaryActionLabel": "باز کردن وب‌سایت",
+          "repoLabel": "مشاهده مخزن گیت‌هاب",
+          "imageAlt": "پیش‌نمایش وب‌سایت نال‌آی‌دی"
+        }
+      },
       "image": {
         "src": "./assets/images/nullid-site-preview.png",
         "alt": "Live preview of NullID website",
@@ -34,6 +54,26 @@
       "primaryActionLabel": "Open Live Website",
       "repoUrl": "https://github.com/KamranBoroomand/NullCal",
       "repoLabel": "View GitHub Repo",
+      "i18n": {
+        "ru": {
+          "title": "NullCal",
+          "categoryLabel": "Набор автоматизации",
+          "description": "Автоматизация планирования и расписаний для снижения повторяющейся координационной работы и повышения стабильности исполнения.",
+          "previewAriaLabel": "Открыть сайт NullCal",
+          "primaryActionLabel": "Открыть сайт",
+          "repoLabel": "Открыть репозиторий GitHub",
+          "imageAlt": "Предпросмотр сайта NullCal"
+        },
+        "fa": {
+          "title": "نال‌کال",
+          "categoryLabel": "مجموعه اتوماسیون",
+          "description": "اتوماسیون زمان‌بندی و برنامه‌ریزی برای کاهش کارهای تکراری هماهنگی و افزایش ثبات اجرا.",
+          "previewAriaLabel": "باز کردن وب‌سایت نال‌کال",
+          "primaryActionLabel": "باز کردن وب‌سایت",
+          "repoLabel": "مشاهده مخزن گیت‌هاب",
+          "imageAlt": "پیش‌نمایش وب‌سایت نال‌کال"
+        }
+      },
       "image": {
         "src": "./assets/images/nullcal-site-preview.png",
         "alt": "Live preview of NullCal website",
@@ -56,6 +96,26 @@
       "primaryActionLabel": "Open Live Website",
       "repoUrl": "https://github.com/KamranBoroomand?tab=repositories",
       "repoLabel": "Browse All Repos",
+      "i18n": {
+        "ru": {
+          "title": "PacMan",
+          "categoryLabel": "Игровой проект",
+          "description": "Классическая аркадная реализация PacMan с акцентом на игровую логику, отзывчивое управление и чистую фронтенд-архитектуру.",
+          "previewAriaLabel": "Открыть сайт PacMan",
+          "primaryActionLabel": "Открыть сайт",
+          "repoLabel": "Открыть все репозитории",
+          "imageAlt": "Предпросмотр сайта PacMan"
+        },
+        "fa": {
+          "title": "پک‌من",
+          "categoryLabel": "پروژه بازی",
+          "description": "پیاده‌سازی کلاسیک سبک آرکید PacMan با تمرکز بر منطق بازی، کنترل واکنش‌گرا و ساختار تمیز فرانت‌اند.",
+          "previewAriaLabel": "باز کردن وب‌سایت پک‌من",
+          "primaryActionLabel": "باز کردن وب‌سایت",
+          "repoLabel": "مشاهده همه مخزن‌ها",
+          "imageAlt": "پیش‌نمایش وب‌سایت پک‌من"
+        }
+      },
       "image": {
         "src": "./assets/images/pacman-site-preview.png",
         "alt": "Live preview of PacMan website",

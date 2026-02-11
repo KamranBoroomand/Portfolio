@@ -5,6 +5,7 @@
   "jobTitle": "Linux System Administrator",
   "url": "https://kamranboroomand.ir/",
   "sameAs": ["https://github.com/KamranBoroomand", "https://t.me/kamranRU"],
+  "availableLanguage": ["English", "Russian", "Persian"],
   "knowsAbout": [
     "Linux Administration",
     "Security Hardening",

@@ -63,6 +63,36 @@ test.describe('Portfolio Smoke Flow', () => {
     await expect(page).toHaveURL(/#portfolio$/);
   });
 
+  test('toggles language across English, Russian, and Persian', async ({ page }) => {
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+    const languageSelect = page.locator('[data-language-select]');
+    await expect(languageSelect).toBeVisible();
+    await expect(languageSelect).toHaveValue('en');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    await expect(page.locator('html')).toHaveAttribute('dir', 'ltr');
+
+    await languageSelect.selectOption('ru');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'ru');
+    await expect(page.locator('html')).toHaveAttribute('dir', 'ltr');
+    await expect(page).toHaveURL(/\?lang=ru.*#about$/);
+    await expect(page.getByRole('tab', { name: 'Обо мне' })).toBeVisible();
+    await expect(page.locator('.sidebar-section-title')).toHaveText('Контакты');
+
+    await languageSelect.selectOption('fa');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'fa');
+    await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+    await expect(page).toHaveURL(/\?lang=fa.*#about$/);
+    await expect(page.getByRole('tab', { name: 'درباره' })).toBeVisible();
+    await expect(page.locator('.sidebar-section-title')).toHaveText('ارتباط');
+
+    await languageSelect.selectOption('en');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    await expect(page.locator('html')).toHaveAttribute('dir', 'ltr');
+    await expect(page).toHaveURL(/#about$/);
+    await expect(page.getByRole('tab', { name: 'About' })).toBeVisible();
+  });
+
   test('applies project filters', async ({ page }) => {
     await page.goto('/#portfolio', { waitUntil: 'domcontentloaded' });
 

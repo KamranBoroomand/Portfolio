@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+>
   <url>
     <loc>https://kamranboroomand.ir/</loc>
-    <lastmod>2026-02-09</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kamranboroomand.ir/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kamranboroomand.ir/?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="fa" href="https://kamranboroomand.ir/?lang=fa" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kamranboroomand.ir/" />
+    <lastmod>2026-02-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://kamranboroomand.ir/?lang=ru</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kamranboroomand.ir/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kamranboroomand.ir/?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="fa" href="https://kamranboroomand.ir/?lang=fa" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kamranboroomand.ir/" />
+    <lastmod>2026-02-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://kamranboroomand.ir/?lang=fa</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kamranboroomand.ir/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kamranboroomand.ir/?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="fa" href="https://kamranboroomand.ir/?lang=fa" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kamranboroomand.ir/" />
+    <lastmod>2026-02-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 </urlset>

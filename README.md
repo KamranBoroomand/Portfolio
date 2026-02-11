@@ -5,10 +5,11 @@ Static portfolio website for [kamranboroomand.ir](https://kamranboroomand.ir), b
 ## Highlights
 
 - Single-page app flow with hash-based tabs (`About`, `Resume`, `Projects`, `Settings`).
+- Built-in language switcher in the topbar (`English`, `Русский`, `فارسی`) with persistent preference and RTL support for Persian.
 - Data-driven project cards loaded from `assets/data/projects.json`.
 - Interactive effects layer (React + OGL) mounted separately from main content.
 - Accessibility-first interactions: keyboard tab navigation, skip link, ARIA-aware controls.
-- Security and SEO baseline: CSP, Open Graph/Twitter metadata, JSON-LD schema, `robots.txt`, and `sitemap.xml`.
+- Security and SEO baseline: CSP, Open Graph/Twitter metadata, JSON-LD schema, hreflang alternates, `robots.txt`, and `sitemap.xml`.
 - Custom `404.html` with recovery links.
 
 ## Stack
@@ -65,6 +66,7 @@ Open:
 - Content/metadata: `index.html`
 - Main styling: `assets/css/style.css`
 - Interaction logic (tabs, filters, preferences, analytics pixel): `assets/js/script.js`
+- Localization catalog: `assets/data/translations.json`
 - Effect source: `src/react/effects-entry.tsx`
 - Project data: `assets/data/projects.json`
 - Playwright config: `playwright.config.mjs`

@@ -3,21 +3,207 @@
 const STORAGE_KEYS = {
   forceReducedMotion: 'kb_force_reduced_motion',
   effectsIntensity: 'kb_effects_intensity',
-  analyticsOptOut: 'kb_analytics_opt_out'
+  analyticsOptOut: 'kb_analytics_opt_out',
+  language: 'kb_language'
 };
 
 const EVENTS = {
   effectsSettings: 'kb-effects-settings',
-  virtualPageView: 'kb:virtual-pageview'
+  virtualPageView: 'kb:virtual-pageview',
+  languageChanged: 'kb:language-changed'
 };
+
+const SUPPORTED_LANGUAGES = ['en', 'ru', 'fa'];
+const DEFAULT_LANGUAGE = 'en';
+
+const I18N_SOURCE = './assets/data/translations.json';
+let TRANSLATIONS = Object.freeze({ [DEFAULT_LANGUAGE]: {} });
+let hasLoadedTranslations = false;
+
+let currentLanguage = DEFAULT_LANGUAGE;
+let cachedProjects = [];
+let renderProjectsForCurrentLanguage = null;
+let activeProjectFilter = 'all';
+let applyProjectFilterRef = null;
+let refreshProjectFilterLabelsRef = null;
 
 function clampNumber(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
 
 function getCurrentPath() {
-  const { pathname, hash } = window.location;
-  return `${pathname}${hash || ''}`;
+  const { pathname, search, hash } = window.location;
+  return `${pathname}${search || ''}${hash || ''}`;
+}
+
+function normalizeLanguage(language) {
+  const normalized = String(language || '')
+    .trim()
+    .toLowerCase();
+  return SUPPORTED_LANGUAGES.includes(normalized) ? normalized : null;
+}
+
+async function ensureTranslationsLoaded() {
+  if (hasLoadedTranslations) {
+    return;
+  }
+
+  try {
+    const response = await fetch(I18N_SOURCE, { cache: 'no-store' });
+    if (!response.ok) {
+      throw new Error(`Failed to load translations (${response.status})`);
+    }
+
+    const payload = await response.json();
+    if (payload && typeof payload === 'object' && !Array.isArray(payload)) {
+      TRANSLATIONS = payload;
+      hasLoadedTranslations = true;
+      return;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
+  hasLoadedTranslations = true;
+}
+
+function getTranslation(locale, key) {
+  return TRANSLATIONS[locale]?.[key] || TRANSLATIONS[DEFAULT_LANGUAGE]?.[key] || '';
+}
+
+function formatTemplate(template, values) {
+  return String(template || '').replace(/\{(\w+)\}/g, (_, name) => {
+    return Object.prototype.hasOwnProperty.call(values, name) ? String(values[name]) : '';
+  });
+}
+
+function applyTextTranslations(locale) {
+  const elements = Array.from(document.querySelectorAll('[data-i18n]'));
+  elements.forEach((element) => {
+    const key = element.dataset.i18n;
+    if (!key) {
+      return;
+    }
+    const value = getTranslation(locale, key);
+    if (value) {
+      element.textContent = value;
+    }
+  });
+}
+
+function applyAttributeTranslations(locale) {
+  const elements = Array.from(document.querySelectorAll('[data-i18n-attr]'));
+  elements.forEach((element) => {
+    const definitions = String(element.dataset.i18nAttr || '')
+      .split(';')
+      .map((definition) => definition.trim())
+      .filter(Boolean);
+
+    definitions.forEach((definition) => {
+      const separatorIndex = definition.indexOf(':');
+      if (separatorIndex <= 0) {
+        return;
+      }
+
+      const attributeName = definition.slice(0, separatorIndex).trim();
+      const key = definition.slice(separatorIndex + 1).trim();
+      if (!attributeName || !key) {
+        return;
+      }
+
+      const value = getTranslation(locale, key);
+      if (value) {
+        element.setAttribute(attributeName, value);
+      }
+    });
+  });
+}
+
+function setDocumentLanguage(locale) {
+  document.documentElement.lang = locale;
+  document.documentElement.dir = locale === 'fa' ? 'rtl' : 'ltr';
+  document.body.dataset.lang = locale;
+}
+
+function updateLanguageInUrl(locale) {
+  const url = new URL(window.location.href);
+  if (locale === DEFAULT_LANGUAGE) {
+    url.searchParams.delete('lang');
+  } else {
+    url.searchParams.set('lang', locale);
+  }
+
+  const nextPath = `${url.pathname}${url.search}${url.hash}`;
+  const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  if (nextPath !== currentPath) {
+    history.replaceState(null, '', nextPath);
+  }
+}
+
+function syncLanguageSelectControl(locale) {
+  const select = document.querySelector('[data-language-select]');
+  if (select instanceof HTMLSelectElement) {
+    select.value = locale;
+  }
+}
+
+function applyLanguage(locale, options = {}) {
+  const { persist = true, updateUrl = true, reRenderProjects = true } = options;
+  const normalized = normalizeLanguage(locale) || DEFAULT_LANGUAGE;
+  currentLanguage = normalized;
+
+  if (persist) {
+    localStorage.setItem(STORAGE_KEYS.language, normalized);
+  }
+
+  if (updateUrl) {
+    updateLanguageInUrl(normalized);
+  }
+
+  setDocumentLanguage(normalized);
+  applyTextTranslations(normalized);
+  applyAttributeTranslations(normalized);
+  syncLanguageSelectControl(normalized);
+
+  if (reRenderProjects && typeof renderProjectsForCurrentLanguage === 'function') {
+    renderProjectsForCurrentLanguage();
+  }
+
+  if (typeof refreshProjectFilterLabelsRef === 'function') {
+    refreshProjectFilterLabelsRef();
+  }
+
+  if (typeof applyProjectFilterRef === 'function') {
+    applyProjectFilterRef(activeProjectFilter);
+  }
+
+  window.dispatchEvent(
+    new CustomEvent(EVENTS.languageChanged, {
+      detail: { language: normalized }
+    })
+  );
+}
+
+function getInitialLanguage() {
+  const fromUrl = normalizeLanguage(new URLSearchParams(window.location.search).get('lang'));
+  if (fromUrl) {
+    return fromUrl;
+  }
+
+  const fromStorage = normalizeLanguage(localStorage.getItem(STORAGE_KEYS.language));
+  return fromStorage || DEFAULT_LANGUAGE;
+}
+
+function initLanguageControls() {
+  const select = document.querySelector('[data-language-select]');
+  if (!(select instanceof HTMLSelectElement)) {
+    return;
+  }
+
+  select.value = currentLanguage;
+  select.addEventListener('change', () => {
+    applyLanguage(select.value, { persist: true, updateUrl: true, reRenderProjects: true });
+  });
 }
 
 function readStoredEffectsSettings() {
@@ -143,7 +329,8 @@ function initPrivacyAnalytics() {
       v: '1',
       event: 'pageview',
       path: normalizedPath,
-      ts: String(Date.now())
+      ts: String(Date.now()),
+      lang: currentLanguage
     });
 
     if (document.referrer) {
@@ -161,13 +348,21 @@ function initPrivacyAnalytics() {
     const customEvent = /** @type {CustomEvent} */ (event);
     trackPageView(customEvent.detail?.path);
   });
+  window.addEventListener(EVENTS.languageChanged, () => {
+    trackPageView(getCurrentPath());
+  });
 
   trackPageView(getCurrentPath());
 }
 
 async function initializePage() {
+  await ensureTranslationsLoaded();
+  const initialLanguage = getInitialLanguage();
+  applyLanguage(initialLanguage, { persist: false, updateUrl: true, reRenderProjects: false });
+
   document.body.classList.add('is-loaded');
 
+  initLanguageControls();
   initEffectPreferences();
   initPrivacyAnalytics();
   initTabs();
@@ -233,7 +428,7 @@ function initTabs() {
 
     window.dispatchEvent(
       new CustomEvent(EVENTS.virtualPageView, {
-        detail: { path: `${window.location.pathname}#${targetKey}` }
+        detail: { path: `${window.location.pathname}${window.location.search}#${targetKey}` }
       })
     );
   }
@@ -287,6 +482,21 @@ function initTabs() {
   }
 }
 
+function getLocalizedProjectField(project, locale, fieldKey, fallback) {
+  const localePack = project?.i18n?.[locale];
+  const localizedValue = localePack && typeof localePack === 'object' ? localePack[fieldKey] : null;
+  if (typeof localizedValue === 'string' && localizedValue.trim()) {
+    return localizedValue.trim();
+  }
+
+  const baseValue = project?.[fieldKey];
+  if (typeof baseValue === 'string' && baseValue.trim()) {
+    return baseValue.trim();
+  }
+
+  return String(fallback || '').trim();
+}
+
 async function initProjects() {
   const projectList = document.querySelector('[data-project-list]');
   if (!(projectList instanceof HTMLUListElement)) {
@@ -324,17 +534,42 @@ async function initProjects() {
       .join(', ');
   }
 
-  function createProjectItem(project) {
-    const title = String(project.title || 'Untitled Project').trim();
+  function createProjectItem(project, locale) {
+    const title = getLocalizedProjectField(
+      project,
+      locale,
+      'title',
+      getTranslation(locale, 'projects.untitled')
+    );
     const categories = normalizeFilterList(project.filters);
     const previewUrl = String(project.previewUrl || '#').trim();
     const previewDomain = String(project.previewDomain || '').trim();
-    const previewAriaLabel = String(project.previewAriaLabel || `Open ${title} website`).trim();
-    const categoryLabel = String(project.categoryLabel || 'Project').trim();
-    const description = String(project.description || '').trim();
+    const previewAriaLabel = getLocalizedProjectField(
+      project,
+      locale,
+      'previewAriaLabel',
+      formatTemplate(getTranslation(locale, 'projects.openWebsiteTemplate'), { title })
+    );
+    const categoryLabel = getLocalizedProjectField(
+      project,
+      locale,
+      'categoryLabel',
+      getTranslation(locale, 'projects.defaultCategory')
+    );
+    const description = getLocalizedProjectField(project, locale, 'description', '');
     const repoUrl = String(project.repoUrl || '#').trim();
-    const repoLabel = String(project.repoLabel || 'View GitHub Repo').trim();
-    const primaryActionLabel = String(project.primaryActionLabel || 'Open Live Website').trim();
+    const repoLabel = getLocalizedProjectField(
+      project,
+      locale,
+      'repoLabel',
+      getTranslation(locale, 'projects.viewRepo')
+    );
+    const primaryActionLabel = getLocalizedProjectField(
+      project,
+      locale,
+      'primaryActionLabel',
+      getTranslation(locale, 'projects.openLive')
+    );
     const imageConfig = project.image && typeof project.image === 'object' ? project.image : {};
 
     const listItem = document.createElement('li');
@@ -394,9 +629,13 @@ async function initProjects() {
       picture.append(webpSource);
     }
 
+    const localizedImageAlt =
+      (project?.i18n?.[locale] && String(project.i18n[locale].imageAlt || '').trim()) ||
+      String(imageConfig.alt || `${title} preview`).trim();
+
     const image = document.createElement('img');
     image.src = String(imageConfig.src || '').trim();
-    image.alt = String(imageConfig.alt || `${title} preview`).trim();
+    image.alt = localizedImageAlt;
     image.width = Number.parseInt(String(imageConfig.width || 1200), 10) || 1200;
     image.height = Number.parseInt(String(imageConfig.height || 800), 10) || 800;
     image.loading = 'lazy';
@@ -461,18 +700,31 @@ async function initProjects() {
 
     const title = document.createElement('h3');
     title.className = 'project-title';
-    title.textContent = 'Project data unavailable';
+    title.textContent = getTranslation(currentLanguage, 'projects.errorTitle');
 
     const description = document.createElement('p');
     description.className = 'project-description';
-    description.textContent =
-      'Please refresh the page. If the issue persists, check assets/data/projects.json.';
+    description.textContent = getTranslation(currentLanguage, 'projects.errorDescription');
 
     content.append(title, description);
     article.append(content);
     listItem.append(article);
     projectList.append(listItem);
   }
+
+  function renderProjects(projects) {
+    projectList.innerHTML = '';
+    projects.forEach((project) => {
+      projectList.append(createProjectItem(project, currentLanguage));
+    });
+  }
+
+  renderProjectsForCurrentLanguage = () => {
+    if (!cachedProjects.length) {
+      return;
+    }
+    renderProjects(cachedProjects);
+  };
 
   try {
     const response = await fetch(source, { cache: 'no-store' });
@@ -486,10 +738,8 @@ async function initProjects() {
       throw new Error('Project data file does not contain projects.');
     }
 
-    projectList.innerHTML = '';
-    projects.forEach((project) => {
-      projectList.append(createProjectItem(project));
-    });
+    cachedProjects = projects;
+    renderProjects(cachedProjects);
   } catch (error) {
     console.error(error);
     renderErrorState();
@@ -500,26 +750,31 @@ async function initProjects() {
 
 function initProjectFilters() {
   const filterButtons = Array.from(document.querySelectorAll('[data-filter-btn]'));
-  const filterItems = Array.from(document.querySelectorAll('[data-filter-item]'));
   const selectBox = document.querySelector('.filter-select-box');
   const selectTrigger = document.querySelector('[data-select]');
   const selectValue = document.querySelector('[data-select-value]');
   const selectItems = Array.from(document.querySelectorAll('[data-select-item]'));
 
-  if (!filterItems.length) {
+  if (!filterButtons.length) {
     return;
   }
 
-  const labelByFilter = {
-    all: 'All',
-    security: 'Security',
-    automation: 'Automation'
-  };
+  function getFilterItems() {
+    return Array.from(document.querySelectorAll('[data-filter-item]'));
+  }
+
+  function getFilterLabel(filter) {
+    return (
+      getTranslation(currentLanguage, `filters.${filter}`) ||
+      getTranslation(currentLanguage, 'filters.all')
+    );
+  }
 
   function applyFilter(filter) {
     const normalized = (filter || 'all').toLowerCase();
+    activeProjectFilter = normalized;
 
-    filterItems.forEach((item) => {
+    getFilterItems().forEach((item) => {
       const categories = (item.dataset.category || '')
         .split(',')
         .map((value) => value.trim().toLowerCase())
@@ -542,9 +797,18 @@ function initProjectFilters() {
     });
 
     if (selectValue) {
-      selectValue.textContent = labelByFilter[normalized] || 'All';
+      selectValue.textContent = getFilterLabel(normalized);
     }
   }
+
+  function refreshLabels() {
+    if (selectValue) {
+      selectValue.textContent = getFilterLabel(activeProjectFilter);
+    }
+  }
+
+  applyProjectFilterRef = applyFilter;
+  refreshProjectFilterLabelsRef = refreshLabels;
 
   filterButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -614,5 +878,5 @@ function initProjectFilters() {
     });
   }
 
-  applyFilter('all');
+  applyFilter(activeProjectFilter);
 }

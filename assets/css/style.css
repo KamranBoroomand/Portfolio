@@ -35,6 +35,15 @@
   --font-signature: 'Cinema Sunday', 'Lemonade Display', cursive;
 }
 
+html[lang='fa'] {
+  --font-title: 'Tahoma', 'Arial', sans-serif;
+  --font-body: 'Tahoma', 'Arial', sans-serif;
+  --font-nav: 'Tahoma', 'Arial', sans-serif;
+  --font-glitch: 'Tahoma', 'Arial', sans-serif;
+  --font-callout: 'Tahoma', 'Arial', sans-serif;
+  --font-signature: 'Tahoma', 'Arial', sans-serif;
+}
+
 *,
 *::before,
 *::after {
@@ -393,10 +402,18 @@ address {
   padding: 0.55rem;
 }
 
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .navbar-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
+  align-items: center;
+  flex: 1 1 auto;
 }
 
 .navbar-link {
@@ -406,7 +423,7 @@ address {
   border-radius: 12px;
   padding: 0.58rem 0.9rem;
   font-family: var(--font-nav);
-  font-size: 0.92rem;
+  font-size: 0.96rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   cursor: pointer;
@@ -420,6 +437,39 @@ address {
   color: #111827;
   border-color: var(--accent-soft-2);
   background: linear-gradient(120deg, rgba(246, 179, 29, 0.85), rgba(255, 210, 96, 0.9));
+}
+
+.language-switcher {
+  margin-inline-start: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-inline-start: 0.3rem;
+}
+
+.language-label {
+  margin: 0;
+  font-family: var(--font-glitch);
+  font-size: 0.67rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-2);
+}
+
+.language-select {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--text-1);
+  min-width: 120px;
+  padding: 0.46rem 0.58rem;
+  font-family: var(--font-nav);
+  font-size: 0.84rem;
+}
+
+.language-select:focus-visible {
+  outline: 3px solid rgba(246, 179, 29, 0.5);
+  outline-offset: 2px;
 }
 
 .main-content > article {
@@ -783,6 +833,8 @@ address {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  direction: ltr;
+  unicode-bidi: plaintext;
 }
 
 .project-img::after {
@@ -951,6 +1003,16 @@ a:focus-visible {
 
   .name {
     font-size: 1.45rem;
+  }
+}
+
+@media (max-width: 920px) {
+  .language-label {
+    display: none;
+  }
+
+  .language-select {
+    min-width: 98px;
   }
 }
 
