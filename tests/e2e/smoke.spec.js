@@ -1,6 +1,18 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Portfolio Smoke Flow', () => {
+  async function applyProjectFilter(page, filterName) {
+    const desktopFilterButton = page.locator(`[data-filter-btn][data-filter="${filterName}"]`);
+    if (await desktopFilterButton.isVisible()) {
+      await desktopFilterButton.click();
+      return;
+    }
+
+    const mobileSelectTrigger = page.locator('[data-select]');
+    await mobileSelectTrigger.click();
+    await page.locator(`[data-select-item][data-filter="${filterName}"]`).click();
+  }
+
   test('switches between tabs and syncs URL hash', async ({ page }) => {
     await page.goto('/');
 
@@ -35,17 +47,17 @@ test.describe('Portfolio Smoke Flow', () => {
 
     await expect(visibleProjectItems).toHaveCount(3);
 
-    await page.getByRole('tab', { name: 'Security' }).click();
+    await applyProjectFilter(page, 'security');
     await expect(visibleProjectItems).toHaveCount(1);
     await expect(page.locator('.project-item:not([hidden]) .project-title')).toHaveText(['NullID']);
 
-    await page.getByRole('tab', { name: 'Automation' }).click();
+    await applyProjectFilter(page, 'automation');
     await expect(visibleProjectItems).toHaveCount(1);
     await expect(page.locator('.project-item:not([hidden]) .project-title')).toHaveText([
       'NullCal'
     ]);
 
-    await page.getByRole('tab', { name: 'All' }).click();
+    await applyProjectFilter(page, 'all');
     await expect(visibleProjectItems).toHaveCount(3);
   });
 

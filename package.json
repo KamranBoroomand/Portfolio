@@ -6,14 +6,21 @@
     "build:effects": "esbuild src/react/effects-entry.tsx --bundle --format=iife --target=es2018 --outfile=assets/js/effects.bundle.js",
     "watch:effects": "esbuild src/react/effects-entry.tsx --bundle --format=iife --target=es2018 --sourcemap --outfile=assets/js/effects.bundle.js --watch",
     "serve": "http-server . -a 127.0.0.1 -p 4173 -c-1",
-    "serve:test": "http-server . -a 127.0.0.1 -p 4173 -c-1 --silent",
+    "serve:test": "http-server . -a 127.0.0.1 -p 4273 -c-1 --silent",
     "dev": "concurrently -k -n WATCH,SERVE -c yellow,cyan \"npm:watch:effects\" \"npm:serve\"",
     "lint": "eslint assets/js/**/*.js scripts/**/*.mjs tests/e2e/**/*.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test:e2e": "playwright test",
-    "check": "npm run build && npm run lint && npm run format:check && npm run test:e2e",
-    "optimize:images": "node scripts/optimize-images.mjs"
+    "e2e": "playwright test",
+    "test:e2e": "playwright test tests/e2e/smoke.spec.js",
+    "test:e2e:matrix": "PW_MATRIX=1 playwright test tests/e2e/smoke.spec.js",
+    "test:visual": "playwright test tests/e2e/visual.spec.js",
+    "test:a11y": "playwright test tests/e2e/accessibility.spec.js",
+    "perf:check": "node scripts/check-budgets.mjs",
+    "check": "npm run build && npm run lint && npm run format:check && npm run perf:check && npm run test:e2e && npm run test:a11y",
+    "quality:extended": "npm run test:e2e:matrix && npm run test:visual",
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "images:responsive": "node scripts/generate-responsive-images.mjs"
   },
   "dependencies": {
     "motion": "^12.23.24",
@@ -22,6 +29,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.1",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.58.2",
     "concurrently": "^9.2.1",

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; form-action 'self'; upgrade-insecure-requests"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; form-action 'self'"
     />
     <title>Kamran Boroomand | Linux System Administrator</title>
 
@@ -66,20 +66,41 @@
     <script type="application/ld+json" src="./assets/data/person.schema.jsonld"></script>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <div id="effects-root"></div>
 
-    <main class="layout">
+    <main id="main-content" class="layout">
       <aside class="sidebar card" data-sidebar>
         <div class="sidebar-info">
           <figure class="avatar-box">
-            <img
-              src="./assets/images/my-avatar.PNG"
-              alt="Portrait of Kamran Boroomand"
-              width="512"
-              height="512"
-              loading="eager"
-              decoding="async"
-            />
+            <picture>
+              <source
+                type="image/avif"
+                srcset="
+                  ./assets/images/responsive/my-avatar-128.avif 128w,
+                  ./assets/images/responsive/my-avatar-256.avif 256w,
+                  ./assets/images/responsive/my-avatar-512.avif 512w
+                "
+                sizes="(max-width: 760px) 96px, 122px"
+              />
+              <source
+                type="image/webp"
+                srcset="
+                  ./assets/images/responsive/my-avatar-128.webp 128w,
+                  ./assets/images/responsive/my-avatar-256.webp 256w,
+                  ./assets/images/responsive/my-avatar-512.webp 512w
+                "
+                sizes="(max-width: 760px) 96px, 122px"
+              />
+              <img
+                src="./assets/images/my-avatar.PNG"
+                alt="Portrait of Kamran Boroomand"
+                width="512"
+                height="512"
+                loading="eager"
+                decoding="async"
+              />
+            </picture>
           </figure>
 
           <div class="info-content">
@@ -183,9 +204,10 @@
       <div class="main-content">
         <nav class="navbar card" aria-label="Primary">
           <ul class="navbar-list" role="tablist">
-            <li class="navbar-item">
+            <li class="navbar-item" role="presentation">
               <button
                 class="navbar-link active"
+                type="button"
                 data-nav-link
                 data-target="about"
                 role="tab"
@@ -195,9 +217,10 @@
                 About
               </button>
             </li>
-            <li class="navbar-item">
+            <li class="navbar-item" role="presentation">
               <button
                 class="navbar-link"
+                type="button"
                 data-nav-link
                 data-target="resume"
                 role="tab"
@@ -207,9 +230,10 @@
                 Resume
               </button>
             </li>
-            <li class="navbar-item">
+            <li class="navbar-item" role="presentation">
               <button
                 class="navbar-link"
+                type="button"
                 data-nav-link
                 data-target="portfolio"
                 role="tab"
@@ -426,25 +450,25 @@
           </header>
 
           <section class="projects">
-            <ul class="filter-list" role="tablist" aria-label="Project categories">
+            <ul class="filter-list" aria-label="Project categories">
               <li class="filter-item">
                 <button
                   class="active"
+                  type="button"
                   data-filter-btn
                   data-filter="all"
-                  role="tab"
-                  aria-selected="true"
+                  aria-pressed="true"
                 >
                   All
                 </button>
               </li>
               <li class="filter-item">
-                <button data-filter-btn data-filter="security" role="tab" aria-selected="false">
+                <button type="button" data-filter-btn data-filter="security" aria-pressed="false">
                   Security
                 </button>
               </li>
               <li class="filter-item">
-                <button data-filter-btn data-filter="automation" role="tab" aria-selected="false">
+                <button type="button" data-filter-btn data-filter="automation" aria-pressed="false">
                   Automation
                 </button>
               </li>
@@ -465,13 +489,17 @@
 
               <ul class="select-list" role="listbox">
                 <li class="select-item">
-                  <button data-select-item data-filter="all" role="option">All</button>
+                  <button type="button" data-select-item data-filter="all" role="option">
+                    All
+                  </button>
                 </li>
                 <li class="select-item">
-                  <button data-select-item data-filter="security" role="option">Security</button>
+                  <button type="button" data-select-item data-filter="security" role="option">
+                    Security
+                  </button>
                 </li>
                 <li class="select-item">
-                  <button data-select-item data-filter="automation" role="option">
+                  <button type="button" data-select-item data-filter="automation" role="option">
                     Automation
                   </button>
                 </li>
@@ -493,14 +521,34 @@
                         <span class="preview-dots"> <i></i><i></i><i></i> </span>
                         <span class="preview-domain">nullid.kamranboroomand.ir</span>
                       </div>
-                      <img
-                        src="./assets/images/nullid-site-preview.png"
-                        width="1200"
-                        height="800"
-                        alt="Live preview of NullID website"
-                        loading="lazy"
-                        decoding="async"
-                      />
+                      <picture>
+                        <source
+                          type="image/avif"
+                          srcset="
+                            ./assets/images/responsive/nullid-site-preview-480.avif   480w,
+                            ./assets/images/responsive/nullid-site-preview-800.avif   800w,
+                            ./assets/images/responsive/nullid-site-preview-1200.avif 1200w
+                          "
+                          sizes="(max-width: 759px) 100vw, 50vw"
+                        />
+                        <source
+                          type="image/webp"
+                          srcset="
+                            ./assets/images/responsive/nullid-site-preview-480.webp   480w,
+                            ./assets/images/responsive/nullid-site-preview-800.webp   800w,
+                            ./assets/images/responsive/nullid-site-preview-1200.webp 1200w
+                          "
+                          sizes="(max-width: 759px) 100vw, 50vw"
+                        />
+                        <img
+                          src="./assets/images/nullid-site-preview.png"
+                          width="1200"
+                          height="800"
+                          alt="Live preview of NullID website"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </picture>
                     </figure>
                   </a>
                   <div class="project-content">
@@ -544,14 +592,34 @@
                         <span class="preview-dots"> <i></i><i></i><i></i> </span>
                         <span class="preview-domain">nullcal.kamranboroomand.ir</span>
                       </div>
-                      <img
-                        src="./assets/images/nullcal-site-preview.png"
-                        width="1200"
-                        height="800"
-                        alt="Live preview of NullCal website"
-                        loading="lazy"
-                        decoding="async"
-                      />
+                      <picture>
+                        <source
+                          type="image/avif"
+                          srcset="
+                            ./assets/images/responsive/nullcal-site-preview-480.avif   480w,
+                            ./assets/images/responsive/nullcal-site-preview-800.avif   800w,
+                            ./assets/images/responsive/nullcal-site-preview-1200.avif 1200w
+                          "
+                          sizes="(max-width: 759px) 100vw, 50vw"
+                        />
+                        <source
+                          type="image/webp"
+                          srcset="
+                            ./assets/images/responsive/nullcal-site-preview-480.webp   480w,
+                            ./assets/images/responsive/nullcal-site-preview-800.webp   800w,
+                            ./assets/images/responsive/nullcal-site-preview-1200.webp 1200w
+                          "
+                          sizes="(max-width: 759px) 100vw, 50vw"
+                        />
+                        <img
+                          src="./assets/images/nullcal-site-preview.png"
+                          width="1200"
+                          height="800"
+                          alt="Live preview of NullCal website"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </picture>
                     </figure>
                   </a>
                   <div class="project-content">
@@ -595,14 +663,34 @@
                         <span class="preview-dots"> <i></i><i></i><i></i> </span>
                         <span class="preview-domain">pacman.kamranboroomand.ir</span>
                       </div>
-                      <img
-                        src="./assets/images/pacman-site-preview.png"
-                        width="1200"
-                        height="800"
-                        alt="Live preview of PacMan website"
-                        loading="lazy"
-                        decoding="async"
-                      />
+                      <picture>
+                        <source
+                          type="image/avif"
+                          srcset="
+                            ./assets/images/responsive/pacman-site-preview-480.avif   480w,
+                            ./assets/images/responsive/pacman-site-preview-800.avif   800w,
+                            ./assets/images/responsive/pacman-site-preview-1200.avif 1200w
+                          "
+                          sizes="(max-width: 759px) 100vw, 50vw"
+                        />
+                        <source
+                          type="image/webp"
+                          srcset="
+                            ./assets/images/responsive/pacman-site-preview-480.webp   480w,
+                            ./assets/images/responsive/pacman-site-preview-800.webp   800w,
+                            ./assets/images/responsive/pacman-site-preview-1200.webp 1200w
+                          "
+                          sizes="(max-width: 759px) 100vw, 50vw"
+                        />
+                        <img
+                          src="./assets/images/pacman-site-preview.png"
+                          width="1200"
+                          height="800"
+                          alt="Live preview of PacMan website"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </picture>
                     </figure>
                   </a>
                   <div class="project-content">

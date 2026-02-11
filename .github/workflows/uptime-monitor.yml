@@ -1,0 +1,103 @@
+name: Uptime Monitor
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run uptime checks
+        id: uptime
+        continue-on-error: true
+        run: node scripts/monitor-uptime.mjs
+
+      - name: Open or update alert issue
+        if: steps.uptime.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = 'Uptime Alert: kamranboroomand.ir is unreachable';
+            const body = [
+              'Automated uptime monitor detected a failure.',
+              '',
+              `Time: ${new Date().toISOString()}`,
+              `Run: https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              '',
+              'This issue will be auto-closed when checks recover.'
+            ].join('\n');
+
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'uptime-alert'
+            });
+
+            const existing = issues.find((issue) => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                body
+              });
+            } else {
+              await github.rest.issues.createIssue({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+                labels: ['uptime-alert']
+              });
+            }
+
+      - name: Close alert issue on recovery
+        if: steps.uptime.outcome == 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = 'Uptime Alert: kamranboroomand.ir is unreachable';
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'uptime-alert'
+            });
+
+            const existing = issues.find((issue) => issue.title === title);
+            if (!existing) {
+              return;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: existing.number,
+              body: `Recovered at ${new Date().toISOString()} in run https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
+
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: existing.number,
+              state: 'closed'
+            });
+
+      - name: Fail workflow when checks fail
+        if: steps.uptime.outcome == 'failure'
+        run: exit 1

@@ -60,6 +60,25 @@ body.is-loaded {
   opacity: 1;
 }
 
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 30;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0f1a2b;
+  padding: 0.5rem 0.7rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.skip-link:focus-visible {
+  top: 1rem;
+}
+
 #effects-root {
   position: fixed;
   inset: 0;
@@ -712,6 +731,12 @@ address {
   display: block;
 }
 
+.project-img picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .project-content {
   padding: 0.86rem;
 }
@@ -802,11 +827,12 @@ address {
 .site-footer {
   padding: 0.4rem 0;
   text-align: center;
+  color: #d8e1f2;
 }
 
 .last-updated {
   margin: 0;
-  color: var(--text-2);
+  color: currentColor;
   font-size: 0.8rem;
 }
 

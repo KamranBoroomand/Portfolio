@@ -1,11 +1,17 @@
 'use strict';
 
-document.addEventListener('DOMContentLoaded', () => {
+function initializePage() {
   document.body.classList.add('is-loaded');
 
   initTabs();
   initProjectFilters();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializePage, { once: true });
+} else {
+  initializePage();
+}
 
 function initTabs() {
   const navLinks = Array.from(document.querySelectorAll('[data-nav-link]'));
@@ -56,6 +62,34 @@ function initTabs() {
     });
   });
 
+  navLinks.forEach((link, index) => {
+    link.addEventListener('keydown', (event) => {
+      const { key } = event;
+      const lastIndex = navLinks.length - 1;
+      let nextIndex;
+
+      if (key === 'ArrowRight') {
+        nextIndex = index === lastIndex ? 0 : index + 1;
+      } else if (key === 'ArrowLeft') {
+        nextIndex = index === 0 ? lastIndex : index - 1;
+      } else if (key === 'Home') {
+        nextIndex = 0;
+      } else if (key === 'End') {
+        nextIndex = lastIndex;
+      } else if (key === 'Enter' || key === ' ') {
+        event.preventDefault();
+        link.click();
+        return;
+      } else {
+        return;
+      }
+
+      event.preventDefault();
+      navLinks[nextIndex].focus();
+      navLinks[nextIndex].click();
+    });
+  });
+
   const targetFromHash = window.location.hash.replace('#', '').trim().toLowerCase();
   if (targetFromHash && pageMap.has(targetFromHash)) {
     activatePage(targetFromHash, false);
@@ -103,7 +137,7 @@ function initProjectFilters() {
     filterButtons.forEach((button) => {
       const isActive = button.dataset.filter === normalized;
       button.classList.toggle('active', isActive);
-      button.setAttribute('aria-selected', String(isActive));
+      button.setAttribute('aria-pressed', String(isActive));
     });
 
     selectItems.forEach((item) => {
@@ -119,6 +153,34 @@ function initProjectFilters() {
   filterButtons.forEach((button) => {
     button.addEventListener('click', () => {
       applyFilter(button.dataset.filter);
+    });
+  });
+
+  filterButtons.forEach((button, index) => {
+    button.addEventListener('keydown', (event) => {
+      const { key } = event;
+      const lastIndex = filterButtons.length - 1;
+      let nextIndex;
+
+      if (key === 'ArrowRight') {
+        nextIndex = index === lastIndex ? 0 : index + 1;
+      } else if (key === 'ArrowLeft') {
+        nextIndex = index === 0 ? lastIndex : index - 1;
+      } else if (key === 'Home') {
+        nextIndex = 0;
+      } else if (key === 'End') {
+        nextIndex = lastIndex;
+      } else if (key === 'Enter' || key === ' ') {
+        event.preventDefault();
+        button.click();
+        return;
+      } else {
+        return;
+      }
+
+      event.preventDefault();
+      filterButtons[nextIndex].focus();
+      filterButtons[nextIndex].click();
     });
   });
 
