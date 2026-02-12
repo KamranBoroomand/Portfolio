@@ -7,6 +7,12 @@ Static portfolio website for [kamranboroomand.ir](https://kamranboroomand.ir), b
 - Single-page app flow with hash-based tabs (`About`, `Resume`, `Projects`, `Settings`).
 - Built-in language switcher in the topbar (`English`, `Русский`, `فارسی`) with persistent preference and RTL support for Persian.
 - Data-driven project cards loaded from `assets/data/projects.json`.
+- Dedicated project case-study pages with per-project SEO/Open Graph metadata:
+  - `/projects/nullid/`
+  - `/projects/nullcal/`
+  - `/projects/pacman/`
+- CTA strips across tabs, testimonials, changelog section, and production monitoring links.
+- ATS-friendly downloadable one-page PDF resume.
 - Interactive effects layer (React + OGL) mounted separately from main content.
 - Accessibility-first interactions: keyboard tab navigation, skip link, ARIA-aware controls.
 - Security and SEO baseline: CSP, Open Graph/Twitter metadata, JSON-LD schema, hreflang alternates, `robots.txt`, and `sitemap.xml`.
@@ -26,9 +32,11 @@ Static portfolio website for [kamranboroomand.ir](https://kamranboroomand.ir), b
 .
 ├── index.html
 ├── 404.html
+├── projects/
 ├── assets/
 │   ├── css/
 │   ├── data/
+│   ├── docs/
 │   ├── images/
 │   └── js/
 ├── src/react/
@@ -65,10 +73,13 @@ Open:
 
 - Content/metadata: `index.html`
 - Main styling: `assets/css/style.css`
+- Case-study styling: `assets/css/project-page.css`
 - Interaction logic (tabs, filters, preferences, analytics pixel): `assets/js/script.js`
+- Case-study analytics logic: `assets/js/project-page.js`
 - Localization catalog: `assets/data/translations.json`
 - Effect source: `src/react/effects-entry.tsx`
 - Project data: `assets/data/projects.json`
+- ATS resume source + PDF: `assets/docs/kamran-boroomand-resume-ats.html`, `assets/docs/kamran-boroomand-resume-ats.pdf`
 - Playwright config: `playwright.config.mjs`
 - Lighthouse config: `.lighthouserc.json`
 
@@ -84,6 +95,7 @@ Open:
 - `npm run images:responsive` - generate responsive image variants.
 - `npm run build` - run `images:responsive` then `build:effects`.
 - `npm run optimize:images` - optimize source image assets.
+- `npm run resume:pdf` - generate `assets/docs/kamran-boroomand-resume-ats.pdf` from its HTML source.
 
 ### Quality
 

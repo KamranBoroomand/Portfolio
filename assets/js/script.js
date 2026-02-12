@@ -15,10 +15,12 @@ const EVENTS = {
 
 const SUPPORTED_LANGUAGES = ['en', 'ru', 'fa'];
 const DEFAULT_LANGUAGE = 'en';
-
 const I18N_SOURCE = './assets/data/translations.json';
+const EFFECTS_BUNDLE_SOURCE = './assets/js/effects.bundle.js';
+
 let TRANSLATIONS = Object.freeze({ [DEFAULT_LANGUAGE]: {} });
 let hasLoadedTranslations = false;
+let hasLoadedEffectsBundle = false;
 
 let currentLanguage = DEFAULT_LANGUAGE;
 let cachedProjects = [];
@@ -36,6 +38,13 @@ function getCurrentPath() {
   return `${pathname}${search || ''}${hash || ''}`;
 }
 
+function sanitizeAnalyticsValue(value, maxLength = 180) {
+  return String(value || '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, maxLength);
+}
+
 function normalizeLanguage(language) {
   const normalized = String(language || '')
     .trim()
@@ -49,7 +58,7 @@ async function ensureTranslationsLoaded() {
   }
 
   try {
-    const response = await fetch(I18N_SOURCE, { cache: 'no-store' });
+    const response = await fetch(I18N_SOURCE);
     if (!response.ok) {
       throw new Error(`Failed to load translations (${response.status})`);
     }
@@ -222,6 +231,43 @@ function resolveEffectiveMotionPreference(forceReducedMotion) {
   return forceReducedMotion || systemReducedMotion;
 }
 
+function shouldRenderEffects(settings) {
+  return (
+    !resolveEffectiveMotionPreference(settings.forceReducedMotion) && settings.intensity > 0.05
+  );
+}
+
+function scheduleIdleTask(task) {
+  if (typeof window.requestIdleCallback === 'function') {
+    window.requestIdleCallback(task, { timeout: 1500 });
+    return;
+  }
+  window.setTimeout(task, 350);
+}
+
+function ensureEffectsBundleLoaded(settings = readStoredEffectsSettings()) {
+  if (hasLoadedEffectsBundle || !shouldRenderEffects(settings)) {
+    return;
+  }
+
+  hasLoadedEffectsBundle = true;
+  scheduleIdleTask(() => {
+    const existingScript = document.querySelector('script[data-effects-bundle="1"]');
+    if (existingScript) {
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = EFFECTS_BUNDLE_SOURCE;
+    script.async = true;
+    script.dataset.effectsBundle = '1';
+    script.addEventListener('error', () => {
+      hasLoadedEffectsBundle = false;
+    });
+    document.body.append(script);
+  });
+}
+
 function publishEffectsSettings(settings) {
   const detail = {
     reducedMotion: resolveEffectiveMotionPreference(settings.forceReducedMotion),
@@ -240,7 +286,9 @@ function initEffectPreferences() {
   const intensityValue = document.querySelector('[data-effects-value]');
 
   if (!(reducedMotionToggle instanceof HTMLInputElement)) {
-    publishEffectsSettings(readStoredEffectsSettings());
+    const settings = readStoredEffectsSettings();
+    publishEffectsSettings(settings);
+    ensureEffectsBundleLoaded(settings);
     return;
   }
 
@@ -265,10 +313,12 @@ function initEffectPreferences() {
     localStorage.setItem(STORAGE_KEYS.effectsIntensity, nextSettings.intensity.toFixed(2));
     syncIntensityLabel(nextSettings.intensity);
     publishEffectsSettings(nextSettings);
+    ensureEffectsBundleLoaded(nextSettings);
   }
 
   syncIntensityLabel(settings.intensity);
   publishEffectsSettings(settings);
+  ensureEffectsBundleLoaded(settings);
 
   reducedMotionToggle.addEventListener('change', () => {
     persistAndPublish({
@@ -289,7 +339,9 @@ function initEffectPreferences() {
 
   const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const handleSystemMotionChange = () => {
-    publishEffectsSettings(readStoredEffectsSettings());
+    const latest = readStoredEffectsSettings();
+    publishEffectsSettings(latest);
+    ensureEffectsBundleLoaded(latest);
   };
 
   if (typeof mediaQuery.addEventListener === 'function') {
@@ -316,32 +368,141 @@ function initPrivacyAnalytics() {
     return;
   }
 
+  const queryPrefix = pixelPath.includes('?') ? '&' : '?';
   let lastTrackedPath = '';
+  let errorEventsSent = 0;
 
-  function trackPageView(path) {
-    const normalizedPath = (path || getCurrentPath()).trim();
-    if (!normalizedPath || normalizedPath === lastTrackedPath) {
+  function sendAnalyticsEvent(eventName, payload = {}) {
+    const event = sanitizeAnalyticsValue(eventName, 48);
+    if (!event) {
       return;
     }
-    lastTrackedPath = normalizedPath;
 
     const params = new URLSearchParams({
       v: '1',
-      event: 'pageview',
-      path: normalizedPath,
+      event,
+      path: sanitizeAnalyticsValue(payload.path || getCurrentPath(), 200),
       ts: String(Date.now()),
       lang: currentLanguage
     });
 
-    if (document.referrer) {
-      params.set('ref', document.referrer.slice(0, 300));
+    const label = sanitizeAnalyticsValue(payload.label, 140);
+    if (label) {
+      params.set('label', label);
     }
 
-    const queryPrefix = pixelPath.includes('?') ? '&' : '?';
+    const target = sanitizeAnalyticsValue(payload.target, 220);
+    if (target) {
+      params.set('target', target);
+    }
+
+    if (document.referrer) {
+      params.set('ref', sanitizeAnalyticsValue(document.referrer, 240));
+    }
+
     const image = new Image(1, 1);
     image.referrerPolicy = 'no-referrer';
     image.src = `${pixelPath}${queryPrefix}${params.toString()}`;
   }
+
+  function trackPageView(path) {
+    const normalizedPath = sanitizeAnalyticsValue(path || getCurrentPath(), 200);
+    if (!normalizedPath || normalizedPath === lastTrackedPath) {
+      return;
+    }
+
+    lastTrackedPath = normalizedPath;
+    sendAnalyticsEvent('pageview', { path: normalizedPath });
+  }
+
+  function trackClientError(eventName, message, source) {
+    if (errorEventsSent >= 8) {
+      return;
+    }
+
+    errorEventsSent += 1;
+    sendAnalyticsEvent(eventName, {
+      label: sanitizeAnalyticsValue(message, 140),
+      target: sanitizeAnalyticsValue(source, 220)
+    });
+  }
+
+  document.addEventListener(
+    'click',
+    (event) => {
+      if (!(event.target instanceof Element)) {
+        return;
+      }
+
+      const link = event.target.closest('a[href]');
+      if (!(link instanceof HTMLAnchorElement)) {
+        return;
+      }
+
+      const href = link.getAttribute('href');
+      if (!href) {
+        return;
+      }
+
+      const explicitEvent = sanitizeAnalyticsValue(link.dataset.trackEvent, 48);
+      const label = sanitizeAnalyticsValue(
+        link.dataset.trackLabel || link.textContent || link.getAttribute('aria-label'),
+        120
+      );
+
+      let resolvedTarget;
+      let isOutbound = false;
+
+      try {
+        const resolvedUrl = new URL(href, window.location.href);
+        resolvedTarget = resolvedUrl.href;
+        isOutbound =
+          resolvedUrl.origin !== window.location.origin ||
+          resolvedUrl.protocol === 'mailto:' ||
+          resolvedUrl.protocol === 'tel:';
+      } catch {
+        resolvedTarget = href;
+      }
+
+      if (explicitEvent) {
+        sendAnalyticsEvent(explicitEvent, {
+          path: getCurrentPath(),
+          label,
+          target: resolvedTarget
+        });
+        return;
+      }
+
+      if (isOutbound) {
+        sendAnalyticsEvent('outbound_click', {
+          path: getCurrentPath(),
+          label,
+          target: resolvedTarget
+        });
+      }
+    },
+    { capture: true }
+  );
+
+  window.addEventListener('error', (event) => {
+    trackClientError(
+      'client_error',
+      event.message || 'runtime error',
+      `${event.filename || 'inline'}:${event.lineno || 0}:${event.colno || 0}`
+    );
+  });
+
+  window.addEventListener('unhandledrejection', (event) => {
+    const reason = event.reason;
+    const message =
+      reason instanceof Error
+        ? reason.message
+        : typeof reason === 'string'
+          ? reason
+          : JSON.stringify(reason || 'unhandled rejection');
+
+    trackClientError('unhandled_rejection', message, 'promise');
+  });
 
   window.addEventListener('hashchange', () => trackPageView(getCurrentPath()));
   window.addEventListener(EVENTS.virtualPageView, (event) => {
@@ -353,38 +514,6 @@ function initPrivacyAnalytics() {
   });
 
   trackPageView(getCurrentPath());
-}
-
-async function initializePage() {
-  await ensureTranslationsLoaded();
-  const initialLanguage = getInitialLanguage();
-  applyLanguage(initialLanguage, { persist: false, updateUrl: true, reRenderProjects: false });
-
-  document.body.classList.add('is-loaded');
-
-  initLanguageControls();
-  initEffectPreferences();
-  initPrivacyAnalytics();
-  initTabs();
-  await initProjects();
-  initProjectFilters();
-}
-
-let hasInitialized = false;
-
-function bootstrapPage() {
-  if (hasInitialized) {
-    return;
-  }
-  hasInitialized = true;
-  void initializePage();
-}
-
-if (document.readyState === 'loading') {
-  bootstrapPage();
-  document.addEventListener('DOMContentLoaded', bootstrapPage, { once: true });
-} else {
-  bootstrapPage();
 }
 
 function initTabs() {
@@ -497,6 +626,16 @@ function getLocalizedProjectField(project, locale, fieldKey, fallback) {
   return String(fallback || '').trim();
 }
 
+function getLocalizedProjectArray(project, locale, fieldKey) {
+  const localePack = project?.i18n?.[locale];
+  const localizedValue = localePack && typeof localePack === 'object' ? localePack[fieldKey] : null;
+  if (Array.isArray(localizedValue)) {
+    return localizedValue;
+  }
+
+  return Array.isArray(project?.[fieldKey]) ? project[fieldKey] : [];
+}
+
 async function initProjects() {
   const projectList = document.querySelector('[data-project-list]');
   if (!(projectList instanceof HTMLUListElement)) {
@@ -570,6 +709,25 @@ async function initProjects() {
       'primaryActionLabel',
       getTranslation(locale, 'projects.openLive')
     );
+    const caseStudyLabel = getTranslation(locale, 'projects.caseStudy');
+    const caseStudyUrl = String(
+      project.caseStudyUrl || (project.id ? `/projects/${project.id}/` : '#')
+    ).trim();
+    const caseStudyAriaLabel = getLocalizedProjectField(
+      project,
+      locale,
+      'detailAriaLabel',
+      formatTemplate(getTranslation(locale, 'projects.caseStudyTemplate'), { title })
+    );
+    const impactMetrics = getLocalizedProjectArray(project, locale, 'impactMetrics')
+      .filter((metric) => metric && typeof metric === 'object')
+      .map((metric) => ({
+        value: sanitizeAnalyticsValue(metric.value, 40),
+        label: sanitizeAnalyticsValue(metric.label, 120)
+      }))
+      .filter((metric) => metric.value && metric.label)
+      .slice(0, 3);
+
     const imageConfig = project.image && typeof project.image === 'object' ? project.image : {};
 
     const listItem = document.createElement('li');
@@ -586,6 +744,8 @@ async function initProjects() {
     previewLink.target = '_blank';
     previewLink.rel = 'noopener noreferrer';
     previewLink.setAttribute('aria-label', previewAriaLabel);
+    previewLink.dataset.trackEvent = 'project_open_live_preview';
+    previewLink.dataset.trackLabel = title;
 
     const figure = document.createElement('figure');
     figure.className = 'project-img';
@@ -660,6 +820,36 @@ async function initProjects() {
     descriptionNode.className = 'project-description';
     descriptionNode.textContent = description;
 
+    content.append(titleNode, categoryNode, descriptionNode);
+
+    if (impactMetrics.length) {
+      const metricsTitle = document.createElement('p');
+      metricsTitle.className = 'project-metrics-title';
+      metricsTitle.textContent = getTranslation(locale, 'projects.impactHeading');
+
+      const metricsList = document.createElement('ul');
+      metricsList.className = 'project-metrics';
+      metricsList.setAttribute('aria-label', getTranslation(locale, 'projects.metricsAria'));
+
+      impactMetrics.forEach((metric) => {
+        const item = document.createElement('li');
+        item.className = 'project-metric-item';
+
+        const valueNode = document.createElement('span');
+        valueNode.className = 'project-metric-value';
+        valueNode.textContent = metric.value;
+
+        const labelNode = document.createElement('p');
+        labelNode.className = 'project-metric-label';
+        labelNode.textContent = metric.label;
+
+        item.append(valueNode, labelNode);
+        metricsList.append(item);
+      });
+
+      content.append(metricsTitle, metricsList);
+    }
+
     const actions = document.createElement('div');
     actions.className = 'project-actions';
 
@@ -669,6 +859,8 @@ async function initProjects() {
     primaryAction.target = '_blank';
     primaryAction.rel = 'noopener noreferrer';
     primaryAction.textContent = primaryActionLabel;
+    primaryAction.dataset.trackEvent = 'project_open_live';
+    primaryAction.dataset.trackLabel = title;
 
     const repoAction = document.createElement('a');
     repoAction.className = 'project-action';
@@ -676,9 +868,23 @@ async function initProjects() {
     repoAction.target = '_blank';
     repoAction.rel = 'noopener noreferrer';
     repoAction.textContent = repoLabel;
+    repoAction.dataset.trackEvent = 'project_open_repo';
+    repoAction.dataset.trackLabel = title;
 
     actions.append(primaryAction, repoAction);
-    content.append(titleNode, categoryNode, descriptionNode, actions);
+
+    if (caseStudyUrl && caseStudyUrl !== '#') {
+      const caseStudyAction = document.createElement('a');
+      caseStudyAction.className = 'project-action project-action-secondary';
+      caseStudyAction.href = caseStudyUrl;
+      caseStudyAction.textContent = caseStudyLabel;
+      caseStudyAction.setAttribute('aria-label', caseStudyAriaLabel);
+      caseStudyAction.dataset.trackEvent = 'project_case_study';
+      caseStudyAction.dataset.trackLabel = title;
+      actions.append(caseStudyAction);
+    }
+
+    content.append(actions);
 
     article.append(previewLink, content);
     listItem.append(article);
@@ -727,7 +933,7 @@ async function initProjects() {
   };
 
   try {
-    const response = await fetch(source, { cache: 'no-store' });
+    const response = await fetch(source);
     if (!response.ok) {
       throw new Error(`Failed to load project data (${response.status})`);
     }
@@ -879,4 +1085,35 @@ function initProjectFilters() {
   }
 
   applyFilter(activeProjectFilter);
+}
+
+async function initializePage() {
+  await ensureTranslationsLoaded();
+  const initialLanguage = getInitialLanguage();
+  applyLanguage(initialLanguage, { persist: false, updateUrl: true, reRenderProjects: false });
+
+  document.body.classList.add('is-loaded');
+
+  initLanguageControls();
+  initTabs();
+  initEffectPreferences();
+  initPrivacyAnalytics();
+  await initProjects();
+  initProjectFilters();
+}
+
+let hasInitialized = false;
+
+function bootstrapPage() {
+  if (hasInitialized) {
+    return;
+  }
+  hasInitialized = true;
+  void initializePage();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootstrapPage, { once: true });
+} else {
+  bootstrapPage();
 }

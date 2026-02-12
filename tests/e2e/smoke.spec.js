@@ -119,6 +119,30 @@ test.describe('Portfolio Smoke Flow', () => {
     await expect(visibleProjectItems).toHaveCount(3);
   });
 
+  test('links each project to a dedicated case study page', async ({ page }) => {
+    await page.goto('/#portfolio', { waitUntil: 'domcontentloaded' });
+
+    const projectsTab = page.getByRole('tab', { name: 'Projects' });
+    if (!(await projectsTab.getAttribute('aria-selected'))?.includes('true')) {
+      await projectsTab.click();
+    }
+
+    const caseStudies = [
+      { href: '/projects/nullid/', title: /NullID Case Study/ },
+      { href: '/projects/nullcal/', title: /NullCal Case Study/ },
+      { href: '/projects/pacman/', title: /PacMan Case Study/ }
+    ];
+
+    for (const item of caseStudies) {
+      const link = page.locator(`a[href="${item.href}"]`).first();
+      await expect(link).toBeVisible();
+      await link.click();
+      await expect(page).toHaveURL(item.href);
+      await expect(page).toHaveTitle(item.title);
+      await page.goBack();
+    }
+  });
+
   test('exposes key outbound links with hardened rel attributes', async ({ page }) => {
     await page.goto('/#portfolio', { waitUntil: 'domcontentloaded' });
 

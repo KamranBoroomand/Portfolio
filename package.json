@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "npm run images:responsive && npm run build:effects",
-    "build:effects": "esbuild src/react/effects-entry.tsx --bundle --format=iife --target=es2018 --outfile=assets/js/effects.bundle.js",
+    "build:effects": "esbuild src/react/effects-entry.tsx --bundle --format=iife --target=es2018 --minify --legal-comments=none --outfile=assets/js/effects.bundle.js",
     "watch:effects": "esbuild src/react/effects-entry.tsx --bundle --format=iife --target=es2018 --sourcemap --outfile=assets/js/effects.bundle.js --watch",
     "serve": "http-server . -a 127.0.0.1 -p 4173 -c-1",
     "serve:test": "http-server . -a 127.0.0.1 -p 4273 -c-1 --silent",
@@ -23,7 +23,8 @@
     "quality:extended": "npm run test:e2e:matrix && npm run test:visual && npm run test:e2e:easter-egg",
     "release:prepare": "npm run check && npm run quality:extended && npm run test:lighthouse",
     "optimize:images": "node scripts/optimize-images.mjs",
-    "images:responsive": "node scripts/generate-responsive-images.mjs"
+    "images:responsive": "node scripts/generate-responsive-images.mjs",
+    "resume:pdf": "node scripts/generate-resume-pdf.mjs"
   },
   "dependencies": {
     "motion": "^12.23.24",

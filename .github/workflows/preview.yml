@@ -34,6 +34,7 @@ jobs:
           path: |
             index.html
             404.html
+            projects
             assets
             robots.txt
             sitemap.xml

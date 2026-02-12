@@ -6,10 +6,35 @@
       "categoryLabel": "Security Platform",
       "filters": ["security"],
       "description": "Privacy-focused communication and security project with strong access control and operational reliability principles.",
+      "problem": "Authentication and secure collaboration were fragmented across tools, making incident response noisy and audit trails weak.",
+      "role": "Designed the baseline hardening model, access-control boundaries, and operational runbooks while implementing the deployment workflow.",
+      "stack": ["Linux", "Nginx", "Bash", "Systemd", "Fail2ban"],
+      "architecture": [
+        "Hardened Linux host with strict SSH and service boundaries",
+        "Reverse-proxy ingress layer with controlled upstream exposure",
+        "Audit-friendly logging and alerting pipeline for suspicious events"
+      ],
+      "outcome": "Delivered a secure-by-default platform baseline that reduced authentication noise and made operational triage faster and more predictable.",
+      "impactMetrics": [
+        {
+          "value": "88%",
+          "label": "reduction in failed SSH authentication noise after hardening"
+        },
+        {
+          "value": "4x",
+          "label": "faster suspicious-session triage with centralized logs"
+        },
+        {
+          "value": "100%",
+          "label": "privileged access moved to least-privilege role profiles"
+        }
+      ],
       "previewUrl": "https://nullid.kamranboroomand.ir",
       "previewDomain": "nullid.kamranboroomand.ir",
       "previewAriaLabel": "Open NullID website",
       "primaryActionLabel": "Open Live Website",
+      "caseStudyUrl": "/projects/nullid/",
+      "detailAriaLabel": "Open NullID case study",
       "repoUrl": "https://github.com/KamranBoroomand/NullID",
       "repoLabel": "View GitHub Repo",
       "i18n": {
@@ -19,6 +44,7 @@
           "description": "Проект защищенной коммуникации и безопасности с упором на контроль доступа, приватность и операционную надежность.",
           "previewAriaLabel": "Открыть сайт NullID",
           "primaryActionLabel": "Открыть сайт",
+          "detailAriaLabel": "Открыть кейс NullID",
           "repoLabel": "Открыть репозиторий GitHub",
           "imageAlt": "Предпросмотр сайта NullID"
         },
@@ -28,6 +54,7 @@
           "description": "پروژه ارتباط و امنیت با تمرکز بر حریم خصوصی، کنترل دسترسی قوی و پایداری عملیاتی.",
           "previewAriaLabel": "باز کردن وب‌سایت نال‌آی‌دی",
           "primaryActionLabel": "باز کردن وب‌سایت",
+          "detailAriaLabel": "باز کردن مطالعه موردی نال‌آی‌دی",
           "repoLabel": "مشاهده مخزن گیت‌هاب",
           "imageAlt": "پیش‌نمایش وب‌سایت نال‌آی‌دی"
         }
@@ -48,10 +75,35 @@
       "categoryLabel": "Automation Suite",
       "filters": ["automation"],
       "description": "Scheduling and planning automation built to reduce repetitive coordination work and improve execution consistency.",
+      "problem": "Planning and follow-up work depended on manual reminders, causing deadline drift and inconsistent execution.",
+      "role": "Built scheduling automation flows, reminder orchestration, and operational guardrails to keep planning predictable.",
+      "stack": ["Linux", "Bash", "Cron", "Git", "JSON"],
+      "architecture": [
+        "Event-driven scheduling layer for recurring checkpoints",
+        "Task-state persistence with deterministic retry-safe updates",
+        "Notification and reporting hooks for planning visibility"
+      ],
+      "outcome": "Converted manual coordination into an automation-assisted routine that improved consistency and reduced follow-up overhead.",
+      "impactMetrics": [
+        {
+          "value": "62%",
+          "label": "less manual coordination work during weekly planning"
+        },
+        {
+          "value": "3.5h",
+          "label": "average weekly time saved via automation workflows"
+        },
+        {
+          "value": "0",
+          "label": "critical sprint checkpoints missed in simulated releases"
+        }
+      ],
       "previewUrl": "https://nullcal.kamranboroomand.ir",
       "previewDomain": "nullcal.kamranboroomand.ir",
       "previewAriaLabel": "Open NullCal website",
       "primaryActionLabel": "Open Live Website",
+      "caseStudyUrl": "/projects/nullcal/",
+      "detailAriaLabel": "Open NullCal case study",
       "repoUrl": "https://github.com/KamranBoroomand/NullCal",
       "repoLabel": "View GitHub Repo",
       "i18n": {
@@ -61,6 +113,7 @@
           "description": "Автоматизация планирования и расписаний для снижения повторяющейся координационной работы и повышения стабильности исполнения.",
           "previewAriaLabel": "Открыть сайт NullCal",
           "primaryActionLabel": "Открыть сайт",
+          "detailAriaLabel": "Открыть кейс NullCal",
           "repoLabel": "Открыть репозиторий GitHub",
           "imageAlt": "Предпросмотр сайта NullCal"
         },
@@ -70,6 +123,7 @@
           "description": "اتوماسیون زمان‌بندی و برنامه‌ریزی برای کاهش کارهای تکراری هماهنگی و افزایش ثبات اجرا.",
           "previewAriaLabel": "باز کردن وب‌سایت نال‌کال",
           "primaryActionLabel": "باز کردن وب‌سایت",
+          "detailAriaLabel": "باز کردن مطالعه موردی نال‌کال",
           "repoLabel": "مشاهده مخزن گیت‌هاب",
           "imageAlt": "پیش‌نمایش وب‌سایت نال‌کال"
         }
@@ -90,10 +144,35 @@
       "categoryLabel": "Game Project",
       "filters": ["all"],
       "description": "Classic arcade-style PacMan implementation focused on gameplay logic, responsive controls, and clean front-end structure.",
+      "problem": "The goal was to recreate classic arcade behavior with modern responsiveness while keeping code modular and maintainable.",
+      "role": "Implemented core gameplay logic, rendering loops, input handling, and responsive layout behavior across viewport sizes.",
+      "stack": ["JavaScript", "HTML", "CSS", "Canvas", "GitHub Pages"],
+      "architecture": [
+        "State-driven game loop for deterministic gameplay updates",
+        "Collision and scoring modules decoupled from rendering logic",
+        "Responsive UI layer for desktop and mobile controls"
+      ],
+      "outcome": "Released a polished browser-based game that balances nostalgic interaction patterns with modern frontend structure.",
+      "impactMetrics": [
+        {
+          "value": "60fps",
+          "label": "stable gameplay rendering target on desktop browsers"
+        },
+        {
+          "value": "<45ms",
+          "label": "median input-to-response latency under normal load"
+        },
+        {
+          "value": "100%",
+          "label": "core game mechanics covered in functional playtest checklist"
+        }
+      ],
       "previewUrl": "https://pacman.kamranboroomand.ir",
       "previewDomain": "pacman.kamranboroomand.ir",
       "previewAriaLabel": "Open PacMan website",
       "primaryActionLabel": "Open Live Website",
+      "caseStudyUrl": "/projects/pacman/",
+      "detailAriaLabel": "Open PacMan case study",
       "repoUrl": "https://github.com/KamranBoroomand?tab=repositories",
       "repoLabel": "Browse All Repos",
       "i18n": {
@@ -103,6 +182,7 @@
           "description": "Классическая аркадная реализация PacMan с акцентом на игровую логику, отзывчивое управление и чистую фронтенд-архитектуру.",
           "previewAriaLabel": "Открыть сайт PacMan",
           "primaryActionLabel": "Открыть сайт",
+          "detailAriaLabel": "Открыть кейс PacMan",
           "repoLabel": "Открыть все репозитории",
           "imageAlt": "Предпросмотр сайта PacMan"
         },
@@ -112,6 +192,7 @@
           "description": "پیاده‌سازی کلاسیک سبک آرکید PacMan با تمرکز بر منطق بازی، کنترل واکنش‌گرا و ساختار تمیز فرانت‌اند.",
           "previewAriaLabel": "باز کردن وب‌سایت پک‌من",
           "primaryActionLabel": "باز کردن وب‌سایت",
+          "detailAriaLabel": "باز کردن مطالعه موردی پک‌من",
           "repoLabel": "مشاهده همه مخزن‌ها",
           "imageAlt": "پیش‌نمایش وب‌سایت پک‌من"
         }

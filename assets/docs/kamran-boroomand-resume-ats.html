@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kamran Boroomand - ATS Resume</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 0.44in;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #101828;
+        font-size: 11px;
+        line-height: 1.38;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 20px;
+        line-height: 1.15;
+        letter-spacing: 0.01em;
+      }
+
+      h2 {
+        margin: 12px 0 4px;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border-bottom: 1px solid #d0d5dd;
+        padding-bottom: 2px;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      ul {
+        margin: 5px 0 0;
+        padding-left: 16px;
+      }
+
+      li {
+        margin: 2px 0;
+      }
+
+      .header {
+        margin-bottom: 8px;
+      }
+
+      .subtitle {
+        margin-top: 2px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .contact {
+        margin-top: 4px;
+        color: #344054;
+        font-size: 10px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .block {
+        break-inside: avoid;
+      }
+
+      .stack {
+        margin-top: 4px;
+      }
+
+      .stack span {
+        display: inline-block;
+        margin: 2px 4px 0 0;
+        border: 1px solid #d0d5dd;
+        border-radius: 999px;
+        padding: 1px 6px;
+        font-size: 10px;
+      }
+
+      .item-title {
+        font-weight: 700;
+        margin-top: 6px;
+      }
+
+      .item-meta {
+        font-size: 10px;
+        color: #475467;
+      }
+
+      .mono {
+        font-family: 'Courier New', Courier, monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <h1>Kamran Boroomand</h1>
+      <p class="subtitle">Linux System Administrator | Security Hardening | Automation</p>
+      <p class="contact">
+        Email: kamranboroomand@mail.ru | Telegram: @kamranRU | GitHub: github.com/KamranBoroomand |
+        Location: Moscow, Russia
+      </p>
+    </header>
+
+    <section class="block">
+      <h2>Professional Summary</h2>
+      <p>
+        Linux System Administrator with hands-on experience in secure infrastructure operations,
+        access control, and reliability-focused automation. Strong at hardening Linux baselines,
+        reducing operational noise, and creating repeatable runbooks and scripts for consistent
+        delivery.
+      </p>
+    </section>
+
+    <section class="block">
+      <h2>Core Skills</h2>
+      <div class="stack">
+        <span>Linux Administration</span><span>Bash Automation</span><span>Systemd</span
+        ><span>SSH Hardening</span><span>Firewall Rules</span><span>Networking</span><span>DNS</span
+        ><span>VPN</span><span>Monitoring</span><span>Git</span>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Project Impact</h2>
+      <p class="item-title">NullID (Security Platform)</p>
+      <p class="item-meta">Linux + Nginx + Bash + Fail2ban</p>
+      <ul>
+        <li>Reduced failed SSH authentication noise by <strong>88%</strong> after hardening.</li>
+        <li>
+          Improved suspicious-session triage speed by <strong>4x</strong> with centralized logs.
+        </li>
+        <li>Moved privileged access to least-privilege role profiles.</li>
+      </ul>
+
+      <p class="item-title">NullCal (Automation Suite)</p>
+      <p class="item-meta">Linux + Bash + Cron + JSON</p>
+      <ul>
+        <li>Reduced weekly manual coordination overhead by <strong>62%</strong>.</li>
+        <li>Saved approximately <strong>3.5 hours/week</strong> via automation workflows.</li>
+        <li>Maintained zero missed critical checkpoints in sprint simulations.</li>
+      </ul>
+
+      <p class="item-title">PacMan (Frontend Project)</p>
+      <p class="item-meta">JavaScript + HTML + CSS + Canvas</p>
+      <ul>
+        <li>Maintained stable gameplay target of <strong>60fps</strong> on desktop browsers.</li>
+        <li>Kept median input-to-response latency below <strong>45ms</strong>.</li>
+        <li>Delivered modular game logic with maintainable code boundaries.</li>
+      </ul>
+    </section>
+
+    <div class="grid">
+      <section class="block">
+        <h2>Certifications and Learning</h2>
+        <ul>
+          <li>LPIC-1 (Linux Administration)</li>
+          <li>Network+ (Networking)</li>
+          <li>Security-focused Linux hardening lab work</li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <h2>Working Style</h2>
+        <ul>
+          <li>Reliability-first operations and predictable recovery paths.</li>
+          <li>Security-by-default controls with audit-friendly configuration.</li>
+          <li>Automation that removes manual toil without reducing visibility.</li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="block">
+      <h2>Availability</h2>
+      <p>
+        Open to Linux administration, security hardening, and automation-focused opportunities.
+        Portfolio: <span class="mono">kamranboroomand.ir</span>
+      </p>
+    </section>
+  </body>
+</html>
