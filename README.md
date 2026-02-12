@@ -106,10 +106,11 @@ Open:
 - `npm run test:e2e` - smoke tests (chromium).
 - `npm run test:e2e:matrix` - smoke tests across multiple browsers/devices.
 - `npm run test:a11y` - accessibility checks with axe.
+- `npm run test:links` - validate internal links and local asset references in HTML files.
 - `npm run test:visual` - screenshot regression checks.
 - `npm run test:e2e:easter-egg` - avatar easter egg behavior check.
 - `npm run test:lighthouse` - Lighthouse CI assertions.
-- `npm run check` - build + lint + format + perf + smoke + a11y.
+- `npm run check` - build + lint + format + perf + links + smoke + a11y.
 - `npm run quality:extended` - matrix + visual + easter egg.
 - `npm run release:prepare` - full gate: `check + quality:extended + lighthouse`.
 
@@ -127,7 +128,7 @@ Snapshots are stored in `tests/e2e/visual.spec.js-snapshots/`.
 
 CI workflows live in `.github/workflows/`:
 
-- `ci.yml`: build, lint, formatting, perf, smoke, and a11y.
+- `ci.yml`: build, lint, formatting, perf, internal links, smoke, and a11y.
 - `extended-quality.yml`: matrix + visual + easter egg.
 - Lighthouse assertions are configured in `.lighthouserc.json`.
 

@@ -13,10 +13,17 @@
       content="NullCal case study: automation suite for schedule reliability, follow-up consistency, and lower manual coordination overhead."
     />
     <meta name="robots" content="index,follow" />
+    <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="privacy-analytics-pixel" content="/assets/images/analytics-pixel.gif" />
 
     <link rel="canonical" href="https://kamranboroomand.ir/projects/nullcal/" />
+    <link rel="alternate" hreflang="en" href="https://kamranboroomand.ir/projects/nullcal/" />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://kamranboroomand.ir/projects/nullcal/"
+    />
 
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Kamran Boroomand Portfolio" />
@@ -39,6 +46,7 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="NullCal case study preview by Kamran Boroomand" />
+    <meta property="og:locale" content="en_US" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="NullCal Case Study | Kamran Boroomand" />
@@ -46,6 +54,7 @@
       name="twitter:description"
       content="Automation case study covering architecture, role, and measurable execution improvements for NullCal."
     />
+    <meta name="twitter:url" content="https://kamranboroomand.ir/projects/nullcal/" />
     <meta name="twitter:image" content="https://kamranboroomand.ir/assets/images/og-nullcal.png" />
     <meta name="twitter:image:alt" content="NullCal case study preview by Kamran Boroomand" />
 
@@ -55,27 +64,68 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "CreativeWork",
-        "name": "NullCal Case Study",
-        "url": "https://kamranboroomand.ir/projects/nullcal/",
-        "description": "Automation case study covering architecture, role, and measurable execution improvements for NullCal.",
-        "image": "https://kamranboroomand.ir/assets/images/og-nullcal.png",
-        "genre": "Automation Engineering",
-        "author": {
-          "@type": "Person",
-          "name": "Kamran Boroomand",
-          "url": "https://kamranboroomand.ir/"
-        },
-        "publisher": {
-          "@type": "Person",
-          "name": "Kamran Boroomand"
-        },
-        "inLanguage": "en",
-        "isPartOf": {
-          "@type": "WebSite",
-          "name": "Kamran Boroomand Portfolio",
-          "url": "https://kamranboroomand.ir/"
-        }
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://kamranboroomand.ir/#person",
+            "name": "Kamran Boroomand",
+            "jobTitle": "Linux System Administrator",
+            "url": "https://kamranboroomand.ir/",
+            "sameAs": ["https://github.com/KamranBoroomand", "https://t.me/kamranRU"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://kamranboroomand.ir/#website",
+            "url": "https://kamranboroomand.ir/",
+            "name": "Kamran Boroomand Portfolio",
+            "publisher": { "@id": "https://kamranboroomand.ir/#person" },
+            "inLanguage": ["en", "ru", "fa"]
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://kamranboroomand.ir/projects/nullcal/#webpage",
+            "url": "https://kamranboroomand.ir/projects/nullcal/",
+            "name": "NullCal Case Study | Kamran Boroomand",
+            "description": "Automation case study covering architecture, role, and measurable execution improvements for NullCal.",
+            "isPartOf": { "@id": "https://kamranboroomand.ir/#website" },
+            "about": { "@id": "https://kamranboroomand.ir/projects/nullcal/#work" },
+            "primaryImageOfPage": "https://kamranboroomand.ir/assets/images/og-nullcal.png",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "CreativeWork",
+            "@id": "https://kamranboroomand.ir/projects/nullcal/#work",
+            "name": "NullCal Case Study",
+            "url": "https://kamranboroomand.ir/projects/nullcal/",
+            "description": "Automation case study covering architecture, role, and measurable execution improvements for NullCal.",
+            "image": "https://kamranboroomand.ir/assets/images/og-nullcal.png",
+            "genre": "Automation Engineering",
+            "author": { "@id": "https://kamranboroomand.ir/#person" },
+            "publisher": { "@id": "https://kamranboroomand.ir/#person" },
+            "mainEntityOfPage": { "@id": "https://kamranboroomand.ir/projects/nullcal/#webpage" },
+            "keywords": ["linux automation", "scheduling workflow", "operations planning"],
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://kamranboroomand.ir/#website" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://kamranboroomand.ir/projects/nullcal/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Portfolio",
+                "item": "https://kamranboroomand.ir/#portfolio"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "NullCal Case Study",
+                "item": "https://kamranboroomand.ir/projects/nullcal/"
+              }
+            ]
+          }
+        ]
       }
     </script>
   </head>
@@ -184,11 +234,11 @@
         </article>
 
         <article class="section-block card">
-          <h2 class="section-title">Reference Snapshot</h2>
+          <h2 class="section-title">Reference Excerpt</h2>
           <p>
-            "His automation work removed recurring manual coordination pain and made weekly
-            execution noticeably calmer."<br />
-            <strong>Engineering Coordinator, Product Ops</strong>
+            "He turned a messy reminder process into a reliable operating rhythm. We spent less time
+            coordinating and more time executing."<br />
+            <strong>Operations Manager (name withheld by request)</strong>
           </p>
         </article>
       </section>

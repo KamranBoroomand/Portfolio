@@ -637,6 +637,16 @@ function initLeadFunnel() {
 
   const statusNode = form.querySelector('[data-lead-status]');
   const recipient = 'kamranboroomand@mail.ru';
+  let hasTrackedLeadStart = false;
+
+  function trackLeadStart() {
+    if (hasTrackedLeadStart) {
+      return;
+    }
+
+    hasTrackedLeadStart = true;
+    emitAnalyticsEvent('lead_form_start', { path: getCurrentPath() });
+  }
 
   function setStatus(statusKey) {
     form.dataset.statusKey = statusKey;
@@ -651,6 +661,8 @@ function initLeadFunnel() {
       statusNode.textContent = getTranslation(currentLanguage, statusKey);
     }
   }
+
+  form.addEventListener('focusin', trackLeadStart);
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -732,7 +744,7 @@ function initTabs() {
     }
   });
 
-  function activatePage(targetKey, shouldScroll = true) {
+  function activatePage(targetKey, shouldScroll = true, shouldTrack = true) {
     navLinks.forEach((link) => {
       const isActive = link.dataset.target === targetKey;
       link.classList.toggle('active', isActive);
@@ -760,13 +772,20 @@ function initTabs() {
         detail: { path: `${window.location.pathname}${window.location.search}#${targetKey}` }
       })
     );
+
+    if (shouldTrack) {
+      emitAnalyticsEvent('tab_open', {
+        path: getCurrentPath(),
+        label: targetKey
+      });
+    }
   }
 
   navLinks.forEach((link) => {
     link.addEventListener('click', () => {
       const target = link.dataset.target;
       if (target && pageMap.has(target)) {
-        activatePage(target, true);
+        activatePage(target, true, true);
       }
     });
   });
@@ -801,13 +820,13 @@ function initTabs() {
 
   const targetFromHash = window.location.hash.replace('#', '').trim().toLowerCase();
   if (targetFromHash && pageMap.has(targetFromHash)) {
-    activatePage(targetFromHash, false);
+    activatePage(targetFromHash, false, false);
     return;
   }
 
   const initial = navLinks.find((link) => link.classList.contains('active'));
   if (initial?.dataset.target && pageMap.has(initial.dataset.target)) {
-    activatePage(initial.dataset.target, false);
+    activatePage(initial.dataset.target, false, false);
   }
 }
 
@@ -1176,7 +1195,7 @@ function initProjectFilters() {
     );
   }
 
-  function applyFilter(filter) {
+  function applyFilter(filter, { trackEvent = false } = {}) {
     const normalized = (filter || 'all').toLowerCase();
     activeProjectFilter = normalized;
 
@@ -1205,6 +1224,13 @@ function initProjectFilters() {
     if (selectValue) {
       selectValue.textContent = getFilterLabel(normalized);
     }
+
+    if (trackEvent) {
+      emitAnalyticsEvent('project_filter_change', {
+        path: getCurrentPath(),
+        label: normalized
+      });
+    }
   }
 
   function refreshLabels() {
@@ -1218,7 +1244,7 @@ function initProjectFilters() {
 
   filterButtons.forEach((button) => {
     button.addEventListener('click', () => {
-      applyFilter(button.dataset.filter);
+      applyFilter(button.dataset.filter, { trackEvent: true });
     });
   });
 
@@ -1278,7 +1304,7 @@ function initProjectFilters() {
 
     selectItems.forEach((item) => {
       item.addEventListener('click', () => {
-        applyFilter(item.dataset.filter);
+        applyFilter(item.dataset.filter, { trackEvent: true });
         closeSelect();
       });
     });

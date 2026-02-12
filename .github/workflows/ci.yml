@@ -39,6 +39,9 @@ jobs:
       - name: Performance budget check
         run: npm run perf:check
 
+      - name: Internal link check
+        run: npm run test:links
+
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
 
