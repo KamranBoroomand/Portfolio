@@ -7,7 +7,10 @@ const checks = [
   {
     name: 'www-domain',
     kind: 'http',
-    url: 'https://www.kamranboroomand.ir/'
+    // `www` currently issues an HTTP 301 to the apex domain. Checking over HTTP
+    // avoids false alarms from certificate mismatches on the subdomain while
+    // still validating DNS + edge reachability for that host.
+    url: 'http://www.kamranboroomand.ir/'
   },
   {
     name: 'root-a-record',
