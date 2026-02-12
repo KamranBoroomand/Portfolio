@@ -11,7 +11,7 @@ Static portfolio website for [kamranboroomand.ir](https://kamranboroomand.ir), b
   - `/projects/nullid/`
   - `/projects/nullcal/`
   - `/projects/pacman/`
-- CTA strips across tabs, testimonials, changelog section, and production monitoring links.
+- Single global contact strip beneath tab content, plus public references and monitoring links.
 - ATS-friendly downloadable one-page PDF resume.
 - Interactive effects layer (React + OGL) mounted separately from main content.
 - Accessibility-first interactions: keyboard tab navigation, skip link, ARIA-aware controls.
