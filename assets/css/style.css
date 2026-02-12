@@ -36,12 +36,21 @@
 }
 
 html[lang='fa'] {
-  --font-title: 'Tahoma', 'Arial', sans-serif;
-  --font-body: 'Tahoma', 'Arial', sans-serif;
-  --font-nav: 'Tahoma', 'Arial', sans-serif;
-  --font-glitch: 'Tahoma', 'Arial', sans-serif;
-  --font-callout: 'Tahoma', 'Arial', sans-serif;
-  --font-signature: 'Tahoma', 'Arial', sans-serif;
+  --font-title: 'Vazirmatn', 'IRANSansX', 'Noto Naskh Arabic', 'Tahoma', sans-serif;
+  --font-body: 'Vazirmatn', 'IRANSansX', 'Noto Sans Arabic', 'Tahoma', sans-serif;
+  --font-nav: 'Vazirmatn', 'IRANSansX', 'Noto Sans Arabic', 'Tahoma', sans-serif;
+  --font-glitch: 'Vazirmatn', 'IRANSansX', 'Noto Sans Arabic', 'Tahoma', sans-serif;
+  --font-callout: 'Vazirmatn', 'IRANSansX', 'Noto Sans Arabic', 'Tahoma', sans-serif;
+  --font-signature: 'Vazirmatn', 'IRANSansX', 'Noto Sans Arabic', 'Tahoma', sans-serif;
+}
+
+html[lang='ru'] {
+  --font-title: 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif;
+  --font-body: 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif;
+  --font-nav: 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif;
+  --font-glitch: 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif;
+  --font-callout: 'Segoe UI', 'Georgia', serif;
+  --font-signature: 'Segoe UI', 'Georgia', serif;
 }
 
 *,
@@ -191,7 +200,7 @@ body.is-loaded {
 
 .name {
   margin: 0.35rem 0 0;
-  font-family: 'Space Rabbit', var(--font-title);
+  font-family: var(--font-title);
   font-size: clamp(1.5rem, 3vw, 2rem);
   line-height: 1.1;
 }
@@ -635,7 +644,9 @@ address {
 .testimonials,
 .resume-download,
 .now-board,
-.monitoring-panel {
+.monitoring-panel,
+.proof-panel,
+.intake-panel {
   margin-top: 1.1rem;
 }
 
@@ -651,20 +662,45 @@ address {
   border-radius: var(--radius-md);
   background: linear-gradient(130deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.62));
   padding: 0.78rem 0.86rem;
+  display: grid;
+  gap: 0.42rem;
 }
 
-.testimonial-item blockquote {
+.testimonial-item p {
   margin: 0;
   color: var(--text-1);
   font-size: 0.9rem;
 }
 
-.testimonial-author {
-  margin: 0.45rem 0 0;
-  font-family: var(--font-signature);
-  font-size: 0.78rem;
+.testimonial-kicker {
+  margin: 0;
+  font-family: var(--font-nav);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--text-2);
-  letter-spacing: 0.04em;
+}
+
+.testimonial-link {
+  width: fit-content;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.3rem 0.62rem;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--text-1);
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.testimonial-link:hover {
+  border-color: var(--accent-soft-2);
+  color: var(--accent-strong);
+  transform: translateY(-1px);
 }
 
 .resume-download-link {
@@ -713,6 +749,143 @@ address {
   display: flex;
   flex-wrap: wrap;
   gap: 0.48rem;
+}
+
+.proof-grid {
+  margin: 0.72rem 0 0;
+  display: grid;
+  gap: 0.54rem;
+}
+
+@media (min-width: 620px) {
+  .proof-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.proof-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(246, 179, 29, 0.22), transparent 42%),
+    linear-gradient(130deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.62));
+  padding: 0.72rem 0.78rem;
+}
+
+.proof-value {
+  margin: 0;
+  font-family: var(--font-title);
+  color: var(--text-0);
+  font-size: 1rem;
+  line-height: 1.15;
+}
+
+.proof-label {
+  margin: 0.34rem 0 0;
+  font-size: 0.78rem;
+  color: var(--text-2);
+}
+
+.intake-sla {
+  margin: 0.62rem 0 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.74);
+  padding: 0.26rem 0.65rem;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: baseline;
+  font-size: 0.79rem;
+  color: var(--text-1);
+}
+
+.intake-sla strong {
+  color: var(--text-0);
+}
+
+.intake-form {
+  margin-top: 0.72rem;
+  display: grid;
+  gap: 0.66rem;
+}
+
+.intake-grid {
+  display: grid;
+  gap: 0.58rem;
+}
+
+@media (min-width: 760px) {
+  .intake-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.intake-field {
+  display: grid;
+  gap: 0.32rem;
+}
+
+.intake-field span {
+  font-size: 0.78rem;
+  color: var(--text-2);
+  letter-spacing: 0.03em;
+}
+
+.intake-field input,
+.intake-field select,
+.intake-field textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text-0);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  padding: 0.52rem 0.62rem;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.intake-field textarea {
+  min-height: 108px;
+  resize: vertical;
+}
+
+.intake-field input:focus,
+.intake-field select:focus,
+.intake-field textarea:focus {
+  outline: none;
+  border-color: var(--accent-soft-2);
+  box-shadow: 0 0 0 3px rgba(246, 179, 29, 0.18);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.intake-field-full {
+  grid-column: 1 / -1;
+}
+
+.intake-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.46rem;
+}
+
+.intake-note {
+  margin: 0;
+  font-size: 0.77rem;
+  color: var(--text-2);
+}
+
+.intake-trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .tag-grid {
@@ -1083,6 +1256,10 @@ address {
   box-shadow: 0 10px 24px rgba(14, 27, 46, 0.12);
 }
 
+.cta-strip-global {
+  margin-top: 0;
+}
+
 .cta-strip-title {
   margin: 0;
   font-family: var(--font-title);
@@ -1133,6 +1310,36 @@ address {
   background: linear-gradient(120deg, rgba(246, 179, 29, 0.95), rgba(255, 210, 96, 0.92));
   color: #111827;
   border-color: rgba(209, 142, 0, 0.35);
+}
+
+html[lang='ru'] .kicker,
+html[lang='ru'] .contact-title,
+html[lang='ru'] .sidebar-section-title,
+html[lang='ru'] .language-label,
+html[lang='ru'] .now-date,
+html[lang='ru'] .project-metrics-title,
+html[lang='ru'] .title,
+html[lang='ru'] .navbar-link,
+html[lang='ru'] .testimonial-kicker {
+  text-transform: none;
+  letter-spacing: 0.03em;
+}
+
+html[lang='fa'] body {
+  line-height: 1.8;
+}
+
+html[lang='fa'] .kicker,
+html[lang='fa'] .contact-title,
+html[lang='fa'] .sidebar-section-title,
+html[lang='fa'] .language-label,
+html[lang='fa'] .now-date,
+html[lang='fa'] .project-metrics-title,
+html[lang='fa'] .title,
+html[lang='fa'] .navbar-link,
+html[lang='fa'] .testimonial-kicker {
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 .site-footer {

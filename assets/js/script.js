@@ -17,6 +17,7 @@ const SUPPORTED_LANGUAGES = ['en', 'ru', 'fa'];
 const DEFAULT_LANGUAGE = 'en';
 const I18N_SOURCE = './assets/data/translations.json';
 const EFFECTS_BUNDLE_SOURCE = './assets/js/effects.bundle.js';
+const GITHUB_REPO_API = 'https://api.github.com/repos/KamranBoroomand/Portfolio';
 
 let TRANSLATIONS = Object.freeze({ [DEFAULT_LANGUAGE]: {} });
 let hasLoadedTranslations = false;
@@ -43,6 +44,13 @@ function sanitizeAnalyticsValue(value, maxLength = 180) {
     .replace(/\s+/g, ' ')
     .trim()
     .slice(0, maxLength);
+}
+
+function emitAnalyticsEvent(eventName, payload = {}) {
+  const tracker = window.__KB_ANALYTICS_TRACK__;
+  if (typeof tracker === 'function') {
+    tracker(eventName, payload);
+  }
 }
 
 function normalizeLanguage(language) {
@@ -405,6 +413,8 @@ function initPrivacyAnalytics() {
     image.src = `${pixelPath}${queryPrefix}${params.toString()}`;
   }
 
+  window.__KB_ANALYTICS_TRACK__ = sendAnalyticsEvent;
+
   function trackPageView(path) {
     const normalizedPath = sanitizeAnalyticsValue(path || getCurrentPath(), 200);
     if (!normalizedPath || normalizedPath === lastTrackedPath) {
@@ -514,6 +524,196 @@ function initPrivacyAnalytics() {
   });
 
   trackPageView(getCurrentPath());
+}
+
+function resolveIntlLocale(locale) {
+  if (locale === 'ru') {
+    return 'ru-RU';
+  }
+  if (locale === 'fa') {
+    return 'fa-IR';
+  }
+  return 'en-US';
+}
+
+function formatLocalizedDate(date) {
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
+    return '';
+  }
+
+  try {
+    return new Intl.DateTimeFormat(resolveIntlLocale(currentLanguage), {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    }).format(date);
+  } catch {
+    return date.toISOString().slice(0, 10);
+  }
+}
+
+function initCredibilityPanel() {
+  const lastShipNode = document.querySelector('[data-proof-last-ship]');
+  const activityNode = document.querySelector('[data-proof-activity]');
+  if (!lastShipNode && !activityNode) {
+    return;
+  }
+
+  const state = {
+    lastShipDate: null,
+    activityCountLabel: ''
+  };
+
+  function renderCredibility() {
+    if (lastShipNode) {
+      lastShipNode.textContent =
+        state.lastShipDate instanceof Date
+          ? formatLocalizedDate(state.lastShipDate)
+          : getTranslation(currentLanguage, 'proof.lastShipFallback');
+    }
+
+    if (activityNode) {
+      activityNode.textContent = state.activityCountLabel
+        ? formatTemplate(getTranslation(currentLanguage, 'proof.activityTemplate'), {
+            count: state.activityCountLabel
+          })
+        : getTranslation(currentLanguage, 'proof.activityFallback');
+    }
+  }
+
+  async function loadCredibility() {
+    const since = new Date();
+    since.setDate(since.getDate() - 30);
+    const headers = { Accept: 'application/vnd.github+json' };
+
+    try {
+      const [latestResponse, recentResponse] = await Promise.all([
+        fetch(`${GITHUB_REPO_API}/commits?per_page=1`, { headers }),
+        fetch(
+          `${GITHUB_REPO_API}/commits?per_page=100&since=${encodeURIComponent(since.toISOString())}`,
+          {
+            headers
+          }
+        )
+      ]);
+
+      if (latestResponse.ok) {
+        const latestPayload = await latestResponse.json();
+        const latestCommit = Array.isArray(latestPayload) ? latestPayload[0] : null;
+        const commitDate =
+          latestCommit?.commit?.committer?.date || latestCommit?.commit?.author?.date;
+        if (typeof commitDate === 'string') {
+          const parsedDate = new Date(commitDate);
+          if (!Number.isNaN(parsedDate.getTime())) {
+            state.lastShipDate = parsedDate;
+          }
+        }
+      }
+
+      if (recentResponse.ok) {
+        const recentPayload = await recentResponse.json();
+        if (Array.isArray(recentPayload)) {
+          state.activityCountLabel =
+            recentPayload.length >= 100 ? '100+' : String(recentPayload.length);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      renderCredibility();
+    }
+  }
+
+  renderCredibility();
+  window.addEventListener(EVENTS.languageChanged, renderCredibility);
+  void loadCredibility();
+}
+
+function initLeadFunnel() {
+  const form = document.querySelector('[data-lead-form]');
+  if (!(form instanceof HTMLFormElement)) {
+    return;
+  }
+
+  const statusNode = form.querySelector('[data-lead-status]');
+  const recipient = 'kamranboroomand@mail.ru';
+
+  function setStatus(statusKey) {
+    form.dataset.statusKey = statusKey;
+    if (statusNode) {
+      statusNode.textContent = getTranslation(currentLanguage, statusKey);
+    }
+  }
+
+  function syncStatus() {
+    const statusKey = form.dataset.statusKey || 'intake.noteDefault';
+    if (statusNode) {
+      statusNode.textContent = getTranslation(currentLanguage, statusKey);
+    }
+  }
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    if (!form.reportValidity()) {
+      emitAnalyticsEvent('lead_form_invalid', { path: getCurrentPath() });
+      setStatus('intake.noteInvalid');
+      return;
+    }
+
+    const formData = new FormData(form);
+    const honeypotValue = String(formData.get('company_website') || '').trim();
+    if (honeypotValue) {
+      form.reset();
+      setStatus('intake.noteDefault');
+      return;
+    }
+
+    const name = sanitizeAnalyticsValue(formData.get('name'), 80);
+    const email = sanitizeAnalyticsValue(formData.get('email'), 120);
+    const projectType = sanitizeAnalyticsValue(formData.get('projectType'), 80);
+    const timeline = sanitizeAnalyticsValue(formData.get('timeline'), 80);
+    const summary = sanitizeAnalyticsValue(formData.get('summary'), 700);
+
+    if (!name || !email || !projectType || !timeline || !summary) {
+      emitAnalyticsEvent('lead_form_invalid', { path: getCurrentPath() });
+      setStatus('intake.noteInvalid');
+      return;
+    }
+
+    const subject = `[Portfolio Inquiry] ${projectType} - ${name}`;
+    const body = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Project Type: ${projectType}`,
+      `Timeline: ${timeline}`,
+      '',
+      'Project Summary:',
+      summary,
+      '',
+      `Source: ${window.location.href}`
+    ].join('\n');
+
+    const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const tempLink = document.createElement('a');
+    tempLink.href = mailtoUrl;
+    tempLink.style.display = 'none';
+    form.append(tempLink);
+    tempLink.click();
+    tempLink.remove();
+
+    emitAnalyticsEvent('lead_form_submit', {
+      path: getCurrentPath(),
+      label: projectType,
+      target: `mailto:${recipient}`
+    });
+
+    form.reset();
+    setStatus('intake.noteSent');
+  });
+
+  window.addEventListener(EVENTS.languageChanged, syncStatus);
+  setStatus('intake.noteDefault');
 }
 
 function initTabs() {
@@ -1098,6 +1298,8 @@ async function initializePage() {
   initTabs();
   initEffectPreferences();
   initPrivacyAnalytics();
+  initCredibilityPanel();
+  initLeadFunnel();
   await initProjects();
   initProjectFilters();
 }

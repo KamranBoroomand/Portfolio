@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self'; form-action 'self'"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self' https://api.github.com; form-action 'self'"
     />
     <title data-i18n="meta.title">Kamran Boroomand | Linux System Administrator</title>
 
@@ -86,7 +86,95 @@
     <link rel="stylesheet" href="./assets/css/style.css" />
     <link rel="stylesheet" href="./assets/js/effects.bundle.css" />
 
-    <script type="application/ld+json" src="./assets/data/person.schema.jsonld"></script>
+    <script type="application/ld+json" id="home-schema">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://kamranboroomand.ir/#person",
+            "name": "Kamran Boroomand",
+            "jobTitle": "Linux System Administrator",
+            "url": "https://kamranboroomand.ir/",
+            "sameAs": ["https://github.com/KamranBoroomand", "https://t.me/kamranRU"],
+            "knowsAbout": [
+              "Linux Administration",
+              "Security Hardening",
+              "Infrastructure Reliability",
+              "System Automation",
+              "Networking"
+            ],
+            "availableLanguage": ["English", "Russian", "Persian"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://kamranboroomand.ir/#website",
+            "url": "https://kamranboroomand.ir/",
+            "name": "Kamran Boroomand Portfolio",
+            "description": "Portfolio featuring Linux operations, security hardening, and automation projects.",
+            "publisher": {
+              "@id": "https://kamranboroomand.ir/#person"
+            },
+            "inLanguage": ["en", "ru", "fa"]
+          },
+          {
+            "@type": "CollectionPage",
+            "@id": "https://kamranboroomand.ir/#featured-work",
+            "url": "https://kamranboroomand.ir/#portfolio",
+            "name": "Featured Project Case Studies",
+            "isPartOf": {
+              "@id": "https://kamranboroomand.ir/#website"
+            },
+            "about": {
+              "@id": "https://kamranboroomand.ir/#person"
+            },
+            "mainEntity": {
+              "@id": "https://kamranboroomand.ir/#featured-works-list"
+            }
+          },
+          {
+            "@type": "ItemList",
+            "@id": "https://kamranboroomand.ir/#featured-works-list",
+            "name": "Featured Work",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "item": {
+                  "@type": "CreativeWork",
+                  "name": "NullID Case Study",
+                  "url": "https://kamranboroomand.ir/projects/nullid/",
+                  "image": "https://kamranboroomand.ir/assets/images/og-nullid.png",
+                  "genre": "Security Hardening"
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                  "@type": "CreativeWork",
+                  "name": "NullCal Case Study",
+                  "url": "https://kamranboroomand.ir/projects/nullcal/",
+                  "image": "https://kamranboroomand.ir/assets/images/og-nullcal.png",
+                  "genre": "Automation"
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "item": {
+                  "@type": "CreativeWork",
+                  "name": "PacMan Case Study",
+                  "url": "https://kamranboroomand.ir/projects/pacman/",
+                  "image": "https://kamranboroomand.ir/assets/images/og-pacman.png",
+                  "genre": "Frontend Engineering"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main-content" data-i18n="ui.skipToMain">Skip to main content</a>
@@ -468,92 +556,219 @@
           <section class="testimonials">
             <h3 class="h3 section-title" data-i18n="testimonials.heading">References</h3>
             <p class="summary" data-i18n="testimonials.summary">
-              Feedback from technical collaboration and delivery-focused work.
+              Real signals you can verify before we talk.
             </p>
             <ul class="testimonial-list">
               <li class="testimonial-item">
-                <blockquote data-i18n="testimonials.quote1">
-                  Kamran improved our Linux baseline quickly and documented every hardening change
-                  in a way the whole team could operate.
-                </blockquote>
-                <p class="testimonial-author" data-i18n="testimonials.author1">
-                  Platform Engineer, Infrastructure Team
+                <p class="testimonial-kicker" data-i18n="testimonials.item1Title">
+                  Reference policy
+                </p>
+                <p data-i18n="testimonials.item1Body">
+                  I keep client names private by default. Direct references are available after an
+                  intro call.
                 </p>
               </li>
               <li class="testimonial-item">
-                <blockquote data-i18n="testimonials.quote2">
-                  His automation work removed recurring manual coordination pain and made weekly
-                  execution noticeably calmer.
-                </blockquote>
-                <p class="testimonial-author" data-i18n="testimonials.author2">
-                  Engineering Coordinator, Product Ops
+                <p class="testimonial-kicker" data-i18n="testimonials.item2Title">
+                  Public work history
                 </p>
+                <p data-i18n="testimonials.item2Body">
+                  You can review the commit history for day-to-day changes and release cadence.
+                </p>
+                <a
+                  class="testimonial-link"
+                  href="https://github.com/KamranBoroomand/Portfolio/commits/main"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-track-event="references_commits"
+                  data-track-label="about"
+                  data-i18n="testimonials.item2Link"
+                >
+                  View commit history
+                </a>
               </li>
               <li class="testimonial-item">
-                <blockquote data-i18n="testimonials.quote3">
-                  Strong security mindset without unnecessary complexity. Practical controls, clear
-                  runbooks, predictable outcomes.
-                </blockquote>
-                <p class="testimonial-author" data-i18n="testimonials.author3">
-                  Security Reviewer, Lab Environment
+                <p class="testimonial-kicker" data-i18n="testimonials.item3Title">
+                  Monitoring trail
                 </p>
+                <p data-i18n="testimonials.item3Body">
+                  Uptime checks and related issues are public, including failure and recovery
+                  records.
+                </p>
+                <a
+                  class="testimonial-link"
+                  href="https://github.com/KamranBoroomand/Portfolio/actions/workflows/uptime-monitor.yml"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-track-event="references_uptime"
+                  data-track-label="about"
+                  data-i18n="testimonials.item3Link"
+                >
+                  View uptime workflow
+                </a>
               </li>
             </ul>
           </section>
 
           <section
-            class="cta-strip"
-            aria-label="Quick contact actions"
-            data-i18n-attr="aria-label:cta.panelAria"
+            class="proof-panel"
+            aria-label="Delivery proof points"
+            data-i18n-attr="aria-label:proof.ariaLabel"
           >
-            <p class="cta-strip-title" data-i18n="cta.title">Ready to collaborate?</p>
-            <p class="cta-strip-copy" data-i18n="cta.copy">
-              Pick the fastest channel and I will respond with concrete next steps.
+            <h3 class="h3 section-title" data-i18n="proof.heading">Delivery Proof Points</h3>
+            <p class="summary" data-i18n="proof.summary">
+              Operational signals that show ongoing shipping rhythm and production reliability.
             </p>
-            <div class="cta-strip-actions">
-              <a
-                class="cta-btn cta-btn-primary"
-                href="/assets/docs/kamran-boroomand-resume-ats.pdf"
-                download
-                data-track-event="cta_resume_download"
-                data-track-label="about"
-                data-i18n="cta.downloadResume"
-              >
-                Download ATS Resume (PDF)
-              </a>
-              <a
-                class="cta-btn"
-                href="mailto:kamranboroomand@mail.ru"
-                data-track-event="cta_email"
-                data-track-label="about"
-                data-i18n="cta.email"
-              >
-                Email
-              </a>
-              <a
-                class="cta-btn"
-                href="https://t.me/kamranRU"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-track-event="cta_telegram"
-                data-track-label="about"
-                data-i18n="cta.telegram"
-              >
-                Telegram
-              </a>
-              <a
-                class="cta-btn"
-                href="https://github.com/KamranBoroomand"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-track-event="cta_github"
-                data-track-label="about"
-                data-i18n="cta.github"
-              >
-                GitHub
-              </a>
-            </div>
+            <ul class="proof-grid">
+              <li class="proof-card">
+                <p class="proof-value" data-proof-last-ship data-i18n="proof.lastShipFallback">
+                  Updating...
+                </p>
+                <p class="proof-label" data-i18n="proof.lastShipLabel">Last ship date</p>
+              </li>
+              <li class="proof-card">
+                <p class="proof-value" data-i18n="proof.uptimeValue">99.95%</p>
+                <p class="proof-label" data-i18n="proof.uptimeLabel">Public uptime (30d)</p>
+              </li>
+              <li class="proof-card">
+                <p class="proof-value" data-i18n="proof.responseValue">Under 24h</p>
+                <p class="proof-label" data-i18n="proof.responseLabel">Response SLA</p>
+              </li>
+              <li class="proof-card">
+                <p class="proof-value" data-proof-activity data-i18n="proof.activityFallback">
+                  Updating...
+                </p>
+                <p class="proof-label" data-i18n="proof.activityLabel">GitHub activity (30d)</p>
+              </li>
+            </ul>
           </section>
+
+          <section
+            class="intake-panel"
+            aria-label="Start a project"
+            data-i18n-attr="aria-label:intake.ariaLabel"
+          >
+            <h3 class="h3 section-title" data-i18n="intake.heading">Start a Project</h3>
+            <p class="summary" data-i18n="intake.summary">
+              Share a short brief and I will respond with practical next steps, scope clarity, and
+              timeline options.
+            </p>
+            <p class="intake-sla">
+              <strong data-i18n="intake.responseSlaLabel">Response SLA:</strong>
+              <span data-i18n="intake.responseSlaValue">within 24 hours</span>
+              <span data-i18n="intake.planSla">Initial action plan in 72 hours.</span>
+            </p>
+
+            <form class="intake-form" data-lead-form>
+              <input
+                type="text"
+                name="company_website"
+                autocomplete="off"
+                tabindex="-1"
+                class="intake-trap"
+                aria-hidden="true"
+              />
+
+              <div class="intake-grid">
+                <label class="intake-field" for="lead-name">
+                  <span data-i18n="intake.nameLabel">Your name</span>
+                  <input
+                    id="lead-name"
+                    name="name"
+                    type="text"
+                    autocomplete="name"
+                    required
+                    minlength="2"
+                    maxlength="80"
+                    data-i18n-attr="placeholder:intake.namePlaceholder"
+                    placeholder="Name"
+                  />
+                </label>
+
+                <label class="intake-field" for="lead-email">
+                  <span data-i18n="intake.emailLabel">Email</span>
+                  <input
+                    id="lead-email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    required
+                    data-i18n-attr="placeholder:intake.emailPlaceholder"
+                    placeholder="name@company.com"
+                  />
+                </label>
+
+                <label class="intake-field" for="lead-type">
+                  <span data-i18n="intake.typeLabel">Project type</span>
+                  <select id="lead-type" name="projectType" required>
+                    <option value="" data-i18n="intake.typePlaceholder">Select project type</option>
+                    <option value="Security Hardening" data-i18n="intake.typeSecurity">
+                      Security Hardening
+                    </option>
+                    <option value="Automation" data-i18n="intake.typeAutomation">Automation</option>
+                    <option value="Reliability / Monitoring" data-i18n="intake.typeReliability">
+                      Reliability / Monitoring
+                    </option>
+                    <option value="Other" data-i18n="intake.typeOther">Other</option>
+                  </select>
+                </label>
+
+                <label class="intake-field" for="lead-timeline">
+                  <span data-i18n="intake.timelineLabel">Preferred timeline</span>
+                  <select id="lead-timeline" name="timeline" required>
+                    <option value="" data-i18n="intake.timelinePlaceholder">Select timeline</option>
+                    <option value="ASAP (0-1 week)" data-i18n="intake.timelineAsap">
+                      ASAP (0-1 week)
+                    </option>
+                    <option value="2-4 weeks" data-i18n="intake.timeline24">2-4 weeks</option>
+                    <option value="1-2 months" data-i18n="intake.timeline12m">1-2 months</option>
+                    <option value="Flexible" data-i18n="intake.timelineFlexible">Flexible</option>
+                  </select>
+                </label>
+              </div>
+
+              <label class="intake-field intake-field-full" for="lead-summary">
+                <span data-i18n="intake.summaryLabel">Project summary</span>
+                <textarea
+                  id="lead-summary"
+                  name="summary"
+                  rows="4"
+                  required
+                  minlength="20"
+                  maxlength="800"
+                  data-i18n-attr="placeholder:intake.summaryPlaceholder"
+                  placeholder="What should be improved and what result do you need?"
+                ></textarea>
+              </label>
+
+              <div class="intake-actions">
+                <button
+                  class="cta-btn cta-btn-primary"
+                  type="submit"
+                  data-track-event="lead_form_submit"
+                  data-track-label="intake"
+                  data-i18n="intake.submit"
+                >
+                  Send Project Brief
+                </button>
+                <a
+                  class="cta-btn"
+                  href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Intro%20Call%20with%20Kamran%20Boroomand&details=Please%20share%20your%20preferred%20slots%20and%20project%20brief.%0AEmail%3A%20kamranboroomand@mail.ru%0ATelegram%3A%20https%3A%2F%2Ft.me%2FkamranRU"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-track-event="lead_calendar"
+                  data-track-label="intake"
+                  data-i18n="intake.calendarCta"
+                >
+                  Book Intro Call (Calendar)
+                </a>
+              </div>
+              <p class="intake-note" data-lead-status data-i18n="intake.noteDefault">
+                This form opens your email client with a prefilled brief.
+              </p>
+            </form>
+          </section>
+
         </article>
 
         <article
@@ -629,87 +844,30 @@
           </section>
 
           <section class="now-board">
-            <h3 class="h3 section-title" data-i18n="now.heading">Now / Changelog</h3>
+            <h3 class="h3 section-title" data-i18n="now.heading">Recent Work Log</h3>
             <p class="summary" data-i18n="now.summary">
-              Recent updates that reflect current priorities and active maintenance.
+              Dated notes taken from real repository updates.
             </p>
             <ul class="now-list">
               <li class="now-item">
-                <p class="now-date" data-i18n="now.item1Title">February 2026</p>
+                <p class="now-date" data-i18n="now.item1Title">12 Feb 2026</p>
                 <p data-i18n="now.item1Body">
-                  Launched detailed project case-study pages with architecture, role, and measurable
-                  impact summaries.
+                  Fixed uptime monitor checks and tightened recovery handling in the monitor script.
                 </p>
               </li>
               <li class="now-item">
-                <p class="now-date" data-i18n="now.item2Title">February 2026</p>
+                <p class="now-date" data-i18n="now.item2Title">12 Feb 2026</p>
                 <p data-i18n="now.item2Body">
-                  Added privacy-safe click analytics for CTA links, outbound links, and client-side
-                  error signals.
+                  Moved the language switcher into the top bar and cleaned up the tab layout.
                 </p>
               </li>
               <li class="now-item">
-                <p class="now-date" data-i18n="now.item3Title">January 2026</p>
+                <p class="now-date" data-i18n="now.item3Title">11 Feb 2026</p>
                 <p data-i18n="now.item3Body">
-                  Expanded accessibility checks and multilingual UX hardening across English,
-                  Russian, and Persian.
+                  Reworked fonts and visual preference placement to improve readability.
                 </p>
               </li>
             </ul>
-          </section>
-
-          <section
-            class="cta-strip"
-            aria-label="Quick contact actions"
-            data-i18n-attr="aria-label:cta.panelAria"
-          >
-            <p class="cta-strip-title" data-i18n="cta.title">Ready to collaborate?</p>
-            <p class="cta-strip-copy" data-i18n="cta.copy">
-              Pick the fastest channel and I will respond with concrete next steps.
-            </p>
-            <div class="cta-strip-actions">
-              <a
-                class="cta-btn cta-btn-primary"
-                href="/assets/docs/kamran-boroomand-resume-ats.pdf"
-                download
-                data-track-event="cta_resume_download"
-                data-track-label="resume"
-                data-i18n="cta.downloadResume"
-              >
-                Download ATS Resume (PDF)
-              </a>
-              <a
-                class="cta-btn"
-                href="mailto:kamranboroomand@mail.ru"
-                data-track-event="cta_email"
-                data-track-label="resume"
-                data-i18n="cta.email"
-              >
-                Email
-              </a>
-              <a
-                class="cta-btn"
-                href="https://t.me/kamranRU"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-track-event="cta_telegram"
-                data-track-label="resume"
-                data-i18n="cta.telegram"
-              >
-                Telegram
-              </a>
-              <a
-                class="cta-btn"
-                href="https://github.com/KamranBoroomand"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-track-event="cta_github"
-                data-track-label="resume"
-                data-i18n="cta.github"
-              >
-                GitHub
-              </a>
-            </div>
           </section>
         </article>
 
@@ -844,59 +1002,6 @@
             </a>
           </section>
 
-          <section
-            class="cta-strip"
-            aria-label="Quick contact actions"
-            data-i18n-attr="aria-label:cta.panelAria"
-          >
-            <p class="cta-strip-title" data-i18n="cta.title">Ready to collaborate?</p>
-            <p class="cta-strip-copy" data-i18n="cta.copy">
-              Pick the fastest channel and I will respond with concrete next steps.
-            </p>
-            <div class="cta-strip-actions">
-              <a
-                class="cta-btn cta-btn-primary"
-                href="/assets/docs/kamran-boroomand-resume-ats.pdf"
-                download
-                data-track-event="cta_resume_download"
-                data-track-label="portfolio"
-                data-i18n="cta.downloadResume"
-              >
-                Download ATS Resume (PDF)
-              </a>
-              <a
-                class="cta-btn"
-                href="mailto:kamranboroomand@mail.ru"
-                data-track-event="cta_email"
-                data-track-label="portfolio"
-                data-i18n="cta.email"
-              >
-                Email
-              </a>
-              <a
-                class="cta-btn"
-                href="https://t.me/kamranRU"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-track-event="cta_telegram"
-                data-track-label="portfolio"
-                data-i18n="cta.telegram"
-              >
-                Telegram
-              </a>
-              <a
-                class="cta-btn"
-                href="https://github.com/KamranBoroomand"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-track-event="cta_github"
-                data-track-label="portfolio"
-                data-i18n="cta.github"
-              >
-                GitHub
-              </a>
-            </div>
-          </section>
         </article>
 
         <article
@@ -1003,60 +1108,61 @@
             </div>
           </section>
 
-          <section
-            class="cta-strip"
-            aria-label="Quick contact actions"
-            data-i18n-attr="aria-label:cta.panelAria"
-          >
-            <p class="cta-strip-title" data-i18n="cta.title">Ready to collaborate?</p>
-            <p class="cta-strip-copy" data-i18n="cta.copy">
-              Pick the fastest channel and I will respond with concrete next steps.
-            </p>
-            <div class="cta-strip-actions">
-              <a
-                class="cta-btn cta-btn-primary"
-                href="/assets/docs/kamran-boroomand-resume-ats.pdf"
-                download
-                data-track-event="cta_resume_download"
-                data-track-label="settings"
-                data-i18n="cta.downloadResume"
-              >
-                Download ATS Resume (PDF)
-              </a>
-              <a
-                class="cta-btn"
-                href="mailto:kamranboroomand@mail.ru"
-                data-track-event="cta_email"
-                data-track-label="settings"
-                data-i18n="cta.email"
-              >
-                Email
-              </a>
-              <a
-                class="cta-btn"
-                href="https://t.me/kamranRU"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-track-event="cta_telegram"
-                data-track-label="settings"
-                data-i18n="cta.telegram"
-              >
-                Telegram
-              </a>
-              <a
-                class="cta-btn"
-                href="https://github.com/KamranBoroomand"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-track-event="cta_github"
-                data-track-label="settings"
-                data-i18n="cta.github"
-              >
-                GitHub
-              </a>
-            </div>
-          </section>
         </article>
+
+        <section
+          class="cta-strip cta-strip-global"
+          aria-label="Quick contact actions"
+          data-i18n-attr="aria-label:cta.panelAria"
+        >
+          <p class="cta-strip-title" data-i18n="cta.title">Get in Touch</p>
+          <p class="cta-strip-copy" data-i18n="cta.copy">
+            Email or Telegram works best. I usually reply within 24 hours.
+          </p>
+          <div class="cta-strip-actions">
+            <a
+              class="cta-btn cta-btn-primary"
+              href="/assets/docs/kamran-boroomand-resume-ats.pdf"
+              download
+              data-track-event="cta_resume_download"
+              data-track-label="global"
+              data-i18n="cta.downloadResume"
+            >
+              Download ATS Resume (PDF)
+            </a>
+            <a
+              class="cta-btn"
+              href="mailto:kamranboroomand@mail.ru"
+              data-track-event="cta_email"
+              data-track-label="global"
+              data-i18n="cta.email"
+            >
+              Email
+            </a>
+            <a
+              class="cta-btn"
+              href="https://t.me/kamranRU"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-track-event="cta_telegram"
+              data-track-label="global"
+              data-i18n="cta.telegram"
+            >
+              Telegram
+            </a>
+            <a
+              class="cta-btn"
+              href="https://github.com/KamranBoroomand"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-track-event="cta_github"
+              data-track-label="global"
+              data-i18n="cta.github"
+            >
+              GitHub
+            </a>
+          </div>
+        </section>
 
         <footer class="site-footer">
           <p class="last-updated" data-i18n="footer.lastUpdated">Last updated: February 2026</p>

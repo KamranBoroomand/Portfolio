@@ -93,6 +93,34 @@ test.describe('Portfolio Smoke Flow', () => {
     await expect(page.getByRole('tab', { name: 'About' })).toBeVisible();
   });
 
+  test('renders credibility strip and project intake funnel', async ({ page }) => {
+    await page.goto('/#about', { waitUntil: 'domcontentloaded' });
+
+    const aboutTab = page.getByRole('tab', { name: 'About' });
+    if (!(await aboutTab.getAttribute('aria-selected'))?.includes('true')) {
+      await aboutTab.click();
+    }
+
+    await expect(page.locator('.proof-card')).toHaveCount(4);
+    await expect(page.locator('[data-proof-last-ship]')).toBeVisible();
+    await expect(page.locator('[data-proof-activity]')).toBeVisible();
+
+    const leadForm = page.locator('[data-lead-form]');
+    await expect(leadForm).toBeVisible();
+    await expect(page.locator('#lead-name')).toHaveAttribute('required', '');
+    await expect(page.locator('#lead-email')).toHaveAttribute('required', '');
+    await expect(page.locator('#lead-type')).toHaveAttribute('required', '');
+    await expect(page.locator('#lead-timeline')).toHaveAttribute('required', '');
+    await expect(page.locator('#lead-summary')).toHaveAttribute('required', '');
+
+    const calendarLink = page.locator('[data-track-event="lead_calendar"]');
+    await expect(calendarLink).toBeVisible();
+    await expect(calendarLink).toHaveAttribute('target', '_blank');
+    const relValue = await calendarLink.getAttribute('rel');
+    expect(relValue).toContain('noopener');
+    expect(relValue).toContain('noreferrer');
+  });
+
   test('applies project filters', async ({ page }) => {
     await page.goto('/#portfolio', { waitUntil: 'domcontentloaded' });
 
