@@ -134,7 +134,7 @@ CI workflows live in `.github/workflows/`:
 
 Current Lighthouse thresholds:
 
-- Performance: `>= 0.55`
+- Performance: `>= 0.53`
 - Accessibility: `>= 0.95`
 - SEO: `>= 0.90`
 

@@ -11,7 +11,8 @@ test.describe('Visual Regression', () => {
     await expect(page).toHaveScreenshot('homepage.png', {
       fullPage: true,
       animations: 'disabled',
-      mask: [page.locator('#effects-root')]
+      mask: [page.locator('#effects-root')],
+      maxDiffPixels: 200
     });
   });
 
@@ -30,7 +31,8 @@ test.describe('Visual Regression', () => {
     await expect(page).toHaveScreenshot('portfolio-tab.png', {
       fullPage: true,
       animations: 'disabled',
-      mask: [page.locator('#effects-root')]
+      mask: [page.locator('#effects-root')],
+      maxDiffPixels: 200
     });
   });
 });

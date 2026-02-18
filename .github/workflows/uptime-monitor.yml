@@ -98,11 +98,6 @@ jobs:
               state: 'closed'
             });
 
-      - name: Report check status
-        if: always()
-        run: |
-          if [[ "${{ steps.uptime.outcome }}" == "failure" ]]; then
-            echo "Uptime checks failed. Alert issue flow executed; workflow left successful to avoid noisy failure emails."
-          else
-            echo "Uptime checks passed."
-          fi
+      - name: Fail workflow when checks fail
+        if: steps.uptime.outcome == 'failure'
+        run: exit 1
