@@ -1,32 +1,39 @@
-# Kamran Boroomand Portfolio
+# Portfolio Website Repository
 
-Static portfolio website for [kamranboroomand.ir](https://kamranboroomand.ir), built for Linux systems/security work showcase with interactive WebGL effects and strong quality gates.
+Static, production-ready portfolio website for [kamranboroomand.ir](https://kamranboroomand.ir), with multilingual UX, data-driven projects, case-study pages, and CI quality gates.
 
-## Highlights
+This repo can be used as-is for this site or forked as a base for your own portfolio website.
 
-- Single-page app flow with hash-based tabs (`About`, `Resume`, `Projects`, `Settings`).
-- Built-in language switcher in the topbar (`English`, `Русский`, `فارسی`) with persistent preference and RTL support for Persian.
-- Data-driven project cards loaded from `assets/data/projects.json`.
-- Dedicated project case-study pages with per-project SEO/Open Graph metadata:
-  - `/projects/nullid/`
-  - `/projects/nullcal/`
-  - `/projects/pacman/`
-- Single global contact strip beneath tab content, plus public references and monitoring links.
-- ATS-friendly downloadable one-page PDF resume.
-- Interactive effects layer (React + OGL) mounted separately from main content.
-- Accessibility-first interactions: keyboard tab navigation, skip link, ARIA-aware controls.
-- Security and SEO baseline: CSP, Open Graph/Twitter metadata, JSON-LD schema, hreflang alternates, `robots.txt`, and `sitemap.xml`.
-- Custom `404.html` with recovery links.
+## Live Website
 
-## Stack
+- Main site: `https://kamranboroomand.ir/`
+- Case studies:
 
-- Core UI: `HTML`, `CSS`, `Vanilla JS`
-- Effects: `React 18`, `OGL`, `esbuild`
+1. `https://kamranboroomand.ir/projects/nullid/`
+2. `https://kamranboroomand.ir/projects/nullcal/`
+3. `https://kamranboroomand.ir/projects/pacman/`
+
+## Feature Highlights
+
+- Single-page tab flow with hash routing (`#about`, `#resume`, `#portfolio`, `#settings`).
+- Language switcher with persisted preference (`en`, `ru`, `fa`) and RTL support for Persian.
+- Data-driven project cards from `assets/data/projects.json`.
+- Dedicated case-study pages under `projects/*` with project-specific SEO/OG metadata.
+- Optional interactive effects layer (React + OGL) mounted separately from core content.
+- Accessibility baseline with keyboard tab navigation, skip link, and `axe` checks.
+- SEO and discoverability: Open Graph, Twitter metadata, JSON-LD schema, `robots.txt`, and `sitemap.xml`.
+- Security baseline: strict CSP, hardened outbound links, no server runtime in this repository.
+- Automated quality gates in CI, including Playwright, Lighthouse CI, and asset budgets.
+
+## Tech Stack
+
+- UI: `HTML`, `CSS`, `Vanilla JavaScript`
+- Effects layer: `React 18`, `OGL`, bundled by `esbuild`
 - Tooling: `ESLint`, `Prettier`
-- Testing: `Playwright`, `axe-core` (a11y), `Lighthouse CI`
+- Tests: `Playwright`, `@axe-core/playwright`, `Lighthouse CI`
 - Asset pipeline: `sharp` scripts for image optimization and responsive variants
 
-## Project Layout
+## Repository Layout
 
 ```text
 .
@@ -40,99 +47,111 @@ Static portfolio website for [kamranboroomand.ir](https://kamranboroomand.ir), b
 │   ├── images/
 │   └── js/
 ├── src/react/
-├── tests/e2e/
 ├── scripts/
+├── tests/e2e/
 ├── .github/workflows/
 └── README.md
 ```
 
-## Quick Start
+## Getting Started
 
 Prerequisites:
 
-- Node.js 20+ recommended
-- npm 10+
+- Node.js `20+`
+- npm `10+`
 
-Install dependencies:
+Install:
 
 ```bash
 npm ci
 ```
 
-Run local development (watch effects + serve static site):
+Run local development (watch effects bundle + static server):
 
 ```bash
 npm run dev
 ```
 
-Open:
+Open `http://127.0.0.1:4173`.
 
-- `http://127.0.0.1:4173`
+## NPM Scripts
 
-## Key Files
+Development and build:
 
-- Content/metadata: `index.html`
-- Main styling: `assets/css/style.css`
-- Case-study styling: `assets/css/project-page.css`
-- Interaction logic (tabs, filters, preferences, analytics pixel): `assets/js/script.js`
-- Case-study analytics logic: `assets/js/project-page.js`
-- Localization catalog: `assets/data/translations.json`
-- Effect source: `src/react/effects-entry.tsx`
-- Project data: `assets/data/projects.json`
-- ATS resume source + PDF: `assets/docs/kamran-boroomand-resume-ats.html`, `assets/docs/kamran-boroomand-resume-ats.pdf`
-- Playwright config: `playwright.config.mjs`
-- Lighthouse config: `.lighthouserc.json`
+- `npm run dev` - watch effects bundle and serve on `127.0.0.1:4173`
+- `npm run serve` - static server for manual checks
+- `npm run serve:test` - static server used by Playwright (`127.0.0.1:4273`)
+- `npm run watch:effects` - rebuild `assets/js/effects.bundle.js` on change
+- `npm run build:effects` - one-time effects bundle build
+- `npm run images:responsive` - regenerate responsive image variants
+- `npm run optimize:images` - optimize source image assets
+- `npm run resume:pdf` - regenerate `assets/docs/kamran-boroomand-resume-ats.pdf`
+- `npm run build` - run responsive images + effects build
 
-## Scripts
+Quality and release gates:
 
-### Development and Build
+- `npm run lint` - ESLint across browser JS, scripts, and tests
+- `npm run format` - Prettier write mode
+- `npm run format:check` - Prettier check mode
+- `npm run perf:check` - asset/performance budget checks
+- `npm run test:links` - internal link/asset reference checks in HTML
+- `npm run test:e2e` - Chromium smoke suite
+- `npm run test:e2e:matrix` - smoke suite across multiple browsers/devices
+- `npm run test:a11y` - accessibility checks with `axe`
+- `npm run test:visual` - visual regression snapshots
+- `npm run test:e2e:easter-egg` - avatar easter egg behavior check
+- `npm run test:lighthouse` - Lighthouse CI assertions
+- `npm run check` - build + lint + format + perf + links + smoke + a11y
+- `npm run quality:extended` - matrix + visual + easter egg
+- `npm run release:prepare` - full gate (`check + quality:extended + lighthouse`)
 
-- `npm run dev` - watch effects bundle + serve site on `127.0.0.1:4173`.
-- `npm run serve` - serve static files for local manual checks.
-- `npm run serve:test` - local server used by Playwright.
-- `npm run watch:effects` - watch and rebuild `assets/js/effects.bundle.js`.
-- `npm run build:effects` - one-time effects bundle build.
-- `npm run images:responsive` - generate responsive image variants.
-- `npm run build` - run `images:responsive` then `build:effects`.
-- `npm run optimize:images` - optimize source image assets.
-- `npm run resume:pdf` - generate `assets/docs/kamran-boroomand-resume-ats.pdf` from its HTML source.
-
-### Quality
-
-- `npm run lint` - ESLint for browser JS, scripts, and tests.
-- `npm run format` - format repository with Prettier.
-- `npm run format:check` - verify formatting.
-- `npm run perf:check` - enforce asset/performance budgets.
-- `npm run test:e2e` - smoke tests (chromium).
-- `npm run test:e2e:matrix` - smoke tests across multiple browsers/devices.
-- `npm run test:a11y` - accessibility checks with axe.
-- `npm run test:links` - validate internal links and local asset references in HTML files.
-- `npm run test:visual` - screenshot regression checks.
-- `npm run test:e2e:easter-egg` - avatar easter egg behavior check.
-- `npm run test:lighthouse` - Lighthouse CI assertions.
-- `npm run check` - build + lint + format + perf + links + smoke + a11y.
-- `npm run quality:extended` - matrix + visual + easter egg.
-- `npm run release:prepare` - full gate: `check + quality:extended + lighthouse`.
-
-## Visual Snapshot Workflow
-
-When intentional UI changes affect screenshot baselines:
+When visual baselines intentionally change:
 
 ```bash
 npm run test:visual -- --update-snapshots
 ```
 
-Snapshots are stored in `tests/e2e/visual.spec.js-snapshots/`.
+## Customize This Repo For Your Portfolio
 
-## Quality and CI
+If you fork this project, update these first:
 
-CI workflows live in `.github/workflows/`:
+1. Identity and metadata
 
-- `ci.yml`: build, lint, formatting, perf, internal links, smoke, and a11y.
-- `extended-quality.yml`: matrix + visual + easter egg.
-- Lighthouse assertions are configured in `.lighthouserc.json`.
+- `index.html`: `<title>`, description, canonical URL, Open Graph, Twitter, JSON-LD person/site data
+- `404.html`: fallback copy and metadata
 
-Current Lighthouse thresholds:
+2. Personal and project content
+
+- `assets/data/projects.json`: card content, filters, metrics, links, localized project text
+- `projects/*/index.html`: case-study page copy and media
+- `assets/data/translations.json`: interface and content localization
+
+3. Resume
+
+- `assets/docs/kamran-boroomand-resume-ats.html` then run `npm run resume:pdf`
+
+4. Domain and indexing
+
+- `CNAME`, `robots.txt`, `sitemap.xml`, and absolute URLs in HTML metadata
+
+5. Branding/media
+
+- Replace images under `assets/images/`, then run:
+  - `npm run optimize:images`
+  - `npm run images:responsive`
+
+## CI Workflows
+
+Workflows in `.github/workflows/`:
+
+- `ci.yml` - main CI for build, lint, formatting, perf, links, smoke, a11y, and lighthouse jobs
+- `extended-quality.yml` - scheduled/manual cross-browser smoke + visual regression
+- `preview.yml` - PR preview artifact upload with PR comment
+- `release-snapshot.yml` - artifact snapshot for pushes to `main`
+- `rollback.yml` - manual rollback PR generator to a target commit SHA
+- `uptime-monitor.yml` - scheduled uptime checks with auto-open/close alert issue flow
+
+Lighthouse thresholds (`.lighthouserc.json`):
 
 - Performance: `>= 0.53`
 - Accessibility: `>= 0.95`
@@ -140,24 +159,19 @@ Current Lighthouse thresholds:
 
 ## Deployment
 
-This is a static site project and is deployment-targeted for custom domain hosting.
-
-Included deployment/search files:
-
-- `CNAME`
-- `robots.txt`
-- `sitemap.xml`
+This is a static site. You can deploy to any static host (for example GitHub Pages, Cloudflare Pages, Netlify, Vercel static output, or S3+CDN).
 
 Recommended release flow:
 
-1. Update content/style/code.
+1. Update content/code/assets.
 2. Run `npm run release:prepare`.
-3. Commit source + generated assets (effects bundle, snapshots if intentionally changed).
-4. Push/deploy to your static host.
+3. Commit source and generated artifacts.
+4. Push and deploy.
 
-## Security Notes
+## Contributing
 
-- CSP is defined in both `index.html` and `404.html`.
-- No backend runtime in this repository.
-- Outbound links are hardened with `rel="noopener noreferrer"`.
-- Lockfile is committed for deterministic installs.
+See `CONTRIBUTING.md` for branch and release checklists.
+
+## License
+
+Released under the MIT License. See `LICENSE`.
