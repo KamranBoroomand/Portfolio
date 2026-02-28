@@ -100,7 +100,7 @@ Quality and release gates:
 - `npm run test:a11y` - accessibility checks with `axe`
 - `npm run test:visual` - visual regression snapshots
 - `npm run test:e2e:easter-egg` - avatar easter egg behavior check
-- `npm run test:lighthouse` - Lighthouse CI assertions
+- `npm run test:lighthouse` - Lighthouse CI assertions with automatic retry on transient Chrome interstitial failures
 - `npm run check` - build + lint + format + perf + links + smoke + a11y
 - `npm run quality:extended` - matrix + visual + easter egg
 - `npm run release:prepare` - full gate (`check + quality:extended + lighthouse`)
@@ -110,6 +110,11 @@ When visual baselines intentionally change:
 ```bash
 npm run test:visual -- --update-snapshots
 ```
+
+Lighthouse retry tuning (optional):
+
+- `LHCI_MAX_ATTEMPTS` - number of autorun attempts before failing (default `3`)
+- `LHCI_RETRY_DELAY_MS` - delay between retries in milliseconds (default `3000`)
 
 ## Customize This Repo For Your Portfolio
 
