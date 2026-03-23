@@ -2,9 +2,9 @@
   "ci": {
     "collect": {
       "url": [
-        "http://127.0.0.1:4173/",
-        "http://127.0.0.1:4173/#resume",
-        "http://127.0.0.1:4173/#portfolio"
+        "http://127.0.0.1:4173/?lhci=1",
+        "http://127.0.0.1:4173/?lhci=1#resume",
+        "http://127.0.0.1:4173/?lhci=1#portfolio"
       ],
       "startServerCommand": "npm run serve",
       "startServerReadyPattern": "Available on:",

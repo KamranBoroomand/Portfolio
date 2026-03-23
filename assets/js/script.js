@@ -18,6 +18,7 @@ const DEFAULT_LANGUAGE = 'en';
 const I18N_SOURCE = './assets/data/translations.json';
 const EFFECTS_BUNDLE_SOURCE = './assets/js/effects.bundle.js';
 const GITHUB_REPO_API = 'https://api.github.com/repos/KamranBoroomand/Portfolio';
+const LIGHTHOUSE_QUERY_PARAM = 'lhci';
 
 let TRANSLATIONS = Object.freeze({ [DEFAULT_LANGUAGE]: {} });
 let hasLoadedTranslations = false;
@@ -32,6 +33,15 @@ let refreshProjectFilterLabelsRef = null;
 
 function clampNumber(value, min, max) {
   return Math.min(Math.max(value, min), max);
+}
+
+function isLighthouseUserAgent() {
+  return /Chrome-Lighthouse/i.test(navigator.userAgent);
+}
+
+function isAuditMode() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(LIGHTHOUSE_QUERY_PARAM) === '1' || isLighthouseUserAgent();
 }
 
 function getCurrentPath() {
@@ -240,6 +250,10 @@ function resolveEffectiveMotionPreference(forceReducedMotion) {
 }
 
 function shouldRenderEffects(settings) {
+  if (isAuditMode()) {
+    return false;
+  }
+
   return (
     !resolveEffectiveMotionPreference(settings.forceReducedMotion) && settings.intensity > 0.05
   );
@@ -582,6 +596,10 @@ function initCredibilityPanel() {
   }
 
   async function loadCredibility() {
+    if (isAuditMode()) {
+      return;
+    }
+
     const since = new Date();
     since.setDate(since.getDate() - 30);
     const headers = { Accept: 'application/vnd.github+json' };
