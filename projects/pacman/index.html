@@ -10,7 +10,7 @@
     <title>PacMan Case Study | Kamran Boroomand</title>
     <meta
       name="description"
-      content="PacMan case study: browser game project focused on deterministic loop logic, responsive controls, and maintainable frontend architecture."
+      content="PacMan case study: feature-rich browser game with arcade-accurate ghost logic, replay tooling, accessibility controls, and responsive multi-input play."
     />
     <meta name="robots" content="index,follow" />
     <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1" />
@@ -26,7 +26,7 @@
     <meta property="og:title" content="PacMan Case Study | Kamran Boroomand" />
     <meta
       property="og:description"
-      content="Frontend/gameplay case study with architecture, role, and measurable quality metrics for the PacMan project."
+      content="Browser-game case study covering gameplay systems, accessibility upgrades, and the richer feature set behind the redesigned PacMan."
     />
     <meta property="og:url" content="https://kamranboroomand.ir/projects/pacman/" />
     <meta property="og:image" content="https://kamranboroomand.ir/assets/images/og-pacman.png" />
@@ -48,7 +48,7 @@
     <meta name="twitter:title" content="PacMan Case Study | Kamran Boroomand" />
     <meta
       name="twitter:description"
-      content="Frontend/gameplay case study with architecture, role, and measurable quality metrics for the PacMan project."
+      content="Browser-game case study covering gameplay systems, accessibility upgrades, and the richer feature set behind the redesigned PacMan."
     />
     <meta name="twitter:url" content="https://kamranboroomand.ir/projects/pacman/" />
     <meta name="twitter:image" content="https://kamranboroomand.ir/assets/images/og-pacman.png" />
@@ -82,7 +82,7 @@
             "@id": "https://kamranboroomand.ir/projects/pacman/#webpage",
             "url": "https://kamranboroomand.ir/projects/pacman/",
             "name": "PacMan Case Study | Kamran Boroomand",
-            "description": "Frontend/gameplay case study with architecture, role, and measurable quality metrics for the PacMan project.",
+            "description": "Browser-game case study covering gameplay systems, accessibility upgrades, and the richer feature set behind the redesigned PacMan.",
             "isPartOf": { "@id": "https://kamranboroomand.ir/#website" },
             "about": { "@id": "https://kamranboroomand.ir/projects/pacman/#work" },
             "primaryImageOfPage": "https://kamranboroomand.ir/assets/images/og-pacman.png",
@@ -93,13 +93,13 @@
             "@id": "https://kamranboroomand.ir/projects/pacman/#work",
             "name": "PacMan Case Study",
             "url": "https://kamranboroomand.ir/projects/pacman/",
-            "description": "Frontend/gameplay case study with architecture, role, and measurable quality metrics for the PacMan project.",
+            "description": "Browser-game case study covering gameplay systems, accessibility upgrades, and the richer feature set behind the redesigned PacMan.",
             "image": "https://kamranboroomand.ir/assets/images/og-pacman.png",
-            "genre": "Frontend Engineering",
+            "genre": "Browser Game",
             "author": { "@id": "https://kamranboroomand.ir/#person" },
             "publisher": { "@id": "https://kamranboroomand.ir/#person" },
             "mainEntityOfPage": { "@id": "https://kamranboroomand.ir/projects/pacman/#webpage" },
-            "keywords": ["frontend performance", "browser game", "deterministic game loop"],
+            "keywords": ["browser game", "ghost AI", "replay tooling", "accessibility controls"],
             "inLanguage": "en",
             "isPartOf": { "@id": "https://kamranboroomand.ir/#website" }
           },
@@ -130,11 +130,11 @@
 
     <main class="case-layout">
       <header class="hero card">
-        <p class="eyebrow">Frontend Case Study</p>
+        <p class="eyebrow">Browser Game Case Study</p>
         <h1>PacMan</h1>
         <p class="hero-summary">
-          Classic arcade gameplay rebuilt for the browser with clean modular structure, responsive
-          input, and reliable frame pacing.
+          Arcade-inspired browser game rebuilt with authentic ghost behavior, replay/debug tools,
+          accessibility settings, and responsive controls across input modes.
         </p>
         <div class="hero-actions">
           <a
@@ -148,12 +148,12 @@
           >
           <a
             class="btn"
-            href="https://github.com/KamranBoroomand?tab=repositories"
+            href="https://github.com/KamranBoroomand/PacMan"
             target="_blank"
             rel="noopener noreferrer"
             data-track-event="case_repo"
             data-track-label="pacman"
-            >Browse GitHub Repos</a
+            >View GitHub Repo</a
           >
           <a
             class="btn"
@@ -166,20 +166,39 @@
         </div>
       </header>
 
+      <section class="showcase card" aria-label="Current PacMan gameplay preview">
+        <figure class="showcase-media">
+          <img
+            src="/assets/images/pacman-site-preview.png"
+            alt="Current PacMan gameplay preview"
+            width="1440"
+            height="900"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+      </section>
+
       <section class="metrics card">
         <h2 class="section-title">Impact Metrics</h2>
         <div class="metric-grid">
           <article class="metric">
+            <p class="metric-value">4</p>
+            <p class="metric-label">
+              Arcade-accurate ghost personalities with distinct targeting rules.
+            </p>
+          </article>
+          <article class="metric">
+            <p class="metric-value">5</p>
+            <p class="metric-label">
+              Input paths across keyboard, touch, swipe, virtual stick, and gamepad.
+            </p>
+          </article>
+          <article class="metric">
             <p class="metric-value">60fps</p>
-            <p class="metric-label">Stable gameplay rendering target on desktop browsers.</p>
-          </article>
-          <article class="metric">
-            <p class="metric-value">&lt;45ms</p>
-            <p class="metric-label">Median input-to-response latency in normal gameplay.</p>
-          </article>
-          <article class="metric">
-            <p class="metric-value">100%</p>
-            <p class="metric-label">Core mechanics covered in functional playtest checklist.</p>
+            <p class="metric-label">
+              Target supported by frame-pacing guardrails and playtest coverage.
+            </p>
           </article>
         </div>
       </section>
@@ -188,16 +207,16 @@
         <article class="section-block card">
           <h2 class="section-title">Problem</h2>
           <p>
-            Recreating classic arcade behavior in modern browsers requires deterministic updates,
-            responsive control handling, and maintainable UI code.
+            The redesign needed to preserve classic Pac-Man feel while expanding replayability,
+            accessibility, and responsive multi-input play beyond a simple browser clone.
           </p>
         </article>
 
         <article class="section-block card">
           <h2 class="section-title">My Role</h2>
           <p>
-            I implemented gameplay loop logic, collision + scoring behavior, and responsive control
-            surfaces for desktop and mobile contexts.
+            I implemented the gameplay systems, ghost AI behaviors, replay/debug tooling,
+            accessibility options, and responsive control surfaces for desktop and mobile play.
           </p>
         </article>
 
@@ -208,33 +227,37 @@
             <li>HTML</li>
             <li>CSS</li>
             <li>Canvas</li>
-            <li>GitHub Pages</li>
+            <li>Playwright</li>
           </ul>
         </article>
 
         <article class="section-block card">
           <h2 class="section-title">Architecture</h2>
           <ul class="arch-list">
-            <li>State-driven loop for deterministic update and render phases.</li>
-            <li>Collision and scoring modules separated from rendering.</li>
-            <li>Responsive layout and controls tuned for multiple viewport sizes.</li>
+            <li>
+              Deterministic fixed-step loop keeps gameplay, replay capture, and debugging in sync.
+            </li>
+            <li>Ghost AI, scoring, challenge rules, and the phase state machine stay modular.</li>
+            <li>
+              Responsive controls support keyboard, touch, swipe, virtual stick, and gamepad input.
+            </li>
           </ul>
         </article>
 
         <article class="section-block card">
           <h2 class="section-title">Outcome</h2>
           <p>
-            Delivered a polished browser game experience that balances nostalgic interaction with a
-            maintainable and testable frontend structure.
+            The result is a deeper browser game with authentic arcade behavior, modern accessibility
+            settings, daily/replay loops, and repeatable automated coverage.
           </p>
         </article>
 
         <article class="section-block card">
-          <h2 class="section-title">Reference Excerpt</h2>
+          <h2 class="section-title">Product Highlights</h2>
           <p>
-            "The project was delivered with clean structure, clear trade-off decisions, and reliable
-            performance across test sessions."<br />
-            <strong>Frontend Reviewer (independent portfolio review)</strong>
+            The redesign adds challenge modes, deterministic replay support, mobile-friendly input
+            layers, and accessibility controls, making the project feel like a full-featured arcade
+            web game rather than a minimal homage.
           </p>
         </article>
       </section>

@@ -45,8 +45,7 @@ function isAuditMode() {
 }
 
 function getCurrentPath() {
-  const { pathname, search, hash } = window.location;
-  return `${pathname}${search || ''}${hash || ''}`;
+  return `${location.pathname}${location.search}${location.hash}`;
 }
 
 function sanitizeAnalyticsValue(value, maxLength = 180) {
@@ -64,10 +63,10 @@ function emitAnalyticsEvent(eventName, payload = {}) {
 }
 
 function normalizeLanguage(language) {
-  const normalized = String(language || '')
+  language = String(language || '')
     .trim()
     .toLowerCase();
-  return SUPPORTED_LANGUAGES.includes(normalized) ? normalized : null;
+  return SUPPORTED_LANGUAGES.includes(language) ? language : null;
 }
 
 async function ensureTranslationsLoaded() {
@@ -161,8 +160,7 @@ function updateLanguageInUrl(locale) {
   }
 
   const nextPath = `${url.pathname}${url.search}${url.hash}`;
-  const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-  if (nextPath !== currentPath) {
+  if (nextPath !== getCurrentPath()) {
     history.replaceState(null, '', nextPath);
   }
 }
@@ -250,12 +248,10 @@ function resolveEffectiveMotionPreference(forceReducedMotion) {
 }
 
 function shouldRenderEffects(settings) {
-  if (isAuditMode()) {
-    return false;
-  }
-
   return (
-    !resolveEffectiveMotionPreference(settings.forceReducedMotion) && settings.intensity > 0.05
+    !isAuditMode() &&
+    !resolveEffectiveMotionPreference(settings.forceReducedMotion) &&
+    settings.intensity > 0.05
   );
 }
 
@@ -390,7 +386,6 @@ function initPrivacyAnalytics() {
     return;
   }
 
-  const queryPrefix = pixelPath.includes('?') ? '&' : '?';
   let lastTrackedPath = '';
   let errorEventsSent = 0;
 
@@ -424,7 +419,7 @@ function initPrivacyAnalytics() {
 
     const image = new Image(1, 1);
     image.referrerPolicy = 'no-referrer';
-    image.src = `${pixelPath}${queryPrefix}${params.toString()}`;
+    image.src = `${pixelPath}${pixelPath.includes('?') ? '&' : '?'}${params.toString()}`;
   }
 
   window.__KB_ANALYTICS_TRACK__ = sendAnalyticsEvent;
@@ -541,13 +536,7 @@ function initPrivacyAnalytics() {
 }
 
 function resolveIntlLocale(locale) {
-  if (locale === 'ru') {
-    return 'ru-RU';
-  }
-  if (locale === 'fa') {
-    return 'fa-IR';
-  }
-  return 'en-US';
+  return locale === 'ru' ? 'ru-RU' : locale === 'fa' ? 'fa-IR' : 'en-US';
 }
 
 function formatLocalizedDate(date) {

@@ -184,7 +184,8 @@ test.describe('Portfolio Smoke Flow', () => {
       'https://nullcal.kamranboroomand.ir',
       'https://pacman.kamranboroomand.ir',
       'https://github.com/KamranBoroomand/NullID',
-      'https://github.com/KamranBoroomand/NullCal'
+      'https://github.com/KamranBoroomand/NullCal',
+      'https://github.com/KamranBoroomand/PacMan'
     ];
 
     for (const href of expectedLinks) {

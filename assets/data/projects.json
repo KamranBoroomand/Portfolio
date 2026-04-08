@@ -3,30 +3,30 @@
     {
       "id": "nullid",
       "title": "NullID",
-      "categoryLabel": "Security Platform",
+      "categoryLabel": "Security Workbench",
       "filters": ["security"],
-      "description": "Privacy-focused communication and security project with strong access control and operational reliability principles.",
-      "problem": "Authentication and secure collaboration were fragmented across tools, making incident response noisy and audit trails weak.",
-      "role": "Designed the baseline hardening model, access-control boundaries, and operational runbooks while implementing the deployment workflow.",
-      "stack": ["Linux", "Nginx", "Bash", "Systemd", "Fail2ban"],
+      "description": "Offline-first security workbench for hashing, redaction, sanitization, encryption, secure notes, and workflow verification with zero runtime backend dependency.",
+      "problem": "Sensitive cleanup, verification, and safe-sharing tasks were scattered across ad-hoc utilities, which made local-first handling inconsistent and slowed incident prep.",
+      "role": "Designed and built the React + TypeScript workbench, local CLI companion, security UX safeguards, and verifiable release packaging.",
+      "stack": ["React", "TypeScript", "Vite", "WebCrypto", "IndexedDB"],
       "architecture": [
-        "Hardened Linux host with strict SSH and service boundaries",
-        "Reverse-proxy ingress layer with controlled upstream exposure",
-        "Audit-friendly logging and alerting pipeline for suspicious events"
+        "Browser UI and local CLI share an offline-first security workflow model",
+        "Inspectable workflow packages support safe-share and incident handoff",
+        "On-device storage and no runtime API calls keep sensitive processing local"
       ],
-      "outcome": "Delivered a secure-by-default platform baseline that reduced authentication noise and made operational triage faster and more predictable.",
+      "outcome": "Turned fragmented security utilities into one local-first workbench for hashing, sanitization, encrypted notes, and evidence-ready sharing.",
       "impactMetrics": [
         {
-          "value": "88%",
-          "label": "reduction in failed SSH authentication noise after hardening"
+          "value": "12",
+          "label": "focused security modules in the current workbench"
         },
         {
-          "value": "4x",
-          "label": "faster suspicious-session triage with centralized logs"
+          "value": "19",
+          "label": "local CLI commands aligned with browser workflows"
         },
         {
-          "value": "100%",
-          "label": "privileged access moved to least-privilege role profiles"
+          "value": "0",
+          "label": "runtime external services required for core workflows"
         }
       ],
       "previewUrl": "https://nullid.kamranboroomand.ir",
@@ -40,30 +40,30 @@
       "i18n": {
         "ru": {
           "title": "NullID",
-          "categoryLabel": "Платформа безопасности",
-          "description": "Проект защищенной коммуникации и безопасности с упором на контроль доступа, приватность и операционную надежность.",
+          "categoryLabel": "Набор инструментов безопасности",
+          "description": "Офлайн-ориентированный security workbench для хеширования, редактирования, очистки, шифрования, защищенных заметок и проверки workflow-пакетов без runtime-бэкенда.",
           "previewAriaLabel": "Открыть сайт NullID",
           "primaryActionLabel": "Открыть сайт",
           "detailAriaLabel": "Открыть кейс NullID",
           "repoLabel": "Открыть репозиторий GitHub",
-          "imageAlt": "Предпросмотр сайта NullID"
+          "imageAlt": "Предпросмотр обновленного интерфейса NullID"
         },
         "fa": {
           "title": "نال‌آی‌دی",
-          "categoryLabel": "پلتفرم امنیتی",
-          "description": "پروژه ارتباط و امنیت با تمرکز بر حریم خصوصی، کنترل دسترسی قوی و پایداری عملیاتی.",
+          "categoryLabel": "میزکار امنیتی",
+          "description": "میزکار امنیتی آفلاین‌محور برای هش‌گیری، ریداکشن، پاک‌سازی، رمزنگاری، یادداشت امن و بررسی بسته‌های workflow بدون وابستگی به بک‌اند در زمان اجرا.",
           "previewAriaLabel": "باز کردن وب‌سایت نال‌آی‌دی",
           "primaryActionLabel": "باز کردن وب‌سایت",
           "detailAriaLabel": "باز کردن مطالعه موردی نال‌آی‌دی",
           "repoLabel": "مشاهده مخزن گیت‌هاب",
-          "imageAlt": "پیش‌نمایش وب‌سایت نال‌آی‌دی"
+          "imageAlt": "پیش‌نمایش رابط بازطراحی‌شده نال‌آی‌دی"
         }
       },
       "image": {
         "src": "./assets/images/nullid-site-preview.png",
-        "alt": "Live preview of NullID website",
-        "width": 1200,
-        "height": 800,
+        "alt": "Preview of the redesigned NullID security workbench",
+        "width": 1440,
+        "height": 900,
         "sizes": "(max-width: 759px) 100vw, 50vw",
         "responsiveBase": "nullid-site-preview",
         "responsiveWidths": [480, 800, 1200]
@@ -141,30 +141,30 @@
     {
       "id": "pacman",
       "title": "PacMan",
-      "categoryLabel": "Game Project",
+      "categoryLabel": "Arcade Web Game",
       "filters": ["all"],
-      "description": "Classic arcade-style PacMan implementation focused on gameplay logic, responsive controls, and clean front-end structure.",
-      "problem": "The goal was to recreate classic arcade behavior with modern responsiveness while keeping code modular and maintainable.",
-      "role": "Implemented core gameplay logic, rendering loops, input handling, and responsive layout behavior across viewport sizes.",
-      "stack": ["JavaScript", "HTML", "CSS", "Canvas", "GitHub Pages"],
+      "description": "Feature-rich PacMan browser game with arcade-accurate ghost logic, daily challenges, replay tools, and mobile-friendly controls.",
+      "problem": "The redesign aimed to move beyond a simple clone by preserving arcade feel while adding replayability, accessibility, and responsive multi-input play.",
+      "role": "Implemented the gameplay systems, AI behaviors, replay/debug tooling, accessibility settings, and responsive control surfaces.",
+      "stack": ["JavaScript", "HTML", "CSS", "Canvas", "Playwright"],
       "architecture": [
-        "State-driven game loop for deterministic gameplay updates",
-        "Collision and scoring modules decoupled from rendering logic",
-        "Responsive UI layer for desktop and mobile controls"
+        "Deterministic fixed-step loop keeps gameplay, replay capture, and debugging in sync",
+        "Ghost AI, scoring, challenge rules, and phase state machine stay modular",
+        "Responsive control layers support keyboard, touch, virtual stick, and gamepad input"
       ],
-      "outcome": "Released a polished browser-based game that balances nostalgic interaction patterns with modern frontend structure.",
+      "outcome": "Shipped a much deeper browser game experience with authentic arcade behavior, modern accessibility controls, and repeatable test coverage.",
       "impactMetrics": [
         {
+          "value": "4",
+          "label": "arcade-accurate ghost personalities with distinct targeting rules"
+        },
+        {
+          "value": "5",
+          "label": "input paths across keyboard, touch, swipe, virtual stick, and gamepad"
+        },
+        {
           "value": "60fps",
-          "label": "stable gameplay rendering target on desktop browsers"
-        },
-        {
-          "value": "<45ms",
-          "label": "median input-to-response latency under normal load"
-        },
-        {
-          "value": "100%",
-          "label": "core game mechanics covered in functional playtest checklist"
+          "label": "target supported by frame-pacing guardrails and playtest coverage"
         }
       ],
       "previewUrl": "https://pacman.kamranboroomand.ir",
@@ -173,35 +173,35 @@
       "primaryActionLabel": "Open Live Website",
       "caseStudyUrl": "/projects/pacman/",
       "detailAriaLabel": "Open PacMan case study",
-      "repoUrl": "https://github.com/KamranBoroomand?tab=repositories",
-      "repoLabel": "Browse All Repos",
+      "repoUrl": "https://github.com/KamranBoroomand/PacMan",
+      "repoLabel": "View GitHub Repo",
       "i18n": {
         "ru": {
           "title": "PacMan",
-          "categoryLabel": "Игровой проект",
-          "description": "Классическая аркадная реализация PacMan с акцентом на игровую логику, отзывчивое управление и чистую фронтенд-архитектуру.",
+          "categoryLabel": "Аркадная веб-игра",
+          "description": "Расширенная браузерная версия PacMan с аркадно-точной логикой призраков, daily challenge, replay-инструментами и mobile-friendly управлением.",
           "previewAriaLabel": "Открыть сайт PacMan",
           "primaryActionLabel": "Открыть сайт",
           "detailAriaLabel": "Открыть кейс PacMan",
-          "repoLabel": "Открыть все репозитории",
-          "imageAlt": "Предпросмотр сайта PacMan"
+          "repoLabel": "Открыть репозиторий GitHub",
+          "imageAlt": "Предпросмотр обновленной игры PacMan"
         },
         "fa": {
           "title": "پک‌من",
-          "categoryLabel": "پروژه بازی",
-          "description": "پیاده‌سازی کلاسیک سبک آرکید PacMan با تمرکز بر منطق بازی، کنترل واکنش‌گرا و ساختار تمیز فرانت‌اند.",
+          "categoryLabel": "بازی آرکید وب",
+          "description": "نسخه‌ای غنی از بازی PacMan در مرورگر با منطق دقیق ارواح، چالش‌های روزانه، ابزارهای بازپخش و کنترل‌های مناسب موبایل.",
           "previewAriaLabel": "باز کردن وب‌سایت پک‌من",
           "primaryActionLabel": "باز کردن وب‌سایت",
           "detailAriaLabel": "باز کردن مطالعه موردی پک‌من",
-          "repoLabel": "مشاهده همه مخزن‌ها",
-          "imageAlt": "پیش‌نمایش وب‌سایت پک‌من"
+          "repoLabel": "مشاهده مخزن گیت‌هاب",
+          "imageAlt": "پیش‌نمایش بازی بازطراحی‌شده پک‌من"
         }
       },
       "image": {
         "src": "./assets/images/pacman-site-preview.png",
-        "alt": "Live preview of PacMan website",
-        "width": 1200,
-        "height": 800,
+        "alt": "Preview of the redesigned PacMan browser game",
+        "width": 1440,
+        "height": 900,
         "sizes": "(max-width: 759px) 100vw, 50vw",
         "responsiveBase": "pacman-site-preview",
         "responsiveWidths": [480, 800, 1200]
