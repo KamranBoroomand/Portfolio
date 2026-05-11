@@ -131,7 +131,7 @@ test.describe('Portfolio Smoke Flow', () => {
 
     const visibleProjectItems = page.locator('.project-item:not([hidden])');
 
-    await expect(visibleProjectItems).toHaveCount(3);
+    await expect(visibleProjectItems).toHaveCount(4);
 
     await applyProjectFilter(page, 'security');
     await expect(visibleProjectItems).toHaveCount(1);
@@ -144,7 +144,7 @@ test.describe('Portfolio Smoke Flow', () => {
     ]);
 
     await applyProjectFilter(page, 'all');
-    await expect(visibleProjectItems).toHaveCount(3);
+    await expect(visibleProjectItems).toHaveCount(4);
   });
 
   test('links each project to a dedicated case study page', async ({ page }) => {
@@ -158,7 +158,8 @@ test.describe('Portfolio Smoke Flow', () => {
     const caseStudies = [
       { href: '/projects/nullid/', title: /NullID Case Study/ },
       { href: '/projects/nullcal/', title: /NullCal Case Study/ },
-      { href: '/projects/pacman/', title: /PacMan Case Study/ }
+      { href: '/projects/pacman/', title: /PacMan Case Study/ },
+      { href: '/projects/nullkeys/', title: /NullKeys Case Study/ }
     ];
 
     for (const item of caseStudies) {
@@ -183,9 +184,11 @@ test.describe('Portfolio Smoke Flow', () => {
       'https://nullid.kamranboroomand.ir',
       'https://nullcal.kamranboroomand.ir',
       'https://pacman.kamranboroomand.ir',
+      'https://nullkeys.kamranboroomand.ir',
       'https://github.com/KamranBoroomand/NullID',
       'https://github.com/KamranBoroomand/NullCal',
-      'https://github.com/KamranBoroomand/PacMan'
+      'https://github.com/KamranBoroomand/PacMan',
+      'https://github.com/KamranBoroomand/NullKeys'
     ];
 
     for (const href of expectedLinks) {

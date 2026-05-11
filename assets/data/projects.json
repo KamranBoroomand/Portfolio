@@ -206,6 +206,75 @@
         "responsiveBase": "pacman-site-preview",
         "responsiveWidths": [480, 800, 1200]
       }
+    },
+    {
+      "id": "nullkeys",
+      "title": "NullKeys",
+      "categoryLabel": "Typing Trainer",
+      "filters": ["all"],
+      "description": "Local-first multilingual typing trainer with adaptive practice, keyboard layout analysis, and on-device progress history.",
+      "problem": "Most typing tools prioritize accounts and cloud sync over privacy, local ownership, and deeper multilingual practice workflows.",
+      "role": "Designed and built the product experience, adaptive practice flows, local progress model, and multilingual learning surfaces.",
+      "stack": ["Next.js", "TypeScript", "Tailwind CSS", "IndexedDB", "Cloudflare"],
+      "architecture": [
+        "Adaptive practice, typing tests, and keyboard analysis share a local-first learner-state model",
+        "Browser storage layers keep preferences, session history, and cached content on-device",
+        "Content-pack delivery supports multilingual drills without accounts, telemetry, or remote sync"
+      ],
+      "outcome": "Shipped a privacy-first typing product that combines multilingual drills, adaptive review, and local archive portability without a backend profile system.",
+      "impactMetrics": [
+        {
+          "value": "33",
+          "label": "language packs available in the browser-served content set"
+        },
+        {
+          "value": "0",
+          "label": "accounts, remote sync, or telemetry required for progress tracking"
+        },
+        {
+          "value": "3",
+          "label": "local storage layers used for preferences, history, and install hints"
+        }
+      ],
+      "previewUrl": "https://nullkeys.kamranboroomand.ir",
+      "previewDomain": "nullkeys.kamranboroomand.ir",
+      "previewAriaLabel": "Open NullKeys website",
+      "primaryActionLabel": "Open Live Website",
+      "caseStudyUrl": "/projects/nullkeys/",
+      "detailAriaLabel": "Open NullKeys case study",
+      "repoUrl": "https://github.com/KamranBoroomand/NullKeys",
+      "repoLabel": "View GitHub Repo",
+      "i18n": {
+        "ru": {
+          "title": "NullKeys",
+          "categoryLabel": "Тренажер печати",
+          "description": "Локально-ориентированный мультиязычный тренажер печати с адаптивной практикой, анализом раскладок и историей прогресса на устройстве.",
+          "previewAriaLabel": "Открыть сайт NullKeys",
+          "primaryActionLabel": "Открыть сайт",
+          "detailAriaLabel": "Открыть кейс NullKeys",
+          "repoLabel": "Открыть репозиторий GitHub",
+          "imageAlt": "Предпросмотр интерфейса NullKeys"
+        },
+        "fa": {
+          "title": "نال‌کیز",
+          "categoryLabel": "تمرین تایپ",
+          "description": "اپلیکیشن محلی‌محور تمرین تایپ چندزبانه با تمرین تطبیقی، تحلیل چیدمان صفحه‌کلید و تاریخچه پیشرفت روی خود دستگاه.",
+          "previewAriaLabel": "باز کردن وب‌سایت نال‌کیز",
+          "primaryActionLabel": "باز کردن وب‌سایت",
+          "detailAriaLabel": "باز کردن مطالعه موردی نال‌کیز",
+          "repoLabel": "مشاهده مخزن گیت‌هاب",
+          "imageAlt": "پیش‌نمایش رابط نال‌کیز"
+        }
+      },
+      "image": {
+        "src": "./assets/images/nullkeys-site-preview.png",
+        "alt": "Preview of the NullKeys typing trainer",
+        "width": 1440,
+        "height": 900,
+        "sizes": "(max-width: 759px) 100vw, 50vw",
+        "responsiveBase": "nullkeys-site-preview",
+        "responsiveWidths": [480, 800, 1200]
+      }
     }
   ]
 }
