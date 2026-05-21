@@ -1,13 +1,22 @@
 'use strict';
 
 (function initProjectPageAnalytics() {
+  const analyticsOptOutKey = 'kb_analytics_opt_out';
   const doNotTrackEnabled =
     navigator.doNotTrack === '1' ||
     window.doNotTrack === '1' ||
     navigator.msDoNotTrack === '1' ||
     navigator.globalPrivacyControl === true;
 
-  if (doNotTrackEnabled) {
+  function hasAnalyticsOptedOut() {
+    try {
+      return localStorage.getItem(analyticsOptOutKey) === '1';
+    } catch {
+      return true;
+    }
+  }
+
+  if (doNotTrackEnabled || hasAnalyticsOptedOut()) {
     return;
   }
 
@@ -53,10 +62,6 @@
     const target = sanitize(payload.target, 220);
     if (target) {
       params.set('target', target);
-    }
-
-    if (document.referrer) {
-      params.set('ref', sanitize(document.referrer, 240));
     }
 
     const image = new Image(1, 1);

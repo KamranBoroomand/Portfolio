@@ -39,6 +39,12 @@ jobs:
       - name: Performance budget check
         run: npm run perf:check
 
+      - name: Security posture check
+        run: npm run test:security
+
+      - name: SEO posture check
+        run: npm run test:seo
+
       - name: Internal link check
         run: npm run test:links
 

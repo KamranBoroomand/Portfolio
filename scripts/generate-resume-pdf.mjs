@@ -4,9 +4,11 @@ import { chromium } from '@playwright/test';
 
 const cwd = process.cwd();
 const sourcePath = path.resolve(cwd, 'assets/docs/kamran-boroomand-resume-ats.html');
+const stylesheetPath = path.resolve(cwd, 'assets/docs/resume-ats.css');
 const outputPath = path.resolve(cwd, 'assets/docs/kamran-boroomand-resume-ats.pdf');
 
 const html = await fs.readFile(sourcePath, 'utf8');
+const stylesheet = await fs.readFile(stylesheetPath, 'utf8');
 
 async function resolveBrowserExecutable() {
   const home = process.env.HOME;
@@ -68,8 +70,12 @@ if (executablePath) {
 
 const browser = await chromium.launch(launchOptions);
 const page = await browser.newPage();
+const printableHtml = html.replace(
+  '<link rel="stylesheet" href="./resume-ats.css" />',
+  `<style>${stylesheet}</style>`
+);
 
-await page.setContent(html, { waitUntil: 'networkidle' });
+await page.setContent(printableHtml, { waitUntil: 'networkidle' });
 await page.pdf({
   path: outputPath,
   printBackground: true,

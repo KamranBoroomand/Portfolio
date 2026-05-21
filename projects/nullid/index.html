@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self'; form-action 'self'"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self'; font-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self'; form-action 'self'; frame-src 'none'; worker-src 'none'; manifest-src 'self'"
     />
     <title>NullID Case Study | Kamran Boroomand</title>
     <meta
@@ -55,6 +55,9 @@
     <meta name="twitter:image:alt" content="NullID case study preview by Kamran Boroomand" />
 
     <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/favicon-96x96.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/assets/images/site.webmanifest" />
     <link rel="stylesheet" href="/assets/css/fonts.css" />
     <link rel="stylesheet" href="/assets/css/project-page.css" />
     <script type="application/ld+json">
@@ -89,13 +92,16 @@
             "inLanguage": "en"
           },
           {
-            "@type": "CreativeWork",
+            "@type": "SoftwareSourceCode",
             "@id": "https://kamranboroomand.ir/projects/nullid/#work",
-            "name": "NullID Case Study",
+            "name": "NullID",
             "url": "https://kamranboroomand.ir/projects/nullid/",
             "description": "Product case study covering the offline-first architecture, local security workflows, and module breadth behind NullID.",
             "image": "https://kamranboroomand.ir/assets/images/og-nullid.png",
             "genre": "Security Tooling",
+            "codeRepository": "https://github.com/KamranBoroomand/NullID",
+            "programmingLanguage": ["TypeScript", "React"],
+            "runtimePlatform": "Web browser",
             "author": { "@id": "https://kamranboroomand.ir/#person" },
             "publisher": { "@id": "https://kamranboroomand.ir/#person" },
             "mainEntityOfPage": { "@id": "https://kamranboroomand.ir/projects/nullid/#webpage" },

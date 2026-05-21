@@ -30,9 +30,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: production-site-${{ github.sha }}
+          include-hidden-files: true
           path: |
+            .nojekyll
+            .well-known
             index.html
             404.html
+            security
             projects
             assets
             robots.txt

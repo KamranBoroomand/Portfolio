@@ -1356,6 +1356,17 @@ html[lang='fa'] .testimonial-kicker {
   letter-spacing: 0.05em;
 }
 
+.footer-links {
+  margin: 0.3rem 0 0;
+  font-size: 0.72rem;
+}
+
+.footer-links a {
+  color: currentColor;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 a {
   color: inherit;
 }

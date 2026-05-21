@@ -62,6 +62,14 @@ function emitAnalyticsEvent(eventName, payload = {}) {
   }
 }
 
+function hasAnalyticsOptedOut() {
+  try {
+    return localStorage.getItem(STORAGE_KEYS.analyticsOptOut) === '1';
+  } catch {
+    return true;
+  }
+}
+
 function normalizeLanguage(language) {
   language = String(language || '')
     .trim()
@@ -376,7 +384,7 @@ function initPrivacyAnalytics() {
     navigator.msDoNotTrack === '1' ||
     navigator.globalPrivacyControl === true;
 
-  if (doNotTrackEnabled || localStorage.getItem(STORAGE_KEYS.analyticsOptOut) === '1') {
+  if (doNotTrackEnabled || hasAnalyticsOptedOut()) {
     return;
   }
 
@@ -411,10 +419,6 @@ function initPrivacyAnalytics() {
     const target = sanitizeAnalyticsValue(payload.target, 220);
     if (target) {
       params.set('target', target);
-    }
-
-    if (document.referrer) {
-      params.set('ref', sanitizeAnalyticsValue(document.referrer, 240));
     }
 
     const image = new Image(1, 1);

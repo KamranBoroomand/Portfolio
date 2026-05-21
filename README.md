@@ -23,7 +23,7 @@ This repo can be used as-is for this site or forked as a base for your own portf
 - Optional interactive effects layer (React + OGL) mounted separately from core content.
 - Accessibility baseline with keyboard tab navigation, skip link, and `axe` checks.
 - SEO and discoverability: Open Graph, Twitter metadata, JSON-LD schema, `robots.txt`, and `sitemap.xml`.
-- Security baseline: strict CSP, hardened outbound links, no server runtime in this repository.
+- Security baseline: static-host-compatible CSP metadata, hardened outbound links, security disclosure files, and documented CDN/header TODOs.
 - Automated quality gates in CI, including Playwright, Lighthouse CI, and asset budgets.
 
 ## Tech Stack
@@ -41,6 +41,7 @@ This repo can be used as-is for this site or forked as a base for your own portf
 ├── index.html
 ├── 404.html
 ├── projects/
+├── security/
 ├── assets/
 │   ├── css/
 │   ├── data/
@@ -50,6 +51,12 @@ This repo can be used as-is for this site or forked as a base for your own portf
 ├── src/react/
 ├── scripts/
 ├── tests/e2e/
+├── .well-known/security.txt
+├── docs/deployment-security-todo.md
+├── docs/deployment-security-headers.md
+├── docs/seo-roadmap.md
+├── docs/subdomain-inventory.md
+├── SECURITY.md
 ├── .github/workflows/
 └── README.md
 ```
@@ -95,6 +102,8 @@ Quality and release gates:
 - `npm run format` - Prettier write mode
 - `npm run format:check` - Prettier check mode
 - `npm run perf:check` - asset/performance budget checks
+- `npm run test:security` - static CSP/privacy/trust/deployment posture checks
+- `npm run test:seo` - metadata, hreflang, sitemap, robots, JSON-LD, and placeholder checks
 - `npm run test:links` - internal link/asset reference checks in HTML
 - `npm run test:e2e` - Chromium smoke suite
 - `npm run test:e2e:matrix` - smoke suite across multiple browsers/devices
@@ -166,6 +175,8 @@ Lighthouse thresholds (`.lighthouserc.json`):
 ## Deployment
 
 This is a static site. You can deploy to any static host (for example GitHub Pages, Cloudflare Pages, Netlify, Vercel static output, or S3+CDN).
+
+The checked-in `CNAME` makes the repo GitHub Pages-compatible, but arbitrary HTTP response headers are not controlled by this repo when served directly from GitHub Pages. See `docs/deployment-security-headers.md` and `docs/deployment-security-todo.md` for CDN/host-level headers, DNS, registrar, and runtime verification tasks.
 
 Recommended release flow:
 

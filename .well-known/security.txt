@@ -1,0 +1,5 @@
+Contact: mailto:security@kamranboroomand.ir
+Preferred-Languages: en, ru
+Canonical: https://kamranboroomand.ir/.well-known/security.txt
+Policy: https://kamranboroomand.ir/security/
+Expires: 2027-05-21T00:00:00.000Z

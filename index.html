@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self' https://api.github.com; form-action 'self'"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self'; font-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self' https://api.github.com; form-action 'self'; frame-src 'none'; worker-src 'none'; manifest-src 'self'"
     />
     <title data-i18n="meta.title">Kamran Boroomand | Linux System Administrator</title>
 
@@ -22,7 +22,7 @@
     <meta name="theme-color" content="#0f141d" />
     <meta name="privacy-analytics-pixel" content="/assets/images/analytics-pixel.gif" />
     <link rel="canonical" href="https://kamranboroomand.ir/" />
-    <link rel="alternate" hreflang="en" href="https://kamranboroomand.ir/?lang=en" />
+    <link rel="alternate" hreflang="en" href="https://kamranboroomand.ir/" />
     <link rel="alternate" hreflang="ru" href="https://kamranboroomand.ir/?lang=ru" />
     <link rel="alternate" hreflang="fa" href="https://kamranboroomand.ir/?lang=fa" />
     <link rel="alternate" hreflang="x-default" href="https://kamranboroomand.ir/" />
@@ -651,13 +651,13 @@
             <ul class="proof-grid">
               <li class="proof-card">
                 <p class="proof-value" data-proof-last-ship data-i18n="proof.lastShipFallback">
-                  Updating...
+                  See commits
                 </p>
                 <p class="proof-label" data-i18n="proof.lastShipLabel">Last ship date</p>
               </li>
               <li class="proof-card">
-                <p class="proof-value" data-i18n="proof.uptimeValue">99.95%</p>
-                <p class="proof-label" data-i18n="proof.uptimeLabel">Public uptime (30d)</p>
+                <p class="proof-value" data-i18n="proof.uptimeValue">Every 30 min</p>
+                <p class="proof-label" data-i18n="proof.uptimeLabel">Uptime checks</p>
               </li>
               <li class="proof-card">
                 <p class="proof-value" data-i18n="proof.responseValue">Under 24h</p>
@@ -665,7 +665,7 @@
               </li>
               <li class="proof-card">
                 <p class="proof-value" data-proof-activity data-i18n="proof.activityFallback">
-                  Updating...
+                  Public log
                 </p>
                 <p class="proof-label" data-i18n="proof.activityLabel">GitHub activity (30d)</p>
               </li>
@@ -1191,7 +1191,10 @@
         </section>
 
         <footer class="site-footer">
-          <p class="last-updated" data-i18n="footer.lastUpdated">Last updated: February 2026</p>
+          <p class="last-updated" data-i18n="footer.lastUpdated">Last reviewed: May 2026</p>
+          <p class="footer-links">
+            <a href="/security/" data-i18n="footer.securityPolicy">Security policy</a>
+          </p>
         </footer>
       </div>
     </main>
