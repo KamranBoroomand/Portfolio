@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test.describe('Visual Regression', () => {
   test.beforeEach(async ({ page }) => {
-    // Keep visual snapshots deterministic by removing dynamic effects and live API drift.
+    // Keep visual snapshots deterministic by removing dynamic effects.
     await page.route('**/assets/js/effects.bundle.js', (route) => {
       route.fulfill({
         status: 200,
@@ -18,38 +18,6 @@ test.describe('Visual Regression', () => {
         body: ''
       });
     });
-
-    await page.route(
-      'https://api.github.com/repos/KamranBoroomand/Portfolio/commits**',
-      (route) => {
-        const requestUrl = route.request().url();
-        const isLatestCommitRequest = requestUrl.includes('per_page=1');
-        const payload = isLatestCommitRequest
-          ? [
-              {
-                commit: {
-                  committer: {
-                    date: '2026-02-01T00:00:00Z'
-                  }
-                }
-              }
-            ]
-          : Array.from({ length: 7 }, (_, index) => ({
-              sha: `mock-sha-${index}`,
-              commit: {
-                committer: {
-                  date: '2026-01-01T00:00:00Z'
-                }
-              }
-            }));
-
-        route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify(payload)
-        });
-      }
-    );
   });
 
   test('homepage baseline remains stable', async ({ page, browserName }) => {

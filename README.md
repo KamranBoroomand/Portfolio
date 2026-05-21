@@ -24,6 +24,7 @@ This repo can be used as-is for this site or forked as a base for your own portf
 - Accessibility baseline with keyboard tab navigation, skip link, and `axe` checks.
 - SEO and discoverability: Open Graph, Twitter metadata, JSON-LD schema, `robots.txt`, and `sitemap.xml`.
 - Security baseline: static-host-compatible CSP metadata, hardened outbound links, security disclosure files, and documented CDN/header TODOs.
+- Privacy baseline: no Google Analytics, GTM, advertising tags, remote tracking pixels, or third-party analytics scripts; see `docs/privacy-analytics.md`.
 - Automated quality gates in CI, including Playwright, Lighthouse CI, and asset budgets.
 
 ## Tech Stack
@@ -54,6 +55,7 @@ This repo can be used as-is for this site or forked as a base for your own portf
 ├── .well-known/security.txt
 ├── docs/deployment-security-todo.md
 ├── docs/deployment-security-headers.md
+├── docs/privacy-analytics.md
 ├── docs/seo-roadmap.md
 ├── docs/subdomain-inventory.md
 ├── SECURITY.md

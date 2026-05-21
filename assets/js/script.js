@@ -17,7 +17,6 @@ const SUPPORTED_LANGUAGES = ['en', 'ru', 'fa'];
 const DEFAULT_LANGUAGE = 'en';
 const I18N_SOURCE = './assets/data/translations.json';
 const EFFECTS_BUNDLE_SOURCE = './assets/js/effects.bundle.js';
-const GITHUB_REPO_API = 'https://api.github.com/repos/KamranBoroomand/Portfolio';
 const LIGHTHOUSE_QUERY_PARAM = 'lhci';
 
 let TRANSLATIONS = Object.freeze({ [DEFAULT_LANGUAGE]: {} });
@@ -539,26 +538,6 @@ function initPrivacyAnalytics() {
   trackPageView(getCurrentPath());
 }
 
-function resolveIntlLocale(locale) {
-  return locale === 'ru' ? 'ru-RU' : locale === 'fa' ? 'fa-IR' : 'en-US';
-}
-
-function formatLocalizedDate(date) {
-  if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
-    return '';
-  }
-
-  try {
-    return new Intl.DateTimeFormat(resolveIntlLocale(currentLanguage), {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    }).format(date);
-  } catch {
-    return date.toISOString().slice(0, 10);
-  }
-}
-
 function initCredibilityPanel() {
   const lastShipNode = document.querySelector('[data-proof-last-ship]');
   const activityNode = document.querySelector('[data-proof-activity]');
@@ -566,78 +545,18 @@ function initCredibilityPanel() {
     return;
   }
 
-  const state = {
-    lastShipDate: null,
-    activityCountLabel: ''
-  };
-
   function renderCredibility() {
     if (lastShipNode) {
-      lastShipNode.textContent =
-        state.lastShipDate instanceof Date
-          ? formatLocalizedDate(state.lastShipDate)
-          : getTranslation(currentLanguage, 'proof.lastShipFallback');
+      lastShipNode.textContent = getTranslation(currentLanguage, 'proof.lastShipFallback');
     }
 
     if (activityNode) {
-      activityNode.textContent = state.activityCountLabel
-        ? formatTemplate(getTranslation(currentLanguage, 'proof.activityTemplate'), {
-            count: state.activityCountLabel
-          })
-        : getTranslation(currentLanguage, 'proof.activityFallback');
-    }
-  }
-
-  async function loadCredibility() {
-    if (isAuditMode()) {
-      return;
-    }
-
-    const since = new Date();
-    since.setDate(since.getDate() - 30);
-    const headers = { Accept: 'application/vnd.github+json' };
-
-    try {
-      const [latestResponse, recentResponse] = await Promise.all([
-        fetch(`${GITHUB_REPO_API}/commits?per_page=1`, { headers }),
-        fetch(
-          `${GITHUB_REPO_API}/commits?per_page=100&since=${encodeURIComponent(since.toISOString())}`,
-          {
-            headers
-          }
-        )
-      ]);
-
-      if (latestResponse.ok) {
-        const latestPayload = await latestResponse.json();
-        const latestCommit = Array.isArray(latestPayload) ? latestPayload[0] : null;
-        const commitDate =
-          latestCommit?.commit?.committer?.date || latestCommit?.commit?.author?.date;
-        if (typeof commitDate === 'string') {
-          const parsedDate = new Date(commitDate);
-          if (!Number.isNaN(parsedDate.getTime())) {
-            state.lastShipDate = parsedDate;
-          }
-        }
-      }
-
-      if (recentResponse.ok) {
-        const recentPayload = await recentResponse.json();
-        if (Array.isArray(recentPayload)) {
-          state.activityCountLabel =
-            recentPayload.length >= 100 ? '100+' : String(recentPayload.length);
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      renderCredibility();
+      activityNode.textContent = getTranslation(currentLanguage, 'proof.activityFallback');
     }
   }
 
   renderCredibility();
   window.addEventListener(EVENTS.languageChanged, renderCredibility);
-  void loadCredibility();
 }
 
 function initLeadFunnel() {

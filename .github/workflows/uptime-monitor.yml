@@ -5,6 +5,10 @@ on:
     - cron: '*/30 * * * *'
   workflow_dispatch:
 
+concurrency:
+  group: uptime-monitor
+  cancel-in-progress: true
+
 permissions:
   contents: read
   issues: write
@@ -14,29 +18,54 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Run uptime checks
         id: uptime
         continue-on-error: true
-        run: node scripts/monitor-uptime.mjs
+        run: |
+          set +e
+          node scripts/monitor-uptime.mjs 2>&1 | tee uptime-monitor.log
+          status=${PIPESTATUS[0]}
+          exit "$status"
 
       - name: Open or update alert issue
         if: steps.uptime.outcome == 'failure'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
+            const fs = require('node:fs');
+            const log = fs.existsSync('uptime-monitor.log')
+              ? fs.readFileSync('uptime-monitor.log', 'utf8')
+              : 'uptime-monitor.log was not found';
+            const failedChecks = Array.from(
+              new Set(log.match(/^FAIL\s+([^\s]+)/gm)?.map((line) => line.split(/\s+/)[1]) || [])
+            );
+            const diagnostics = log.includes('--- UPTIME FAILURES ---')
+              ? log.slice(log.indexOf('--- UPTIME FAILURES ---'))
+              : log;
+            const truncatedDiagnostics = diagnostics.length > 8000
+              ? `${diagnostics.slice(-8000)}\n[truncated to last 8000 characters]`
+              : diagnostics;
             const title = 'Uptime Alert: kamranboroomand.ir is unreachable';
+            const marker = '<!-- uptime-alert-monitor -->';
             const body = [
+              marker,
               'Automated uptime monitor detected a failure.',
               '',
               `Time: ${new Date().toISOString()}`,
               `Run: https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              `Failed checks: ${failedChecks.length ? failedChecks.join(', ') : 'unknown'}`,
+              '',
+              'Diagnostics:',
+              '```text',
+              truncatedDiagnostics,
+              '```',
               '',
               'This issue will be auto-closed when checks recover.'
             ].join('\n');
@@ -50,10 +79,11 @@ jobs:
 
             const existing = issues.find((issue) => issue.title === title);
             if (existing) {
-              await github.rest.issues.createComment({
+              await github.rest.issues.update({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: existing.number,
+                title,
                 body
               });
             } else {
@@ -68,7 +98,7 @@ jobs:
 
       - name: Close alert issue on recovery
         if: steps.uptime.outcome == 'success'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const title = 'Uptime Alert: kamranboroomand.ir is unreachable';

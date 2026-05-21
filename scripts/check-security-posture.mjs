@@ -39,6 +39,19 @@ const requiredHeaderNames = [
   'Origin-Agent-Cluster',
   'Strict-Transport-Security'
 ];
+const forbiddenRuntimeTokens = [
+  'google-analytics.com',
+  'googletagmanager.com',
+  'gtag(',
+  'dataLayer',
+  'doubleclick.net',
+  'facebook.net',
+  'connect.facebook.net',
+  'hotjar.com',
+  'segment.com',
+  'plausible.io',
+  'https://api.github.com'
+];
 
 const failures = [];
 
@@ -111,14 +124,14 @@ function checkCsp(file, html) {
     }
   }
 
-  const connectSrc = directives.get('connect-src') || [];
-  const allowsGitHubApi = connectSrc.includes('https://api.github.com');
-  if (file === 'index.html' && !allowsGitHubApi) {
-    failures.push('index.html: connect-src must allow https://api.github.com for credibility data');
+  const scriptSrc = directives.get('script-src') || [];
+  if (scriptSrc.length !== 1 || scriptSrc[0] !== "'self'") {
+    failures.push(`${file}: CSP script-src must be exactly 'self'`);
   }
 
-  if (file !== 'index.html' && allowsGitHubApi) {
-    failures.push(`${file}: connect-src allows GitHub API even though this page does not use it`);
+  const connectSrc = directives.get('connect-src') || [];
+  if (connectSrc.length !== 1 || connectSrc[0] !== "'self'") {
+    failures.push(`${file}: CSP connect-src must be exactly 'self'`);
   }
 }
 
@@ -178,7 +191,8 @@ async function checkTrustAndDeploymentFiles() {
     '.well-known/security.txt',
     'SECURITY.md',
     'docs/deployment-security-headers.md',
-    'docs/deployment-security-todo.md'
+    'docs/deployment-security-todo.md',
+    'docs/privacy-analytics.md'
   ];
 
   for (const file of requiredFiles) {
@@ -230,6 +244,10 @@ async function checkTrustAndDeploymentFiles() {
       }
     }
 
+    if (headerDoc.includes('https://api.github.com')) {
+      failures.push('docs/deployment-security-headers.md: must keep connect-src self-only');
+    }
+
     if (!headerDoc.includes('Do not enable includeSubDomains')) {
       failures.push(
         'docs/deployment-security-headers.md: must document the HSTS includeSubDomains guardrail'
@@ -241,20 +259,50 @@ async function checkTrustAndDeploymentFiles() {
 async function checkPrivacyImplementation() {
   const mainScript = await readText('assets/js/script.js');
   const projectScript = await readText('assets/js/project-page.js');
+  const indexHtml = await readText('index.html');
+  const analyticsDoc = await readText('docs/privacy-analytics.md');
 
   for (const [file, source] of [
     ['assets/js/script.js', mainScript],
-    ['assets/js/project-page.js', projectScript]
+    ['assets/js/project-page.js', projectScript],
+    ['index.html', indexHtml]
   ]) {
     if (source.includes("params.set('ref'") || source.includes('params.set("ref"')) {
       failures.push(
         `${file}: first-party analytics must not copy document.referrer into query logs`
       );
     }
+
+    if (source.includes('document.referrer')) {
+      failures.push(`${file}: first-party analytics must not read document.referrer`);
+    }
+  }
+
+  for (const [file, source] of [
+    ['assets/js/script.js', mainScript],
+    ['assets/js/project-page.js', projectScript],
+    ['index.html', indexHtml]
+  ]) {
+    for (const token of forbiddenRuntimeTokens) {
+      if (source.includes(token)) {
+        failures.push(`${file}: forbidden third-party analytics/runtime token found: ${token}`);
+      }
+    }
   }
 
   if (!projectScript.includes('kb_analytics_opt_out')) {
     failures.push('assets/js/project-page.js: project pages must honor kb_analytics_opt_out');
+  }
+
+  for (const requiredText of [
+    'does not use Google Analytics',
+    'referrerPolicy =',
+    'kb_analytics_opt_out',
+    'No analytics cookies'
+  ]) {
+    if (!analyticsDoc.includes(requiredText)) {
+      failures.push(`docs/privacy-analytics.md: missing required privacy note: ${requiredText}`);
+    }
   }
 }
 
