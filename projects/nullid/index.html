@@ -259,10 +259,11 @@
       </section>
 
       <section class="status-panel card">
-        <h2 class="section-title">Production Monitoring</h2>
+        <h2 class="section-title">Live Site Verification</h2>
         <p>
-          Public uptime monitoring runs every 30 minutes with automatic failure alerts and recovery
-          closure.
+          GitHub Actions runs post-deploy verification every 30 minutes with live verification
+          alerts and automatic recovery closure. Authoritative uptime monitoring should run in
+          Cloudflare Health Checks or an external synthetic monitor.
         </p>
         <div class="status-links">
           <a
@@ -272,16 +273,16 @@
             rel="noopener noreferrer"
             data-track-event="case_status_metric"
             data-track-label="nullid"
-            >View Uptime Metric</a
+            >View Verification Workflow</a
           >
           <a
             class="btn"
-            href="https://github.com/KamranBoroomand/Portfolio/issues?q=is%3Aissue+is%3Aopen+label%3Auptime-alert"
+            href="https://github.com/KamranBoroomand/Portfolio/issues?q=is%3Aissue+is%3Aopen+label%3Asite-verification-alert"
             target="_blank"
             rel="noopener noreferrer"
             data-track-event="case_status_alerts"
             data-track-label="nullid"
-            >View Alert Issues</a
+            >View Verification Alerts</a
           >
         </div>
       </section>

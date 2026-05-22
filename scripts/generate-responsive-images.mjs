@@ -1,9 +1,14 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
 const cwd = process.cwd();
 const outDir = path.resolve(cwd, 'assets/images/responsive');
+const scriptPath = fileURLToPath(import.meta.url);
+const force = process.argv.includes('--force');
+const avifOptions = { quality: 52, effort: 4 };
+const webpOptions = { quality: 70, effort: 4 };
 await fs.mkdir(outDir, { recursive: true });
 
 const staticJobs = [
@@ -17,6 +22,8 @@ const staticJobs = [
 
 const projectsDataPath = path.resolve(cwd, 'assets/data/projects.json');
 const projectsPayload = JSON.parse(await fs.readFile(projectsDataPath, 'utf8'));
+const projectsDataStat = await fs.stat(projectsDataPath);
+const scriptStat = await fs.stat(scriptPath);
 const projects = Array.isArray(projectsPayload.projects) ? projectsPayload.projects : [];
 
 const projectJobs = projects
@@ -43,23 +50,47 @@ const projectJobs = projects
 const jobs = [...staticJobs, ...projectJobs];
 const dedupedJobs = Array.from(new Map(jobs.map((job) => [job.base, job])).values());
 
+async function isUpToDate(filePath, sourceMtimeMs) {
+  try {
+    const stat = await fs.stat(filePath);
+    return stat.mtimeMs >= sourceMtimeMs;
+  } catch (error) {
+    if (error && error.code === 'ENOENT') return false;
+    throw error;
+  }
+}
+
 for (const job of dedupedJobs) {
   const inputPath = path.resolve(cwd, job.input);
+  const inputStat = await fs.stat(inputPath);
+  const sourceMtimeMs = Math.max(inputStat.mtimeMs, projectsDataStat.mtimeMs, scriptStat.mtimeMs);
+
   for (const width of job.widths) {
     const avifPath = path.join(outDir, `${job.base}-${width}.avif`);
     const webpPath = path.join(outDir, `${job.base}-${width}.webp`);
+    const avifRelativePath = path.relative(cwd, avifPath);
+    const webpRelativePath = path.relative(cwd, webpPath);
+    const outputsCurrent =
+      !force &&
+      (await isUpToDate(avifPath, sourceMtimeMs)) &&
+      (await isUpToDate(webpPath, sourceMtimeMs));
+
+    if (outputsCurrent) {
+      console.log(`skipped ${avifRelativePath} and ${webpRelativePath}`);
+      continue;
+    }
 
     await sharp(inputPath)
       .resize({ width, withoutEnlargement: true, fit: job.fit })
-      .avif({ quality: 52, effort: 8 })
+      .avif(avifOptions)
       .toFile(avifPath);
 
     await sharp(inputPath)
       .resize({ width, withoutEnlargement: true, fit: job.fit })
-      .webp({ quality: 70, effort: 6 })
+      .webp(webpOptions)
       .toFile(webpPath);
 
-    console.log(`generated ${path.relative(cwd, avifPath)}`);
-    console.log(`generated ${path.relative(cwd, webpPath)}`);
+    console.log(`generated ${avifRelativePath}`);
+    console.log(`generated ${webpRelativePath}`);
   }
 }

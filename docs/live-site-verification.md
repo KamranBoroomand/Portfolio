@@ -37,10 +37,10 @@ A TLS certificate error on `https://www.kamranboroomand.ir/` is reported as `HTT
 
 ## Workflow Outputs
 
-`.github/workflows/uptime-monitor.yml` is named `Live Site Verification` in GitHub Actions. It:
+`.github/workflows/uptime-monitor.yml` is named `Live Site Verification` in GitHub Actions. The filename is legacy; the workflow role is post-deploy/live verification. It:
 
 - runs the live verifier on a schedule and by manual dispatch;
-- uploads `live-site-verification-report.json` and `uptime-monitor.log` as public-safe artifacts;
+- uploads `live-site-verification-report.json` and `live-site-verification.log` as public-safe artifacts;
 - keeps one open alert issue labeled `site-verification-alert`;
 - updates that issue with exact failed checks and diagnostics;
 - closes the alert issue automatically when verification recovers;

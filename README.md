@@ -94,10 +94,12 @@ Development and build:
 - `npm run serve:test` - static server used by Playwright (`127.0.0.1:4273`)
 - `npm run watch:effects` - rebuild `assets/js/effects.bundle.js` on change
 - `npm run build:effects` - one-time effects bundle build
-- `npm run images:responsive` - regenerate responsive image variants
+- `npm run build` - run the normal effects build without regenerating images
+- `npm run build:with-images` - refresh responsive image variants, then run the effects build
+- `npm run images:responsive` - refresh responsive image variants that are missing or stale
+- `npm run images:responsive:force` - force responsive image regeneration
 - `npm run optimize:images` - optimize source image assets
 - `npm run resume:pdf` - regenerate `assets/docs/kamran-boroomand-resume-ats.pdf`
-- `npm run build` - run responsive images + effects build
 
 Quality and release gates:
 
@@ -158,6 +160,10 @@ If you fork this project, update these first:
 - Replace images under `assets/images/`, then run:
   - `npm run optimize:images`
   - `npm run images:responsive`
+  - `npm run build:with-images`
+
+Normal `npm run build` only rebuilds the static effects bundle. Use `npm run build:with-images`
+after changing source images or responsive image settings.
 
 ## CI Workflows
 
@@ -168,7 +174,7 @@ Workflows in `.github/workflows/`:
 - `preview.yml` - PR preview artifact upload with PR comment
 - `release-snapshot.yml` - artifact snapshot for pushes to `main`
 - `rollback.yml` - manual rollback PR generator to a target commit SHA
-- `uptime-monitor.yml` - live site verification for deployment correctness, headers, public files, report artifacts, and alert issue flow
+- `uptime-monitor.yml` - Live Site Verification workflow for deployment correctness, headers, public files, report artifacts, and alert issue flow
 
 Lighthouse thresholds (`.lighthouserc.json`):
 

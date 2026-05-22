@@ -33,7 +33,7 @@ jobs:
         continue-on-error: true
         run: |
           set +e
-          node scripts/monitor-uptime.mjs 2>&1 | tee uptime-monitor.log
+          node scripts/monitor-uptime.mjs 2>&1 | tee live-site-verification.log
           status=${PIPESTATUS[0]}
           exit "$status"
 
@@ -44,7 +44,7 @@ jobs:
           name: live-site-verification-report
           path: |
             live-site-verification-report.json
-            uptime-monitor.log
+            live-site-verification.log
           if-no-files-found: warn
           retention-days: 14
 
@@ -56,14 +56,13 @@ jobs:
             const fs = require('node:fs');
             const marker = '<!-- live-site-verification-alert -->';
             const label = 'site-verification-alert';
-            const legacyLabel = 'uptime-alert';
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const report = fs.existsSync('live-site-verification-report.json')
               ? JSON.parse(fs.readFileSync('live-site-verification-report.json', 'utf8'))
               : null;
-            const log = fs.existsSync('uptime-monitor.log')
-              ? fs.readFileSync('uptime-monitor.log', 'utf8')
-              : 'uptime-monitor.log was not found';
+            const log = fs.existsSync('live-site-verification.log')
+              ? fs.readFileSync('live-site-verification.log', 'utf8')
+              : 'live-site-verification.log was not found';
 
             const results = report
               ? [...(report.httpResults || []), ...(report.dnsResults || [])]
@@ -138,7 +137,7 @@ jobs:
             const existing = issues.find((issue) => {
               if (issue.pull_request) return false;
               const labels = issue.labels.map((item) => typeof item === 'string' ? item : item.name);
-              return issue.body?.includes(marker) || labels.includes(label) || labels.includes(legacyLabel);
+              return issue.body?.includes(marker) || labels.includes(label);
             });
 
             if (existing) {
@@ -167,7 +166,6 @@ jobs:
           script: |
             const marker = '<!-- live-site-verification-alert -->';
             const label = 'site-verification-alert';
-            const legacyLabel = 'uptime-alert';
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -178,7 +176,7 @@ jobs:
             const existing = issues.find((issue) => {
               if (issue.pull_request) return false;
               const labels = issue.labels.map((item) => typeof item === 'string' ? item : item.name);
-              return issue.body?.includes(marker) || labels.includes(label) || labels.includes(legacyLabel);
+              return issue.body?.includes(marker) || labels.includes(label);
             });
 
             if (!existing) {

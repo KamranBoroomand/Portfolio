@@ -622,18 +622,19 @@
                   Reliability evidence
                 </p>
                 <p data-i18n="testimonials.item3Body">
-                  Uptime checks, alert issues, and recovery updates are public and timestamped.
+                  Live verification checks, alert issues, and recovery updates are public and
+                  timestamped.
                 </p>
                 <a
                   class="testimonial-link"
                   href="https://github.com/KamranBoroomand/Portfolio/actions/workflows/uptime-monitor.yml"
                   target="_blank"
                   rel="noopener noreferrer"
-                  data-track-event="references_uptime"
+                  data-track-event="references_live_verification"
                   data-track-label="about"
                   data-i18n="testimonials.item3Link"
                 >
-                  Review uptime workflow
+                  Review live verification workflow
                 </a>
               </li>
             </ul>
@@ -657,7 +658,7 @@
               </li>
               <li class="proof-card">
                 <p class="proof-value" data-i18n="proof.uptimeValue">Every 30 min</p>
-                <p class="proof-label" data-i18n="proof.uptimeLabel">Uptime checks</p>
+                <p class="proof-label" data-i18n="proof.uptimeLabel">Verification checks</p>
               </li>
               <li class="proof-card">
                 <p class="proof-value" data-i18n="proof.responseValue">Under 24h</p>
@@ -880,7 +881,8 @@
               <li class="now-item">
                 <p class="now-date" data-i18n="now.item1Title">12 Feb 2026</p>
                 <p data-i18n="now.item1Body">
-                  Fixed uptime monitor checks and tightened recovery handling in the monitor script.
+                  Renamed the GitHub Actions verifier and tightened recovery handling in the live
+                  verification script.
                 </p>
               </li>
               <li class="now-item">
@@ -1102,13 +1104,13 @@
           </section>
 
           <section class="monitoring-panel">
-            <h3 class="h3 section-title" data-i18n="monitoring.heading">Production Monitoring</h3>
+            <h3 class="h3 section-title" data-i18n="monitoring.heading">Live Site Verification</h3>
             <p data-i18n="monitoring.summary">
-              Automated uptime checks run every 30 minutes with alert issues created on failure and
-              auto-closed on recovery.
+              GitHub Actions runs post-deploy verification every 30 minutes. Authoritative uptime
+              monitoring belongs in Cloudflare Health Checks or an external synthetic monitor.
             </p>
             <p class="monitoring-meta">
-              <strong data-i18n="monitoring.statusLabel">Public status metric</strong>
+              <strong data-i18n="monitoring.statusLabel">Verification workflow</strong>
               <span data-i18n="monitoring.statusFrequency">Schedule: every 30 minutes</span>
             </p>
             <div class="monitoring-links">
@@ -1120,17 +1122,17 @@
                 data-track-event="monitoring_public_metric"
                 data-i18n="monitoring.publicMetric"
               >
-                View Uptime Workflow
+                View Live Verification Workflow
               </a>
               <a
                 class="project-action"
-                href="https://github.com/KamranBoroomand/Portfolio/issues?q=is%3Aissue+is%3Aopen+label%3Auptime-alert"
+                href="https://github.com/KamranBoroomand/Portfolio/issues?q=is%3Aissue+is%3Aopen+label%3Asite-verification-alert"
                 target="_blank"
                 rel="noopener noreferrer"
                 data-track-event="monitoring_alerts"
                 data-i18n="monitoring.alerts"
               >
-                View Uptime Alerts
+                View Live Verification Alerts
               </a>
             </div>
           </section>
