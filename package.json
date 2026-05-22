@@ -20,6 +20,7 @@
     "test:links": "node scripts/check-internal-links.mjs",
     "test:seo": "node scripts/check-seo-posture.mjs",
     "test:lighthouse": "node scripts/run-lighthouse-ci.mjs",
+    "verify:live": "node scripts/monitor-uptime.mjs",
     "perf:check": "node scripts/check-budgets.mjs",
     "test:security": "node scripts/check-security-posture.mjs",
     "check": "npm run build && npm run lint && npm run format:check && npm run perf:check && npm run test:security && npm run test:seo && npm run test:links && npm run test:e2e && npm run test:a11y",

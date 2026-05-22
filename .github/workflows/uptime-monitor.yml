@@ -1,4 +1,7 @@
-name: Uptime Monitor
+name: Live Site Verification
+
+# Public-repo-safe post-deploy/live verification. Authoritative uptime
+# monitoring should run from Cloudflare or an external synthetic monitor.
 
 on:
   schedule:
@@ -6,7 +9,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: uptime-monitor
+  group: live-site-verification
   cancel-in-progress: true
 
 permissions:
@@ -14,7 +17,7 @@ permissions:
   issues: write
 
 jobs:
-  monitor:
+  verify-live-site:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,8 +28,8 @@ jobs:
         with:
           node-version: 24
 
-      - name: Run uptime checks
-        id: uptime
+      - name: Run live site verification
+        id: live_verification
         continue-on-error: true
         run: |
           set +e
@@ -34,33 +37,88 @@ jobs:
           status=${PIPESTATUS[0]}
           exit "$status"
 
-      - name: Open or update alert issue
-        if: steps.uptime.outcome == 'failure'
+      - name: Upload live verification report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: live-site-verification-report
+          path: |
+            live-site-verification-report.json
+            uptime-monitor.log
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Open or update verification issue
+        if: steps.live_verification.outcome == 'failure'
         uses: actions/github-script@v9
         with:
           script: |
             const fs = require('node:fs');
+            const marker = '<!-- live-site-verification-alert -->';
+            const label = 'site-verification-alert';
+            const legacyLabel = 'uptime-alert';
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const report = fs.existsSync('live-site-verification-report.json')
+              ? JSON.parse(fs.readFileSync('live-site-verification-report.json', 'utf8'))
+              : null;
             const log = fs.existsSync('uptime-monitor.log')
               ? fs.readFileSync('uptime-monitor.log', 'utf8')
               : 'uptime-monitor.log was not found';
-            const failedChecks = Array.from(
-              new Set(log.match(/^FAIL\s+([^\s]+)/gm)?.map((line) => line.split(/\s+/)[1]) || [])
+
+            const results = report
+              ? [...(report.httpResults || []), ...(report.dnsResults || [])]
+              : [];
+            const failedResults = results.filter((result) => !result.ok);
+            const hasCloudflareChallenge = failedResults.some(
+              (result) => result.classification === 'CLOUDFLARE_CHALLENGE'
             );
-            const diagnostics = log.includes('--- UPTIME FAILURES ---')
-              ? log.slice(log.indexOf('--- UPTIME FAILURES ---'))
+            const title = hasCloudflareChallenge
+              ? 'Cloudflare challenged GitHub Actions verifier'
+              : 'Live site verification failed';
+
+            function formatResult(result) {
+              const diagnostics = result.diagnostics || {};
+              return [
+                `check=${result.name}`,
+                `classification=${result.classification}`,
+                `kind=${result.kind}`,
+                `url=${diagnostics.url || 'n/a'}`,
+                `hostname=${diagnostics.hostname || 'n/a'}`,
+                `record-types=${diagnostics.recordTypes ? diagnostics.recordTypes.join(',') : 'n/a'}`,
+                `method=${diagnostics.method || 'GET'}`,
+                `status=${diagnostics.status ?? 'n/a'}`,
+                `final-url=${diagnostics.finalUrl || 'n/a'}`,
+                `server=${diagnostics.server || 'none'}`,
+                `cf-ray=${diagnostics.cfRay || 'none'}`,
+                `location=${diagnostics.location || 'none'}`,
+                `content-type=${diagnostics.contentType || 'none'}`,
+                `error-code=${diagnostics.errorCode || 'none'}`,
+                `error-reason=${diagnostics.errorReason || 'none'}`,
+                `error-host=${diagnostics.errorHost || 'none'}`,
+                `queries=${Array.isArray(diagnostics.queries) ? diagnostics.queries.map((query) => `${query.recordType}:http=${query.httpStatus ?? 'n/a'},dns=${query.dnsStatus ?? 'n/a'},answers=${query.answerCount ?? 0}`).join('; ') : 'n/a'}`,
+                `likely-cause=${result.likelyCause || 'n/a'}`,
+                `suggested-next-action=${result.suggestedNextAction || 'n/a'}`,
+                diagnostics.bodyExcerpt ? `body-excerpt=${diagnostics.bodyExcerpt}` : null
+              ].filter(Boolean).join('\n');
+            }
+
+            const diagnostics = failedResults.length
+              ? failedResults.map(formatResult).join('\n---\n')
               : log;
             const truncatedDiagnostics = diagnostics.length > 8000
               ? `${diagnostics.slice(-8000)}\n[truncated to last 8000 characters]`
               : diagnostics;
-            const title = 'Uptime Alert: kamranboroomand.ir is unreachable';
-            const marker = '<!-- uptime-alert-monitor -->';
             const body = [
               marker,
-              'Automated uptime monitor detected a failure.',
+              hasCloudflareChallenge
+                ? 'Cloudflare challenged the GitHub Actions verifier.'
+                : 'Live site verification found one or more failed checks.',
+              '',
+              'This workflow verifies deployment correctness and live public files. It is not the authoritative uptime monitor.',
               '',
               `Time: ${new Date().toISOString()}`,
-              `Run: https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
-              `Failed checks: ${failedChecks.length ? failedChecks.join(', ') : 'unknown'}`,
+              `Run: ${runUrl}`,
+              `Failed checks: ${failedResults.length ? failedResults.map((result) => `${result.name} (${result.classification})`).join(', ') : 'unknown'}`,
               '',
               'Diagnostics:',
               '```text',
@@ -70,21 +128,27 @@ jobs:
               'This issue will be auto-closed when checks recover.'
             ].join('\n');
 
-            const { data: issues } = await github.rest.issues.listForRepo({
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              labels: 'uptime-alert'
+              per_page: 100
             });
 
-            const existing = issues.find((issue) => issue.title === title);
+            const existing = issues.find((issue) => {
+              if (issue.pull_request) return false;
+              const labels = issue.labels.map((item) => typeof item === 'string' ? item : item.name);
+              return issue.body?.includes(marker) || labels.includes(label) || labels.includes(legacyLabel);
+            });
+
             if (existing) {
               await github.rest.issues.update({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: existing.number,
                 title,
-                body
+                body,
+                labels: [label]
               });
             } else {
               await github.rest.issues.create({
@@ -92,24 +156,31 @@ jobs:
                 repo: context.repo.repo,
                 title,
                 body,
-                labels: ['uptime-alert']
+                labels: [label]
               });
             }
 
       - name: Close alert issue on recovery
-        if: steps.uptime.outcome == 'success'
+        if: steps.live_verification.outcome == 'success'
         uses: actions/github-script@v9
         with:
           script: |
-            const title = 'Uptime Alert: kamranboroomand.ir is unreachable';
-            const { data: issues } = await github.rest.issues.listForRepo({
+            const marker = '<!-- live-site-verification-alert -->';
+            const label = 'site-verification-alert';
+            const legacyLabel = 'uptime-alert';
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              labels: 'uptime-alert'
+              per_page: 100
             });
 
-            const existing = issues.find((issue) => issue.title === title);
+            const existing = issues.find((issue) => {
+              if (issue.pull_request) return false;
+              const labels = issue.labels.map((item) => typeof item === 'string' ? item : item.name);
+              return issue.body?.includes(marker) || labels.includes(label) || labels.includes(legacyLabel);
+            });
+
             if (!existing) {
               return;
             }
@@ -118,7 +189,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: existing.number,
-              body: `Recovered at ${new Date().toISOString()} in run https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+              body: `Live site verification recovered at ${new Date().toISOString()} in run https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
 
             await github.rest.issues.update({
@@ -128,6 +199,6 @@ jobs:
               state: 'closed'
             });
 
-      - name: Fail workflow when checks fail
-        if: steps.uptime.outcome == 'failure'
+      - name: Fail workflow when verification fails
+        if: steps.live_verification.outcome == 'failure'
         run: exit 1

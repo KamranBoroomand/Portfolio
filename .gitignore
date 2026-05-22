@@ -1,5 +1,7 @@
 node_modules/
 .DS_Store
+live-site-verification-report.json
+uptime-monitor.log
 playwright-report/
 test-results/
 .lighthouseci/

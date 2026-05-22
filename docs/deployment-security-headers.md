@@ -56,8 +56,16 @@ curl -I https://kamranboroomand.ir/security/
 
 Confirm the headers above are present in HTTP responses. Meta CSP in HTML remains only a static fallback and does not provide clickjacking protection.
 
-The scheduled uptime monitor also checks the live apex response for these headers, except `Strict-Transport-Security`. If GitHub Actions receives HTTP `403` while normal browsers and local `curl -I https://kamranboroomand.ir/` return `200`, inspect Cloudflare Security Events, WAF custom rules, Bot Fight Mode / Super Bot Fight Mode, browser integrity checks, and any rate-limiting rules for GitHub Actions runner traffic. Prefer allowlisting the monitor's first-party User-Agent where appropriate:
+The GitHub Actions workflow named `Live Site Verification` checks the live apex response for these headers, except `Strict-Transport-Security`. It verifies deployment correctness, headers, and public files; it is not the authoritative uptime monitor. Use Cloudflare Health Checks, Better Stack, UptimeRobot, Checkly, Grafana Synthetic Monitoring, or another external synthetic monitor for uptime alerting.
+
+Run the same check locally with:
+
+```bash
+npm run verify:live
+```
+
+If GitHub Actions receives HTTP `403` while normal browsers and local `curl -I https://kamranboroomand.ir/` return `200`, treat that as a verifier challenge, not proof that the public site is down. Inspect Cloudflare Security Events, WAF custom rules, Bot Fight Mode / Super Bot Fight Mode, browser integrity checks, and any rate-limiting rules for GitHub Actions runner traffic. Prefer allowlisting the verifier's first-party User-Agent where appropriate:
 
 ```text
-KamranBoroomand-Portfolio-UptimeMonitor/1.0 (+https://kamranboroomand.ir/security/)
+KamranBoroomand-Portfolio-LiveVerifier/1.0 (+https://kamranboroomand.ir/security/)
 ```

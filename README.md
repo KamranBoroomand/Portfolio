@@ -55,6 +55,7 @@ This repo can be used as-is for this site or forked as a base for your own portf
 ├── .well-known/security.txt
 ├── docs/deployment-security-todo.md
 ├── docs/deployment-security-headers.md
+├── docs/live-site-verification.md
 ├── docs/privacy-analytics.md
 ├── docs/seo-roadmap.md
 ├── docs/subdomain-inventory.md
@@ -113,6 +114,7 @@ Quality and release gates:
 - `npm run test:visual` - visual regression snapshots
 - `npm run test:e2e:easter-egg` - avatar easter egg behavior check
 - `npm run test:lighthouse` - Lighthouse CI assertions with automatic retry on transient Chrome interstitial failures
+- `npm run verify:live` - public live-site verification for deployment correctness, headers, and public files
 - `npm run check` - build + lint + format + perf + links + smoke + a11y
 - `npm run quality:extended` - matrix + visual + easter egg
 - `npm run release:prepare` - full gate (`check + quality:extended + lighthouse`)
@@ -166,7 +168,7 @@ Workflows in `.github/workflows/`:
 - `preview.yml` - PR preview artifact upload with PR comment
 - `release-snapshot.yml` - artifact snapshot for pushes to `main`
 - `rollback.yml` - manual rollback PR generator to a target commit SHA
-- `uptime-monitor.yml` - scheduled uptime checks with auto-open/close alert issue flow
+- `uptime-monitor.yml` - live site verification for deployment correctness, headers, public files, report artifacts, and alert issue flow
 
 Lighthouse thresholds (`.lighthouserc.json`):
 
@@ -178,7 +180,7 @@ Lighthouse thresholds (`.lighthouserc.json`):
 
 This is a static site. You can deploy to any static host (for example GitHub Pages, Cloudflare Pages, Netlify, Vercel static output, or S3+CDN).
 
-The checked-in `CNAME` makes the repo GitHub Pages-compatible, but arbitrary HTTP response headers are not controlled by this repo when served directly from GitHub Pages. See `docs/deployment-security-headers.md` and `docs/deployment-security-todo.md` for CDN/host-level headers, DNS, registrar, and runtime verification tasks.
+The checked-in `CNAME` makes the repo GitHub Pages-compatible, but arbitrary HTTP response headers are not controlled by this repo when served directly from GitHub Pages. See `docs/deployment-security-headers.md`, `docs/deployment-security-todo.md`, and `docs/live-site-verification.md` for CDN/host-level headers, DNS, registrar, monitoring, and runtime verification tasks.
 
 Recommended release flow:
 
