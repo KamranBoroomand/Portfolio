@@ -54,6 +54,45 @@ function sanitizeAnalyticsValue(value, maxLength = 180) {
     .slice(0, maxLength);
 }
 
+function stripUrlQueryAndHash(value) {
+  return String(value || '')
+    .split('#')[0]
+    .split('?')[0];
+}
+
+function minimizeAnalyticsTarget(href) {
+  const rawTarget = sanitizeAnalyticsValue(href, 220);
+  if (!rawTarget) {
+    return '';
+  }
+
+  const protocolMatch = rawTarget.match(/^([a-z][a-z0-9+.-]*):/i);
+  const protocol = protocolMatch ? protocolMatch[1].toLowerCase() : '';
+
+  if (protocol === 'mailto') {
+    return 'mailto';
+  }
+
+  if (protocol === 'tel') {
+    return 'tel';
+  }
+
+  if (!protocol && !rawTarget.startsWith('//')) {
+    return sanitizeAnalyticsValue(stripUrlQueryAndHash(rawTarget), 220);
+  }
+
+  try {
+    const resolvedUrl = new URL(rawTarget, window.location.href);
+    if (resolvedUrl.protocol === 'http:' || resolvedUrl.protocol === 'https:') {
+      return sanitizeAnalyticsValue(`${resolvedUrl.origin}${resolvedUrl.pathname}`, 220);
+    }
+
+    return sanitizeAnalyticsValue(resolvedUrl.protocol.replace(/:$/, ''), 80);
+  } catch {
+    return sanitizeAnalyticsValue(stripUrlQueryAndHash(rawTarget), 220);
+  }
+}
+
 function emitAnalyticsEvent(eventName, payload = {}) {
   const tracker = window.__KB_ANALYTICS_TRACK__;
   if (typeof tracker === 'function') {
@@ -477,13 +516,13 @@ function initPrivacyAnalytics() {
 
       try {
         const resolvedUrl = new URL(href, window.location.href);
-        resolvedTarget = resolvedUrl.href;
+        resolvedTarget = minimizeAnalyticsTarget(href);
         isOutbound =
           resolvedUrl.origin !== window.location.origin ||
           resolvedUrl.protocol === 'mailto:' ||
           resolvedUrl.protocol === 'tel:';
       } catch {
-        resolvedTarget = href;
+        resolvedTarget = minimizeAnalyticsTarget(href);
       }
 
       if (explicitEvent) {

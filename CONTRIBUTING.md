@@ -7,7 +7,7 @@ This repository is a static portfolio site with a React/OGL effects layer bundle
 ## Contribution Checklist
 
 - Create a branch from `main` using prefix `codex/` (or your own feature naming convention).
-- Keep project data in `/Users/kamran/Documents/GitHub/Portfolio/assets/data/projects.json` instead of hardcoding project cards in HTML.
+- Keep project data in `assets/data/projects.json` instead of hardcoding project cards in HTML.
 - If images change, run `npm run optimize:images`.
 - Run `npm run check` before opening a PR.
 - Run `npm run test:security` after changing metadata, CSP, privacy behavior, deployment artifacts, or workflow release packaging.
@@ -19,8 +19,8 @@ This repository is a static portfolio site with a React/OGL effects layer bundle
 ## Release Checklist
 
 - Run `npm run release:prepare`.
-- Confirm `npm run build` regenerated `/Users/kamran/Documents/GitHub/Portfolio/assets/images/responsive/*` and `/Users/kamran/Documents/GitHub/Portfolio/assets/js/effects.bundle.js`.
+- Confirm `npm run build` regenerated `assets/images/responsive/*` and `assets/js/effects.bundle.js`.
 - Review `git diff` for accidental asset churn before commit.
-- Verify `/Users/kamran/Documents/GitHub/Portfolio/index.html`, `/Users/kamran/Documents/GitHub/Portfolio/404.html`, `/Users/kamran/Documents/GitHub/Portfolio/security/index.html`, `/Users/kamran/Documents/GitHub/Portfolio/robots.txt`, and `/Users/kamran/Documents/GitHub/Portfolio/sitemap.xml` still match the release intent.
-- Verify `/Users/kamran/Documents/GitHub/Portfolio/.well-known/security.txt` is included in release artifacts.
+- Verify `index.html`, `404.html`, `security/index.html`, `robots.txt`, and `sitemap.xml` still match the release intent.
+- Verify `.well-known/security.txt` is included in release artifacts.
 - Merge after CI passes (`quality`, `extended-quality`, and `lighthouse` jobs).

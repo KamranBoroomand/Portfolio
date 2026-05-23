@@ -290,6 +290,18 @@ async function checkPrivacyImplementation() {
     }
   }
 
+  for (const [file, source] of [
+    ['assets/js/script.js', mainScript],
+    ['assets/js/project-page.js', projectScript]
+  ]) {
+    if (
+      source.includes('target: resolvedUrl.href') ||
+      source.includes('resolvedTarget = resolvedUrl.href')
+    ) {
+      failures.push(`${file}: analytics target must not send resolvedUrl.href directly`);
+    }
+  }
+
   if (!projectScript.includes('kb_analytics_opt_out')) {
     failures.push('assets/js/project-page.js: project pages must honor kb_analytics_opt_out');
   }
@@ -298,6 +310,7 @@ async function checkPrivacyImplementation() {
     'does not use Google Analytics',
     'referrerPolicy =',
     'kb_analytics_opt_out',
+    'excludes query strings and hashes',
     'No analytics cookies'
   ]) {
     if (!analyticsDoc.includes(requiredText)) {

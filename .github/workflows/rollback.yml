@@ -28,7 +28,7 @@ jobs:
         run: git checkout "${{ inputs.target_sha }}" -- .
 
       - name: Create rollback pull request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: 'rollback: restore site to ${{ inputs.target_sha }}'
           title: 'Rollback to ${{ inputs.target_sha }}'

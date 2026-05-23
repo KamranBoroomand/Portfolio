@@ -30,7 +30,7 @@ Origin-Agent-Cluster: ?1
 
 Do not add Google Analytics, Google Tag Manager, advertising tags, remote tracking pixels, or third-party analytics scripts. Keep analytics first-party and privacy-minimal. The CSP intentionally keeps `script-src 'self'` and `connect-src 'self'`.
 
-Apply `Cross-Origin-Resource-Policy: same-origin` carefully. It is appropriate for HTML document responses, but applying it globally to image assets can affect cross-origin previews and embeds. Test Open Graph image previews before using a global rule.
+Apply `Cross-Origin-Resource-Policy: same-origin` carefully. It is a good default for HTML document responses, but applying it globally to image assets or social-preview assets may affect cross-origin previews and embeds. If needed, use Cloudflare rules to apply stricter headers to HTML routes and lighter or overridden headers for image assets. Test Open Graph image previews before using a global rule.
 
 ## HSTS Guardrail
 

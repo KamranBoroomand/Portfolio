@@ -22,7 +22,9 @@ The first-party pixel request may include these query parameters:
 - `ts`: client timestamp in milliseconds
 - `lang`: active page language
 - `label`: optional clicked link label or short client-error message
-- `target`: optional clicked target URL or short client-error source
+- `target`: optional clicked target or short client-error source
+
+Outbound target logging is minimized and excludes query strings and hashes. For `http` and `https` links, scripts record only the target origin plus pathname. For `mailto:` and `tel:` links, scripts record only `mailto` or `tel`.
 
 The scripts do not collect `document.referrer`, cookies, account identifiers, IP addresses in JavaScript, or cross-site advertising identifiers. Server/CDN access logs may still record standard request metadata outside this repository.
 

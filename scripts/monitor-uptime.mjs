@@ -46,6 +46,17 @@ const cloudflareChallengeMarkers = [
   'cloudflare ray id'
 ];
 
+const dnsErrorMarkers = [
+  'DNS',
+  'EAI_AGAIN',
+  'ENOTFOUND',
+  'ENODATA',
+  'ESERVFAIL',
+  'ENORECOVERY',
+  'GETADDRINFO',
+  'ERR_NAME_NOT_RESOLVED'
+];
+
 const httpChecks = [
   {
     name: 'root-domain',
@@ -152,7 +163,7 @@ function causeFor(kind) {
     case classification.missingHeader:
       return 'Cloudflare Response Header Transform Rules are missing or not applying to this response.';
     case classification.dnsFailure:
-      return 'Public DNS resolution did not return the expected record through DNS-over-HTTPS.';
+      return 'Public DNS resolution failed or did not return the expected record.';
     case classification.timeout:
       return 'The verifier did not receive a response before the request timeout.';
     case classification.unknownFailure:
@@ -173,7 +184,7 @@ function actionFor(kind) {
     case classification.missingHeader:
       return 'Check Cloudflare Response Header Transform Rules for the apex hostname and HTML route.';
     case classification.dnsFailure:
-      return 'Check public DNS records in the DNS/CDN provider dashboard; do not commit private DNS data to the repo.';
+      return 'Check public DNS records in the DNS/CDN provider dashboard and retry transient resolver failures; do not commit private DNS data to the repo.';
     case classification.timeout:
       return 'Retry and inspect Cloudflare/network events if timeouts persist.';
     case classification.unknownFailure:
@@ -486,6 +497,17 @@ function isTlsCertificateError(error) {
   return causeCode.startsWith('ERR_TLS') || causeCode.includes('CERT');
 }
 
+function isDnsLookupError(error) {
+  const cause = errorCause(error);
+  const causeCode = typeof cause.code === 'string' ? cause.code : '';
+  const causeReason = typeof cause.reason === 'string' ? cause.reason : '';
+  const causeMessage = typeof cause.message === 'string' ? cause.message : '';
+  const primaryMessage = error instanceof Error ? error.message : String(error);
+  const details = [causeCode, causeReason, causeMessage, primaryMessage].join(' ').toUpperCase();
+
+  return dnsErrorMarkers.some((marker) => details.includes(marker));
+}
+
 function exceptionResult(check, error) {
   let kind = classification.unknownFailure;
   let likelyCause;
@@ -495,6 +517,11 @@ function exceptionResult(check, error) {
     kind = classification.timeout;
   } else if (check.kind === 'dns') {
     kind = classification.dnsFailure;
+  } else if (check.kind === 'http' && isDnsLookupError(error)) {
+    kind = classification.dnsFailure;
+    likelyCause = 'The verifier could not resolve the hostname while fetching this HTTP route.';
+    suggestedNextAction =
+      'Check public DNS records and retry for transient resolver failures; do not commit private DNS data to the repo.';
   } else if (check.kind === 'http' && isTlsCertificateError(error)) {
     kind = classification.httpFailure;
     likelyCause =
@@ -745,6 +772,26 @@ function runSelfTest() {
     ),
     true,
     'Cloudflare challenge markers should be classified separately from public outage'
+  );
+  assert.equal(
+    exceptionResult(
+      { kind: 'http', name: 'dns-transient', url: 'https://example.invalid/', method: 'GET' },
+      new TypeError('fetch failed', {
+        cause: { code: 'EAI_AGAIN', host: 'example.invalid' }
+      })
+    ).classification,
+    classification.dnsFailure,
+    'HTTP fetch DNS lookup failures should be classified as DNS failures'
+  );
+  assert.equal(
+    exceptionResult(
+      { kind: 'http', name: 'dns-missing', url: 'https://example.invalid/', method: 'GET' },
+      new TypeError('fetch failed', {
+        cause: { code: 'ENOTFOUND', message: 'getaddrinfo ENOTFOUND example.invalid' }
+      })
+    ).classification,
+    classification.dnsFailure,
+    'HTTP fetch missing-host failures should be classified as DNS failures'
   );
 
   console.log('PASS live verifier self-test');

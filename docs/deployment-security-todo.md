@@ -25,7 +25,7 @@ Do not commit Cloudflare account IDs, API tokens, zone IDs, DNS credentials, pri
 - Confirm GitHub Pages "Enforce HTTPS" is enabled if GitHub Pages is the active host.
 - Confirm DNS records for `kamranboroomand.ir` point only to the intended host or CDN.
 - Confirm `https://www.kamranboroomand.ir/` has a certificate that covers `www.kamranboroomand.ir` and redirects to `https://kamranboroomand.ir/`. If `www` is served directly by GitHub Pages instead of through Cloudflare, GitHub's wildcard certificate may not cover the custom `www` hostname.
-- Provision and test the `security@kamranboroomand.ir` mailbox used by `/.well-known/security.txt`.
+- The `security@kamranboroomand.ir` mailbox used by `/.well-known/security.txt` is provisioned; periodically retest inbound delivery and response handling.
 - Consider DNSSEC and CAA records at the DNS provider if supported.
 - Keep registrar account MFA and domain lock enabled.
 - If Cloudflare or another CDN fronts the site, apply the response headers there and verify with `curl -I https://kamranboroomand.ir/`.

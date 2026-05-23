@@ -36,6 +36,45 @@
       .slice(0, limit);
   }
 
+  function stripUrlQueryAndHash(value) {
+    return String(value || '')
+      .split('#')[0]
+      .split('?')[0];
+  }
+
+  function minimizeTarget(href) {
+    const rawTarget = sanitize(href, 220);
+    if (!rawTarget) {
+      return '';
+    }
+
+    const protocolMatch = rawTarget.match(/^([a-z][a-z0-9+.-]*):/i);
+    const protocol = protocolMatch ? protocolMatch[1].toLowerCase() : '';
+
+    if (protocol === 'mailto') {
+      return 'mailto';
+    }
+
+    if (protocol === 'tel') {
+      return 'tel';
+    }
+
+    if (!protocol && !rawTarget.startsWith('//')) {
+      return sanitize(stripUrlQueryAndHash(rawTarget), 220);
+    }
+
+    try {
+      const resolvedUrl = new URL(rawTarget, window.location.href);
+      if (resolvedUrl.protocol === 'http:' || resolvedUrl.protocol === 'https:') {
+        return sanitize(`${resolvedUrl.origin}${resolvedUrl.pathname}`, 220);
+      }
+
+      return sanitize(resolvedUrl.protocol.replace(/:$/, ''), 80);
+    } catch {
+      return sanitize(stripUrlQueryAndHash(rawTarget), 220);
+    }
+  }
+
   function sendEvent(eventName, payload = {}) {
     const event = sanitize(eventName, 48);
     if (!event) {
@@ -99,13 +138,13 @@
 
       try {
         const resolvedUrl = new URL(href, window.location.href);
-        resolvedTarget = resolvedUrl.href;
+        resolvedTarget = minimizeTarget(href);
         isOutbound =
           resolvedUrl.origin !== window.location.origin ||
           resolvedUrl.protocol === 'mailto:' ||
           resolvedUrl.protocol === 'tel:';
       } catch {
-        resolvedTarget = href;
+        resolvedTarget = minimizeTarget(href);
       }
 
       if (explicitEvent) {

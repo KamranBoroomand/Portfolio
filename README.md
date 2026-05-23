@@ -68,7 +68,7 @@ This repo can be used as-is for this site or forked as a base for your own portf
 
 Prerequisites:
 
-- Node.js `20+`
+- Node.js `24` recommended to match CI; Node.js `20.19+` may work, but CI runs Node 24
 - npm `10+`
 
 Install:
