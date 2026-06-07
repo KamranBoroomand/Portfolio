@@ -6,7 +6,7 @@ const cwd = process.cwd();
 const fileBudgets = [
   { file: 'assets/js/effects.bundle.js', maxKb: 320 },
   { file: 'assets/css/style.css', maxKb: 120 },
-  { file: 'assets/js/script.js', maxKb: 40 },
+  { file: 'assets/js/script.js', maxKb: 45 },
   { file: 'assets/images/preview.jpg', maxKb: 100 }
 ];
 

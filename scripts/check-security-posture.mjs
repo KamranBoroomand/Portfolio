@@ -52,6 +52,22 @@ const forbiddenRuntimeTokens = [
   'plausible.io',
   'https://api.github.com'
 ];
+const forbiddenClickIds = ['gclid', 'fbclid', 'msclkid', 'ttclid'];
+const forbiddenAnalyticsFragments = [
+  'document.referrer',
+  'resolvedUrl.href',
+  'event.message',
+  'event.filename',
+  'event.lineno',
+  'event.colno',
+  'event.reason',
+  'screen.width',
+  'screen.height',
+  'Intl.DateTimeFormat',
+  'hardwareConcurrency',
+  'deviceMemory',
+  'canvas.toDataURL'
+];
 
 const failures = [];
 
@@ -173,6 +189,14 @@ function checkFirstPartyAnalyticsMeta(file, html) {
   if (!content.startsWith('/assets/images/') || /^https?:\/\//i.test(content)) {
     failures.push(`${file}: privacy analytics pixel must stay first-party and local`);
   }
+}
+
+function extractBetween(source, startMarker, endMarker) {
+  const start = source.indexOf(startMarker);
+  if (start === -1) return '';
+
+  const end = source.indexOf(endMarker, start + startMarker.length);
+  return end === -1 ? source.slice(start) : source.slice(start, end);
 }
 
 async function checkHtmlEntrypoints() {
@@ -300,10 +324,64 @@ async function checkPrivacyImplementation() {
     ) {
       failures.push(`${file}: analytics target must not send resolvedUrl.href directly`);
     }
+
+    const analyticsSource =
+      file === 'assets/js/script.js'
+        ? extractBetween(
+            source,
+            'function initPrivacyAnalytics()',
+            'function initPrivacyAnalyticsControl()'
+          )
+        : source;
+
+    for (const clickId of forbiddenClickIds) {
+      if (!source.includes(clickId)) {
+        failures.push(`${file}: analytics must explicitly drop or forbid ${clickId}`);
+      }
+    }
+
+    for (const fragment of forbiddenAnalyticsFragments) {
+      if (analyticsSource.includes(fragment)) {
+        failures.push(`${file}: analytics must not include ${fragment}`);
+      }
+    }
+
+    if (!source.includes('ANALYTICS_EVENT_ALLOWLIST')) {
+      failures.push(`${file}: analytics must use a strict event allowlist`);
+    }
+
+    if (!source.includes('sanitizeAnalyticsPath')) {
+      failures.push(`${file}: analytics must sanitize paths and strip arbitrary query strings`);
+    }
+
+    if (!source.includes('utm_source') || !source.includes('utm_campaign')) {
+      failures.push(`${file}: analytics must preserve only sanitized UTM campaign fields`);
+    }
   }
 
   if (!projectScript.includes('kb_analytics_opt_out')) {
     failures.push('assets/js/project-page.js: project pages must honor kb_analytics_opt_out');
+  }
+
+  if (mainScript.includes('lead_form_submit') || indexHtml.includes('lead_form_submit')) {
+    failures.push('lead_form_submit must be renamed to lead_mailto_open for mailto actions');
+  }
+
+  if (mainScript.includes('target: `mailto:')) {
+    failures.push('assets/js/script.js: mailto analytics target must be "mailto", not an address');
+  }
+
+  const leadMailtoEvent = extractBetween(
+    mainScript,
+    "emitAnalyticsEvent('lead_mailto_open'",
+    '});'
+  );
+  for (const forbiddenFormField of ['name', 'email', 'projectType', 'timeline', 'summary']) {
+    if (leadMailtoEvent.includes(forbiddenFormField)) {
+      failures.push(
+        `assets/js/script.js: lead_mailto_open must not send form field ${forbiddenFormField}`
+      );
+    }
   }
 
   for (const requiredText of [
@@ -311,7 +389,11 @@ async function checkPrivacyImplementation() {
     'referrerPolicy =',
     'kb_analytics_opt_out',
     'excludes query strings and hashes',
-    'No analytics cookies'
+    'No analytics cookies',
+    'Global Privacy Control',
+    'utm_source',
+    'gclid',
+    'ad-network pixels are intentionally forbidden'
   ]) {
     if (!analyticsDoc.includes(requiredText)) {
       failures.push(`docs/privacy-analytics.md: missing required privacy note: ${requiredText}`);

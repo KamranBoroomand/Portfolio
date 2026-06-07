@@ -107,6 +107,8 @@ Quality and release gates:
 - `npm run format` - Prettier write mode
 - `npm run format:check` - Prettier check mode
 - `npm run perf:check` - asset/performance budget checks
+- `npm run test:hygiene` - fail on local artifacts, private env/key files, and dirty release exports
+- `npm run test:assets` - verify local asset references, responsive images, and image file validity
 - `npm run test:security` - static CSP/privacy/trust/deployment posture checks
 - `npm run test:seo` - metadata, hreflang, sitemap, robots, JSON-LD, and placeholder checks
 - `npm run test:links` - internal link/asset reference checks in HTML
@@ -117,9 +119,10 @@ Quality and release gates:
 - `npm run test:e2e:easter-egg` - avatar easter egg behavior check
 - `npm run test:lighthouse` - Lighthouse CI assertions with automatic retry on transient Chrome interstitial failures
 - `npm run verify:live` - public live-site verification for deployment correctness, headers, and public files
-- `npm run check` - build + lint + format + perf + links + smoke + a11y
+- `npm run check` - build + lint + format + perf + hygiene + assets + security + SEO + links + smoke + a11y
 - `npm run quality:extended` - matrix + visual + easter egg
 - `npm run release:prepare` - full gate (`check + quality:extended + lighthouse`)
+- `npm run release:zip` - create a clean public ZIP in `output/` after hygiene checks
 
 When visual baselines intentionally change:
 
@@ -192,8 +195,9 @@ Recommended release flow:
 
 1. Update content/code/assets.
 2. Run `npm run release:prepare`.
-3. Commit source and generated artifacts.
-4. Push and deploy.
+3. Optionally run `npm run release:zip` for a clean public export.
+4. Commit source and intended generated assets only.
+5. Push and deploy.
 
 ## Contributing
 

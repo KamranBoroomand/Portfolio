@@ -1,7 +1,16 @@
-node_modules/
 .DS_Store
+**/.DS_Store
+__MACOSX/
+**/._*
+node_modules/
 live-site-verification-report.json
 uptime-monitor.log
+.env
+.env.*
+!.env.example
+*.log
+.cache/
+output/
 playwright-report/
 test-results/
 .lighthouseci/

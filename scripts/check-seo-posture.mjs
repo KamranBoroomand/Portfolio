@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 const rootDir = process.cwd();
-const releaseLastmod = '2026-05-21';
+const releaseLastmod = '2026-06-07';
 const productionOrigin = 'https://kamranboroomand.ir';
 
 const pages = [
@@ -290,6 +290,14 @@ async function checkRoadmapDocs() {
   }
 }
 
+async function checkResumeSourceIndexing() {
+  const file = 'assets/docs/kamran-boroomand-resume-ats.html';
+  const html = await readText(file);
+  if (!/<meta\b(?=[^>]*name=["']robots["'])(?=[^>]*content=["']noindex,nofollow["'])/i.test(html)) {
+    failures.push(`${file}: resume generator source must stay intentionally noindex,nofollow`);
+  }
+}
+
 for (const page of pages) {
   await checkPage(page);
 }
@@ -297,6 +305,7 @@ await checkSitemap();
 await checkRobots();
 await checkPublicPlaceholders();
 await checkRoadmapDocs();
+await checkResumeSourceIndexing();
 
 if (failures.length) {
   console.error(

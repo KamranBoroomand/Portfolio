@@ -18,6 +18,18 @@ const DEFAULT_LANGUAGE = 'en';
 const I18N_SOURCE = './assets/data/translations.json';
 const EFFECTS_BUNDLE_SOURCE = './assets/js/effects.bundle.js';
 const LIGHTHOUSE_QUERY_PARAM = 'lhci';
+const ANALYTICS_EVENT_ALLOWLIST = new Set(
+  'pageview outbound_click tab_open project_filter_change project_open_live_preview project_open_live project_open_repo project_case_study contact_email contact_telegram contact_github references_commits references_live_verification lead_form_start lead_form_invalid lead_mailto_open lead_calendar resume_download portfolio_more_repos monitoring_public_metric monitoring_alerts cta_resume_download cta_email cta_telegram cta_github client_error'.split(
+    ' '
+  )
+);
+const ANALYTICS_CAMPAIGN_FIELDS = 'utm_source utm_medium utm_campaign utm_content'.split(' ');
+const ANALYTICS_DROPPED_QUERY_FIELDS = 'gclid fbclid msclkid ttclid'.split(' ');
+const ANALYTICS_TARGET_ALLOWLIST = new Set(
+  'mailto tel telegram github project_live project_repo resume_download calendar internal'.split(
+    ' '
+  )
+);
 
 let TRANSLATIONS = Object.freeze({ [DEFAULT_LANGUAGE]: {} });
 let hasLoadedTranslations = false;
@@ -54,45 +66,6 @@ function sanitizeAnalyticsValue(value, maxLength = 180) {
     .slice(0, maxLength);
 }
 
-function stripUrlQueryAndHash(value) {
-  return String(value || '')
-    .split('#')[0]
-    .split('?')[0];
-}
-
-function minimizeAnalyticsTarget(href) {
-  const rawTarget = sanitizeAnalyticsValue(href, 220);
-  if (!rawTarget) {
-    return '';
-  }
-
-  const protocolMatch = rawTarget.match(/^([a-z][a-z0-9+.-]*):/i);
-  const protocol = protocolMatch ? protocolMatch[1].toLowerCase() : '';
-
-  if (protocol === 'mailto') {
-    return 'mailto';
-  }
-
-  if (protocol === 'tel') {
-    return 'tel';
-  }
-
-  if (!protocol && !rawTarget.startsWith('//')) {
-    return sanitizeAnalyticsValue(stripUrlQueryAndHash(rawTarget), 220);
-  }
-
-  try {
-    const resolvedUrl = new URL(rawTarget, window.location.href);
-    if (resolvedUrl.protocol === 'http:' || resolvedUrl.protocol === 'https:') {
-      return sanitizeAnalyticsValue(`${resolvedUrl.origin}${resolvedUrl.pathname}`, 220);
-    }
-
-    return sanitizeAnalyticsValue(resolvedUrl.protocol.replace(/:$/, ''), 80);
-  } catch {
-    return sanitizeAnalyticsValue(stripUrlQueryAndHash(rawTarget), 220);
-  }
-}
-
 function emitAnalyticsEvent(eventName, payload = {}) {
   const tracker = window.__KB_ANALYTICS_TRACK__;
   if (typeof tracker === 'function') {
@@ -106,6 +79,130 @@ function hasAnalyticsOptedOut() {
   } catch {
     return true;
   }
+}
+
+function sanitizeAnalyticsToken(value, maxLength = 80) {
+  return String(value || '')
+    .replace(/[^a-zA-Z0-9 ._:-]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, maxLength);
+}
+
+function sanitizeAnalyticsEventName(eventName) {
+  const event = sanitizeAnalyticsToken(eventName, 48);
+  return ANALYTICS_EVENT_ALLOWLIST.has(event) ? event : '';
+}
+
+function sanitizeAnalyticsPath(value = getCurrentPath()) {
+  let url;
+  try {
+    url = new URL(String(value || getCurrentPath()), `${location.origin}/`);
+  } catch {
+    url = new URL('/', location.origin);
+  }
+
+  const campaigns = {};
+  for (const field of ANALYTICS_CAMPAIGN_FIELDS) {
+    const rawValue = url.searchParams.get(field);
+    if (!rawValue) {
+      continue;
+    }
+
+    const maxLength = field === 'utm_content' ? 60 : 80;
+    const safeValue = sanitizeAnalyticsToken(rawValue, maxLength);
+    if (safeValue && (field !== 'utm_content' || rawValue.length <= 80)) {
+      campaigns[field] = safeValue;
+    }
+  }
+
+  for (const field of ANALYTICS_DROPPED_QUERY_FIELDS) {
+    url.searchParams.delete(field);
+  }
+
+  const pathOnly = `${url.pathname}${url.hash}`;
+  return {
+    path: sanitizeAnalyticsValue(pathOnly || '/', 200),
+    campaigns
+  };
+}
+
+function categorizeAnalyticsTarget(href, eventName = '') {
+  const event = sanitizeAnalyticsEventName(eventName) || sanitizeAnalyticsToken(eventName, 48);
+  const rawTarget = String(href || '').trim();
+  const normalizedTarget = sanitizeAnalyticsToken(rawTarget, 80);
+
+  if (ANALYTICS_TARGET_ALLOWLIST.has(normalizedTarget)) {
+    return normalizedTarget;
+  }
+
+  if (event.includes('mailto') || event.includes('email')) {
+    return 'mailto';
+  }
+
+  if (event.includes('telegram')) {
+    return 'telegram';
+  }
+
+  if (event.includes('resume')) {
+    return 'resume_download';
+  }
+
+  if (event.includes('repo')) {
+    return 'project_repo';
+  }
+
+  if (event.includes('github') || event === 'references_commits') {
+    return 'github';
+  }
+
+  if (event.includes('live') || event.includes('preview')) {
+    return 'project_live';
+  }
+
+  if (event.includes('calendar')) {
+    return 'calendar';
+  }
+
+  try {
+    const resolvedUrl = new URL(rawTarget, location.origin);
+    if (resolvedUrl.protocol === 'mailto:') {
+      return 'mailto';
+    }
+
+    if (resolvedUrl.protocol === 'tel:') {
+      return 'tel';
+    }
+
+    const host = resolvedUrl.hostname.toLowerCase();
+    if (host === 'github.com') {
+      return event.includes('repo') || event.startsWith('case_') ? 'project_repo' : 'github';
+    }
+
+    if (host === 't.me' || host.endsWith('.t.me')) {
+      return 'telegram';
+    }
+
+    if (host === 'calendar.google.com') {
+      return 'calendar';
+    }
+
+    if (resolvedUrl.pathname.endsWith('.pdf')) {
+      return 'resume_download';
+    }
+
+    if (host.endsWith('kamranboroomand.ir') && resolvedUrl.origin !== location.origin) {
+      return 'project_live';
+    }
+
+    if (resolvedUrl.origin === location.origin) {
+      return 'internal';
+    }
+  } catch {
+    return '';
+  }
+
+  return '';
 }
 
 function normalizeLanguage(language) {
@@ -435,39 +532,60 @@ function initPrivacyAnalytics() {
   let lastTrackedPath = '';
   let errorEventsSent = 0;
 
+  function sendPixelRequest(params) {
+    if (typeof fetch !== 'function') {
+      return;
+    }
+
+    const queryPrefix = pixelPath.includes('?') ? '&' : '?';
+    const url = `${pixelPath}${queryPrefix}${params.toString()}`;
+    const referrerPolicy = 'no-referrer';
+
+    fetch(url, {
+      method: 'GET',
+      cache: 'no-store',
+      credentials: 'omit',
+      keepalive: true,
+      referrerPolicy
+    }).catch(() => {});
+  }
+
   function sendAnalyticsEvent(eventName, payload = {}) {
-    const event = sanitizeAnalyticsValue(eventName, 48);
+    const event = sanitizeAnalyticsEventName(eventName);
     if (!event) {
       return;
     }
 
+    const sanitizedPath = sanitizeAnalyticsPath(payload.path || getCurrentPath());
     const params = new URLSearchParams({
       v: '1',
       event,
-      path: sanitizeAnalyticsValue(payload.path || getCurrentPath(), 200),
+      path: sanitizedPath.path,
       ts: String(Date.now()),
       lang: currentLanguage
     });
 
-    const label = sanitizeAnalyticsValue(payload.label, 140);
+    for (const [field, value] of Object.entries(sanitizedPath.campaigns)) {
+      params.set(field, value);
+    }
+
+    const label = sanitizeAnalyticsToken(payload.label, 80);
     if (label) {
       params.set('label', label);
     }
 
-    const target = sanitizeAnalyticsValue(payload.target, 220);
+    const target = categorizeAnalyticsTarget(payload.target, event);
     if (target) {
       params.set('target', target);
     }
 
-    const image = new Image(1, 1);
-    image.referrerPolicy = 'no-referrer';
-    image.src = `${pixelPath}${pixelPath.includes('?') ? '&' : '?'}${params.toString()}`;
+    sendPixelRequest(params);
   }
 
   window.__KB_ANALYTICS_TRACK__ = sendAnalyticsEvent;
 
   function trackPageView(path) {
-    const normalizedPath = sanitizeAnalyticsValue(path || getCurrentPath(), 200);
+    const normalizedPath = sanitizeAnalyticsPath(path || getCurrentPath()).path;
     if (!normalizedPath || normalizedPath === lastTrackedPath) {
       return;
     }
@@ -476,16 +594,13 @@ function initPrivacyAnalytics() {
     sendAnalyticsEvent('pageview', { path: normalizedPath });
   }
 
-  function trackClientError(eventName, message, source) {
+  function trackClientError() {
     if (errorEventsSent >= 8) {
       return;
     }
 
     errorEventsSent += 1;
-    sendAnalyticsEvent(eventName, {
-      label: sanitizeAnalyticsValue(message, 140),
-      target: sanitizeAnalyticsValue(source, 220)
-    });
+    sendAnalyticsEvent('client_error');
   }
 
   document.addEventListener(
@@ -505,31 +620,27 @@ function initPrivacyAnalytics() {
         return;
       }
 
-      const explicitEvent = sanitizeAnalyticsValue(link.dataset.trackEvent, 48);
-      const label = sanitizeAnalyticsValue(
-        link.dataset.trackLabel || link.textContent || link.getAttribute('aria-label'),
-        120
-      );
+      const explicitEvent = sanitizeAnalyticsEventName(link.dataset.trackEvent);
+      const label = sanitizeAnalyticsToken(link.dataset.trackLabel, 80);
 
-      let resolvedTarget;
+      let targetCategory = categorizeAnalyticsTarget(href, explicitEvent);
       let isOutbound = false;
 
       try {
-        const resolvedUrl = new URL(href, window.location.href);
-        resolvedTarget = minimizeAnalyticsTarget(href);
+        const resolvedUrl = new URL(href, location.origin);
         isOutbound =
-          resolvedUrl.origin !== window.location.origin ||
+          resolvedUrl.origin !== location.origin ||
           resolvedUrl.protocol === 'mailto:' ||
           resolvedUrl.protocol === 'tel:';
       } catch {
-        resolvedTarget = minimizeAnalyticsTarget(href);
+        targetCategory = categorizeAnalyticsTarget(href, explicitEvent);
       }
 
       if (explicitEvent) {
         sendAnalyticsEvent(explicitEvent, {
           path: getCurrentPath(),
           label,
-          target: resolvedTarget
+          target: targetCategory
         });
         return;
       }
@@ -537,33 +648,16 @@ function initPrivacyAnalytics() {
       if (isOutbound) {
         sendAnalyticsEvent('outbound_click', {
           path: getCurrentPath(),
-          label,
-          target: resolvedTarget
+          label: targetCategory,
+          target: targetCategory
         });
       }
     },
     { capture: true }
   );
 
-  window.addEventListener('error', (event) => {
-    trackClientError(
-      'client_error',
-      event.message || 'runtime error',
-      `${event.filename || 'inline'}:${event.lineno || 0}:${event.colno || 0}`
-    );
-  });
-
-  window.addEventListener('unhandledrejection', (event) => {
-    const reason = event.reason;
-    const message =
-      reason instanceof Error
-        ? reason.message
-        : typeof reason === 'string'
-          ? reason
-          : JSON.stringify(reason || 'unhandled rejection');
-
-    trackClientError('unhandled_rejection', message, 'promise');
-  });
+  window.addEventListener('error', () => trackClientError());
+  window.addEventListener('unhandledrejection', () => trackClientError());
 
   window.addEventListener('hashchange', () => trackPageView(getCurrentPath()));
   window.addEventListener(EVENTS.virtualPageView, (event) => {
@@ -575,6 +669,58 @@ function initPrivacyAnalytics() {
   });
 
   trackPageView(getCurrentPath());
+}
+
+function initPrivacyAnalyticsControl() {
+  const toggle = document.querySelector('[data-analytics-opt-toggle]');
+  const status = document.querySelector('[data-analytics-status]');
+  if (!(toggle instanceof HTMLButtonElement)) {
+    return;
+  }
+
+  function readPreference() {
+    try {
+      return localStorage.getItem(STORAGE_KEYS.analyticsOptOut) === '1';
+    } catch {
+      return true;
+    }
+  }
+
+  function writePreference(isOptedOut) {
+    try {
+      if (isOptedOut) {
+        localStorage.setItem(STORAGE_KEYS.analyticsOptOut, '1');
+      } else {
+        localStorage.removeItem(STORAGE_KEYS.analyticsOptOut);
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function render() {
+    const optedOut = readPreference();
+    toggle.textContent = optedOut ? 'Allow analytics' : 'Opt out analytics';
+    toggle.setAttribute('aria-pressed', String(optedOut));
+
+    if (status) {
+      status.textContent = optedOut
+        ? 'Analytics is off in this browser.'
+        : 'First-party only. No ad pixels or third-party analytics.';
+    }
+  }
+
+  toggle.addEventListener('click', () => {
+    const nextOptOut = !readPreference();
+    if (writePreference(nextOptOut)) {
+      render();
+    } else if (status) {
+      status.textContent = 'Analytics is off because local storage is unavailable.';
+    }
+  });
+
+  render();
 }
 
 function initCredibilityPanel() {
@@ -663,6 +809,7 @@ function initLeadFunnel() {
     }
 
     const subject = `[Portfolio Inquiry] ${projectType} - ${name}`;
+    const sourcePath = sanitizeAnalyticsPath(getCurrentPath()).path;
     const body = [
       `Name: ${name}`,
       `Email: ${email}`,
@@ -672,7 +819,7 @@ function initLeadFunnel() {
       'Project Summary:',
       summary,
       '',
-      `Source: ${window.location.href}`
+      `Source: ${sourcePath}`
     ].join('\n');
 
     const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -683,10 +830,10 @@ function initLeadFunnel() {
     tempLink.click();
     tempLink.remove();
 
-    emitAnalyticsEvent('lead_form_submit', {
+    emitAnalyticsEvent('lead_mailto_open', {
       path: getCurrentPath(),
-      label: projectType,
-      target: `mailto:${recipient}`
+      label: 'intake',
+      target: 'mailto'
     });
 
     form.reset();
@@ -1292,6 +1439,7 @@ async function initializePage() {
   initLanguageControls();
   initTabs();
   initEffectPreferences();
+  initPrivacyAnalyticsControl();
   initPrivacyAnalytics();
   initCredibilityPanel();
   initLeadFunnel();

@@ -775,7 +775,7 @@
                 <button
                   class="cta-btn cta-btn-primary"
                   type="submit"
-                  data-track-event="lead_form_submit"
+                  data-track-event="lead_mailto_open"
                   data-track-label="intake"
                   data-i18n="intake.submit"
                 >
@@ -1196,6 +1196,15 @@
           <p class="last-updated" data-i18n="footer.lastUpdated">Last reviewed: May 2026</p>
           <p class="footer-links">
             <a href="/security/" data-i18n="footer.securityPolicy">Security policy</a>
+            <span aria-hidden="true"> · </span>
+            <a href="/security/#privacy-analytics">Privacy analytics</a>
+            <span aria-hidden="true"> · </span>
+            <button class="footer-privacy-toggle" type="button" data-analytics-opt-toggle>
+              Opt out analytics
+            </button>
+          </p>
+          <p class="privacy-status" data-analytics-status>
+            First-party only. No ad pixels or third-party analytics.
           </p>
         </footer>
       </div>

@@ -39,6 +39,12 @@ jobs:
       - name: Performance budget check
         run: npm run perf:check
 
+      - name: Repository hygiene check
+        run: npm run test:hygiene
+
+      - name: Asset reference check
+        run: npm run test:assets
+
       - name: Security posture check
         run: npm run test:security
 

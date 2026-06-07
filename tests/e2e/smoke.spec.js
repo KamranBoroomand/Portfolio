@@ -200,4 +200,102 @@ test.describe('Portfolio Smoke Flow', () => {
       expect(relValue).toContain('noreferrer');
     }
   });
+
+  test('keeps avatar tightly fitted on desktop and mobile', async ({ page }) => {
+    const viewports = [
+      { width: 1440, height: 900 },
+      { width: 390, height: 844 }
+    ];
+
+    for (const viewport of viewports) {
+      await page.setViewportSize(viewport);
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
+      await expect(page.locator('body')).toHaveClass(/is-loaded/);
+
+      const fit = await page.locator('.avatar-box').evaluate((avatar) => {
+        const picture = avatar.querySelector('picture');
+        const image = avatar.querySelector('img');
+        if (!picture || !image) {
+          return null;
+        }
+
+        const avatarRect = avatar.getBoundingClientRect();
+        const pictureRect = picture.getBoundingClientRect();
+        const imageRect = image.getBoundingClientRect();
+        const pictureStyle = window.getComputedStyle(picture);
+        const imageStyle = window.getComputedStyle(image);
+
+        return {
+          avatarWidth: avatarRect.width,
+          avatarHeight: avatarRect.height,
+          pictureWidth: pictureRect.width,
+          pictureHeight: pictureRect.height,
+          imageWidth: imageRect.width,
+          imageHeight: imageRect.height,
+          pictureDisplay: pictureStyle.display,
+          objectFit: imageStyle.objectFit,
+          objectPosition: imageStyle.objectPosition,
+          background: imageStyle.backgroundColor
+        };
+      });
+
+      expect(fit).not.toBeNull();
+      expect(fit.pictureDisplay).toBe('block');
+      expect(fit.objectFit).toBe('cover');
+      expect(fit.objectPosition).toContain('44%');
+      expect(fit.background).toBe('rgba(0, 0, 0, 0)');
+      expect(fit.pictureWidth).toBeGreaterThanOrEqual(fit.avatarWidth - 2);
+      expect(fit.pictureHeight).toBeGreaterThanOrEqual(fit.avatarHeight - 2);
+      expect(fit.imageWidth).toBeGreaterThanOrEqual(fit.avatarWidth - 2);
+      expect(fit.imageHeight).toBeGreaterThanOrEqual(fit.avatarHeight - 2);
+    }
+  });
+
+  test('prevents horizontal overflow across responsive language states', async ({ page }) => {
+    const widths = [320, 360, 390, 430, 768, 1024, 1440];
+    const languages = ['en', 'ru', 'fa'];
+
+    for (const width of widths) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/#portfolio', { waitUntil: 'domcontentloaded' });
+      await expect(page.locator('body')).toHaveClass(/is-loaded/);
+
+      for (const language of languages) {
+        await page.locator('[data-language-select]').selectOption(language);
+
+        const overflow = await page.evaluate(() => {
+          const root = document.documentElement;
+          const body = document.body;
+          const selectors = [
+            '.layout',
+            '.sidebar',
+            '.navbar',
+            '.filter-list',
+            '.select-list',
+            '.project-card',
+            '.project-actions',
+            '.avatar-box',
+            '.cta-group'
+          ];
+          const offenders = selectors.flatMap((selector) =>
+            Array.from(document.querySelectorAll(selector))
+              .filter((element) => {
+                const rect = element.getBoundingClientRect();
+                return rect.width > 0 && (rect.left < -1 || rect.right > window.innerWidth + 1);
+              })
+              .map(() => selector)
+          );
+
+          return {
+            scrollWidth: Math.max(root.scrollWidth, body.scrollWidth),
+            clientWidth: root.clientWidth,
+            offenders
+          };
+        });
+
+        expect(overflow.scrollWidth).toBeLessThanOrEqual(overflow.clientWidth + 1);
+        expect(overflow.offenders).toEqual([]);
+      }
+    }
+  });
 });
