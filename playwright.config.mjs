@@ -1,10 +1,13 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const useSystemChrome = process.env.PW_USE_SYSTEM_CHROME === '1';
+
 const defaultProjects = [
   {
     name: 'chromium',
     use: {
-      ...devices['Desktop Chrome']
+      ...devices['Desktop Chrome'],
+      ...(useSystemChrome ? { channel: 'chrome' } : {})
     }
   }
 ];

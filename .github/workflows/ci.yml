@@ -14,6 +14,9 @@ jobs:
   quality:
     if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PW_USE_SYSTEM_CHROME: '1'
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -54,8 +57,8 @@ jobs:
       - name: Internal link check
         run: npm run test:links
 
-      - name: Install Playwright Chromium
-        run: npx playwright install --with-deps chromium
+      - name: Diagnose system browser
+        run: google-chrome --version || chromium-browser --version || chromium --version
 
       - name: Run e2e smoke tests
         run: npm run test:e2e
@@ -66,6 +69,7 @@ jobs:
   extended-quality:
     if: github.event_name == 'pull_request' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: macos-latest
+    timeout-minutes: 35
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -82,7 +86,20 @@ jobs:
       - name: Build effects bundle
         run: npm run build
 
+      - name: Configure Playwright browser cache path
+        run: echo "PLAYWRIGHT_BROWSERS_PATH=$HOME/.cache/ms-playwright" >> "$GITHUB_ENV"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-ms-playwright-all-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-ms-playwright-all-
+            ${{ runner.os }}-ms-playwright-
+
       - name: Install Playwright browsers
+        timeout-minutes: 10
         run: npx playwright install chromium firefox webkit
 
       - name: Run extended browser suite
@@ -91,6 +108,7 @@ jobs:
   lighthouse:
     if: github.event_name == 'pull_request' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v6

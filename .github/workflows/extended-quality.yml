@@ -11,6 +11,7 @@ permissions:
 jobs:
   cross-browser-smoke:
     runs-on: ubuntu-latest
+    timeout-minutes: 35
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -24,14 +25,32 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Configure Playwright browser cache path
+        run: echo "PLAYWRIGHT_BROWSERS_PATH=$HOME/.cache/ms-playwright" >> "$GITHUB_ENV"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-ms-playwright-all-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-ms-playwright-all-
+            ${{ runner.os }}-ms-playwright-
+
+      - name: Install Playwright browser dependencies
+        timeout-minutes: 8
+        run: npx playwright install-deps chromium firefox webkit
+
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium firefox webkit
+        timeout-minutes: 12
+        run: npx playwright install chromium firefox webkit
 
       - name: Run matrix smoke tests
         run: npm run test:e2e:matrix
 
   visual-regression:
     runs-on: macos-latest
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -45,7 +64,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Configure Playwright browser cache path
+        run: echo "PLAYWRIGHT_BROWSERS_PATH=$HOME/.cache/ms-playwright" >> "$GITHUB_ENV"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-ms-playwright-chromium-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-ms-playwright-chromium-
+            ${{ runner.os }}-ms-playwright-
+
       - name: Install Playwright Chromium
+        timeout-minutes: 8
         run: npx playwright install chromium
 
       - name: Run visual regression tests
