@@ -1008,6 +1008,19 @@ async function initProjects() {
       .join(', ');
   }
 
+  function isPrivateRepoUrl(value) {
+    const normalized = String(value || '')
+      .trim()
+      .toLowerCase();
+    return (
+      !normalized ||
+      normalized === '#' ||
+      normalized === 'private' ||
+      normalized === 'private-source' ||
+      normalized === 'private source'
+    );
+  }
+
   function createProjectItem(project, locale) {
     const title = getLocalizedProjectField(
       project,
@@ -1032,11 +1045,14 @@ async function initProjects() {
     );
     const description = getLocalizedProjectField(project, locale, 'description', '');
     const repoUrl = String(project.repoUrl || '#').trim();
+    const repoIsPrivate = project?.repoPrivate === true || isPrivateRepoUrl(repoUrl);
     const repoLabel = getLocalizedProjectField(
       project,
       locale,
       'repoLabel',
-      getTranslation(locale, 'projects.viewRepo')
+      repoIsPrivate
+        ? getTranslation(locale, 'projects.privateSource')
+        : getTranslation(locale, 'projects.viewRepo')
     );
     const primaryActionLabel = getLocalizedProjectField(
       project,
@@ -1197,16 +1213,25 @@ async function initProjects() {
     primaryAction.dataset.trackEvent = 'project_open_live';
     primaryAction.dataset.trackLabel = title;
 
-    const repoAction = document.createElement('a');
-    repoAction.className = 'project-action';
-    repoAction.href = repoUrl;
-    repoAction.target = '_blank';
-    repoAction.rel = 'noopener noreferrer';
-    repoAction.textContent = repoLabel;
-    repoAction.dataset.trackEvent = 'project_open_repo';
-    repoAction.dataset.trackLabel = title;
+    actions.append(primaryAction);
 
-    actions.append(primaryAction, repoAction);
+    if (repoIsPrivate) {
+      const repoAction = document.createElement('span');
+      repoAction.className = 'project-action project-action-muted';
+      repoAction.textContent = repoLabel;
+      repoAction.setAttribute('aria-disabled', 'true');
+      actions.append(repoAction);
+    } else {
+      const repoAction = document.createElement('a');
+      repoAction.className = 'project-action';
+      repoAction.href = repoUrl;
+      repoAction.target = '_blank';
+      repoAction.rel = 'noopener noreferrer';
+      repoAction.textContent = repoLabel;
+      repoAction.dataset.trackEvent = 'project_open_repo';
+      repoAction.dataset.trackLabel = title;
+      actions.append(repoAction);
+    }
 
     if (caseStudyUrl && caseStudyUrl !== '#') {
       const caseStudyAction = document.createElement('a');

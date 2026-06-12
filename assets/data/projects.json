@@ -275,6 +275,85 @@
         "responsiveBase": "nullkeys-site-preview",
         "responsiveWidths": [480, 800, 1200]
       }
+    },
+    {
+      "id": "saadi-institute",
+      "title": "Saadi Institute (gUG)",
+      "categoryLabel": "Multilingual Cultural Website",
+      "filters": ["web"],
+      "description": "Multilingual institutional website for a Berlin-based cultural and educational institute focused on Persian language, literature, arts, and German-Iranian cultural dialogue.",
+      "problem": "The institute needed a credible multilingual public website with localized content, legal footer, events, updates, resources, printable materials, and safe deployment hygiene.",
+      "role": "Built the static site structure, localized routes, SEO and hreflang metadata, accessible navigation, image-performance checks, public build allowlist, Cloudflare deployment path, and privacy-safe static form fallbacks.",
+      "stack": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Python QA",
+        "Node.js",
+        "Playwright",
+        "Wrangler",
+        "Cloudflare"
+      ],
+      "architecture": [
+        "Static Persian, German, and English routes publish localized institutional pages",
+        "Localized search JSON, printable downloads, and updates/events pages stay deployable without a runtime backend",
+        "Public build and image QA scripts keep deployment scoped to safe static assets"
+      ],
+      "outcome": "Shipped a clean institutional site ready for public cultural and educational communication without unnecessary runtime backend risk.",
+      "impactMetrics": [
+        {
+          "value": "3",
+          "label": "site languages across Persian, German, and English routes"
+        },
+        {
+          "value": "100+",
+          "label": "static pages and resources across localized routes and printable downloads"
+        },
+        {
+          "value": "0",
+          "label": "runtime backend dependencies for the current public static site"
+        }
+      ],
+      "previewUrl": "https://saadi-institute.com",
+      "previewDomain": "saadi-institute.com",
+      "previewAriaLabel": "Open Saadi Institute website",
+      "primaryActionLabel": "Open Live Website",
+      "caseStudyUrl": "/projects/saadi-institute/",
+      "detailAriaLabel": "Open Saadi Institute case study",
+      "repoPrivate": true,
+      "repoUrl": "private",
+      "repoLabel": "Private source",
+      "i18n": {
+        "ru": {
+          "title": "Saadi Institute (gUG)",
+          "categoryLabel": "Многоязычный культурный сайт",
+          "description": "Многоязычный институциональный сайт берлинского культурно-образовательного института о персидском языке, литературе, искусстве и германо-иранском культурном диалоге.",
+          "previewAriaLabel": "Открыть сайт Saadi Institute",
+          "primaryActionLabel": "Открыть сайт",
+          "detailAriaLabel": "Открыть кейс Saadi Institute",
+          "repoLabel": "Приватный исходный код",
+          "imageAlt": "Предпросмотр сайта Saadi Institute"
+        },
+        "fa": {
+          "title": "مؤسسه سعدی (gUG)",
+          "categoryLabel": "وب‌سایت فرهنگی چندزبانه",
+          "description": "وب‌سایت سازمانی چندزبانه برای یک مؤسسه فرهنگی و آموزشی در برلین با تمرکز بر زبان فارسی، ادبیات، هنر و گفت‌وگوی فرهنگی ایران و آلمان.",
+          "previewAriaLabel": "باز کردن وب‌سایت مؤسسه سعدی",
+          "primaryActionLabel": "باز کردن وب‌سایت",
+          "detailAriaLabel": "باز کردن مطالعه موردی مؤسسه سعدی",
+          "repoLabel": "منبع خصوصی",
+          "imageAlt": "پیش‌نمایش وب‌سایت مؤسسه سعدی"
+        }
+      },
+      "image": {
+        "src": "./assets/images/saadi-institute-site-preview.png",
+        "alt": "Preview of the Saadi Institute multilingual website",
+        "width": 1440,
+        "height": 900,
+        "sizes": "(max-width: 759px) 100vw, 50vw",
+        "responsiveBase": "saadi-institute-site-preview",
+        "responsiveWidths": [480, 800, 1200]
+      }
     }
   ]
 }

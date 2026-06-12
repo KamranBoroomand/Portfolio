@@ -1235,6 +1235,20 @@ address {
   border-style: dashed;
 }
 
+.project-action-muted {
+  color: var(--text-2);
+  border-style: dashed;
+  background: rgba(255, 255, 255, 0.48);
+  cursor: default;
+  pointer-events: none;
+}
+
+.project-action-muted:hover {
+  border-color: var(--line);
+  color: var(--text-2);
+  transform: none;
+}
+
 .more-projects {
   margin-top: 0.2rem;
   display: inline-flex;

@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 const rootDir = process.cwd();
-const releaseLastmod = '2026-06-07';
+const releaseLastmod = '2026-06-09';
 const productionOrigin = 'https://kamranboroomand.ir';
 
 const pages = [
@@ -59,6 +59,16 @@ const pages = [
     }
   },
   {
+    file: 'projects/saadi-institute/index.html',
+    canonical: `${productionOrigin}/projects/saadi-institute/`,
+    requiredJsonLdTypes: ['Person', 'WebSite', 'WebPage', 'CreativeWork', 'BreadcrumbList'],
+    requiredLinks: ['icon', 'apple-touch-icon', 'manifest'],
+    hreflang: {
+      en: `${productionOrigin}/projects/saadi-institute/`,
+      'x-default': `${productionOrigin}/projects/saadi-institute/`
+    }
+  },
+  {
     file: 'security/index.html',
     canonical: `${productionOrigin}/security/`,
     requiredJsonLdTypes: ['Person', 'WebSite', 'WebPage', 'BreadcrumbList'],
@@ -78,6 +88,7 @@ const sitemapUrls = [
   `${productionOrigin}/projects/nullcal/`,
   `${productionOrigin}/projects/pacman/`,
   `${productionOrigin}/projects/nullkeys/`,
+  `${productionOrigin}/projects/saadi-institute/`,
   `${productionOrigin}/security/`
 ];
 
@@ -271,7 +282,8 @@ async function checkPublicPlaceholders() {
     'projects/nullid/index.html',
     'projects/nullcal/index.html',
     'projects/pacman/index.html',
-    'projects/nullkeys/index.html'
+    'projects/nullkeys/index.html',
+    'projects/saadi-institute/index.html'
   ];
 
   for (const file of files) {

@@ -52,5 +52,8 @@
     "http-server": "^14.1.1",
     "prettier": "^3.8.1",
     "sharp": "^0.34.5"
+  },
+  "overrides": {
+    "shell-quote": "1.8.4"
   }
 }

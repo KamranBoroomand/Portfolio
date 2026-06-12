@@ -131,7 +131,7 @@ test.describe('Portfolio Smoke Flow', () => {
 
     const visibleProjectItems = page.locator('.project-item:not([hidden])');
 
-    await expect(visibleProjectItems).toHaveCount(4);
+    await expect(visibleProjectItems).toHaveCount(5);
 
     await applyProjectFilter(page, 'security');
     await expect(visibleProjectItems).toHaveCount(1);
@@ -143,8 +143,14 @@ test.describe('Portfolio Smoke Flow', () => {
       'NullCal'
     ]);
 
+    await applyProjectFilter(page, 'web');
+    await expect(visibleProjectItems).toHaveCount(1);
+    await expect(page.locator('.project-item:not([hidden]) .project-title')).toHaveText([
+      'Saadi Institute (gUG)'
+    ]);
+
     await applyProjectFilter(page, 'all');
-    await expect(visibleProjectItems).toHaveCount(4);
+    await expect(visibleProjectItems).toHaveCount(5);
   });
 
   test('links each project to a dedicated case study page', async ({ page }) => {
@@ -159,7 +165,8 @@ test.describe('Portfolio Smoke Flow', () => {
       { href: '/projects/nullid/', title: /NullID Case Study/ },
       { href: '/projects/nullcal/', title: /NullCal Case Study/ },
       { href: '/projects/pacman/', title: /PacMan Case Study/ },
-      { href: '/projects/nullkeys/', title: /NullKeys Case Study/ }
+      { href: '/projects/nullkeys/', title: /NullKeys Case Study/ },
+      { href: '/projects/saadi-institute/', title: /Saadi Institute.*Case Study/ }
     ];
 
     for (const item of caseStudies) {
@@ -185,6 +192,7 @@ test.describe('Portfolio Smoke Flow', () => {
       'https://nullcal.kamranboroomand.ir',
       'https://pacman.kamranboroomand.ir',
       'https://nullkeys.kamranboroomand.ir',
+      'https://saadi-institute.com',
       'https://github.com/KamranBoroomand/NullID',
       'https://github.com/KamranBoroomand/NullCal',
       'https://github.com/KamranBoroomand/PacMan',
@@ -199,6 +207,14 @@ test.describe('Portfolio Smoke Flow', () => {
       expect(relValue).toContain('noopener');
       expect(relValue).toContain('noreferrer');
     }
+
+    const saadiCard = page.locator('.project-card', {
+      has: page.locator('.project-title', { hasText: 'Saadi Institute (gUG)' })
+    });
+    await expect(saadiCard.getByText('Private source')).toBeVisible();
+    await expect(
+      saadiCard.locator('a[href="https://github.com/AfraBoroomand/saadi-institute"]')
+    ).toHaveCount(0);
   });
 
   test('keeps avatar tightly fitted on desktop and mobile', async ({ page }) => {

@@ -13,7 +13,21 @@ const avatarPngSettings = {
   compressionLevel: 9,
   effort: 10,
   palette: true,
-  quality: 70,
+  quality: 10,
+  colors: 8,
+  dither: 0
+};
+
+const projectPreviewPngSettings = {
+  compressionLevel: 9,
+  effort: 10,
+  palette: true,
+  quality: 10,
+  dither: 0
+};
+
+const saadiScreenshotPngSettings = {
+  ...projectPreviewPngSettings,
   colors: 128
 };
 
@@ -30,10 +44,35 @@ const jobs = [
     resize: { width: 512, height: 512, fit: 'cover' },
     settings: avatarPngSettings
   },
-  { file: 'assets/images/nullid-site-preview.png', format: 'png' },
-  { file: 'assets/images/nullcal-site-preview.png', format: 'png' },
-  { file: 'assets/images/pacman-site-preview.png', format: 'png' },
-  { file: 'assets/images/nullkeys-site-preview.png', format: 'png' },
+  {
+    file: 'assets/images/nullid-site-preview.png',
+    format: 'png',
+    resize: { width: 1200, withoutEnlargement: true },
+    settings: projectPreviewPngSettings
+  },
+  {
+    file: 'assets/images/nullcal-site-preview.png',
+    format: 'png',
+    resize: { width: 1200, withoutEnlargement: true },
+    settings: projectPreviewPngSettings
+  },
+  {
+    file: 'assets/images/pacman-site-preview.png',
+    format: 'png',
+    resize: { width: 1200, withoutEnlargement: true },
+    settings: projectPreviewPngSettings
+  },
+  {
+    file: 'assets/images/nullkeys-site-preview.png',
+    format: 'png',
+    resize: { width: 1200, withoutEnlargement: true },
+    settings: projectPreviewPngSettings
+  },
+  {
+    file: 'assets/images/saadi-institute-site-preview.png',
+    format: 'png',
+    settings: saadiScreenshotPngSettings
+  },
   { file: 'assets/images/web-app-manifest-192x192.png', format: 'png' },
   { file: 'assets/images/web-app-manifest-512x512.png', format: 'png' },
   { file: 'assets/images/apple-touch-icon.png', format: 'png' },

@@ -10,6 +10,7 @@ const htmlEntrypoints = [
   'projects/nullcal/index.html',
   'projects/pacman/index.html',
   'projects/nullkeys/index.html',
+  'projects/saadi-institute/index.html',
   'security/index.html'
 ];
 

@@ -154,6 +154,19 @@ h1 {
   border-color: rgba(209, 142, 0, 0.45);
 }
 
+.btn-muted {
+  color: var(--text-2);
+  border-style: dashed;
+  background: rgba(255, 255, 255, 0.58);
+  cursor: default;
+}
+
+.btn-muted:hover {
+  transform: none;
+  border-color: var(--line);
+  color: var(--text-2);
+}
+
 .metrics {
   padding: 0.9rem 1rem;
 }
