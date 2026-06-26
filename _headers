@@ -1,0 +1,7 @@
+
+# Public email-signature images
+/assets/hotlink-ok/email/*
+  ! Cross-Origin-Resource-Policy
+  Cross-Origin-Resource-Policy: cross-origin
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=86400
