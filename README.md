@@ -1,3 +1,5 @@
+This repository contains the archived first version of my portfolio. The current portfolio is available at kamranboroomand.ir.
+
 # Portfolio Website Repository
 
 Static, production-ready portfolio website for [kamranboroomand.ir](https://kamranboroomand.ir), with multilingual UX, data-driven projects, case-study pages, and CI quality gates.
